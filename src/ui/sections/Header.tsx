@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { SentiumMark } from "@/ui/components";
 
 const NAV = [
-  { href: "#about", label: "About" },
-  { href: "#focus", label: "Focus" },
-  { href: "#projects", label: "Projects" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#about", label: "About" },
+  { href: "/#focus", label: "Focus" },
+  { href: "/#projects", label: "Projects" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 export function Header() {
@@ -33,31 +34,31 @@ export function Header() {
       }}
     >
       <div className="container-prose flex h-16 items-center justify-between">
-        <a href="#top" className="flex items-center gap-2.5 group" aria-label="Sentium home">
+        <Link href="/" className="flex items-center gap-2.5 group" aria-label="Sentium home">
           <SentiumMark size={28} />
           <span className="font-display text-xl tracking-tight">Sentium</span>
-        </a>
+        </Link>
 
         <nav aria-label="Primary" className="hidden sm:flex items-center gap-1">
           {NAV.map((item) => (
-            <a
+            <Link
               key={item.href}
               href={item.href}
               className="relative px-3 py-2 text-sm font-medium tracking-tight transition-colors rounded-full"
               style={{ color: "var(--color-fg)" }}
             >
               {item.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
-        <a
-          href="#contact"
+        <Link
+          href="/#contact"
           className="sm:hidden text-sm font-medium underline underline-offset-4"
           style={{ color: "var(--color-fg)" }}
         >
           Contact
-        </a>
+        </Link>
       </div>
     </header>
   );

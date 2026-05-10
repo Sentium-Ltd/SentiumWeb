@@ -16,7 +16,7 @@ export async function GET() {
   const projectLines = projects
     .map(
       (p) =>
-        `- [${p.name}](${p.href}): ${p.tagline} ${p.platform} app.`
+        `- [${p.name}](${SITE}/projects/${p.id}/) (${p.platform} app): ${p.tagline} External link: ${p.href}`
     )
     .join("\n");
 
@@ -57,6 +57,7 @@ ${projectLines}
 
 ## Pages
 - [Home](${SITE}/): studio overview, projects carousel, contact form
+${projects.map((p) => `- [${p.name}](${SITE}/projects/${p.id}/): ${p.metaDescription}`).join("\n")}
 - [Sitemap](${SITE}/sitemap.xml)
 - [robots.txt](${SITE}/robots.txt)
 `;

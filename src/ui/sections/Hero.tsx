@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ButtonLink, Constellation } from "@/ui/components";
 
 export function Hero() {
@@ -64,7 +65,7 @@ export function Hero() {
             </p>
 
             <div className="mt-9 flex flex-wrap items-center gap-3">
-              <ButtonLink href="#contact">
+              <ButtonLink href="/#contact">
                 Start a conversation
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -80,13 +81,13 @@ export function Hero() {
                   <path d="M5 12h14M13 5l7 7-7 7" />
                 </svg>
               </ButtonLink>
-              <a
-                href="#projects"
+              <Link
+                href="/#projects"
                 className="inline-flex items-center gap-2 rounded-full px-5 h-11 text-sm font-medium tracking-tight transition-colors hover:opacity-70"
                 style={{ color: "var(--color-fg)" }}
               >
                 See what we&apos;ve made
-              </a>
+              </Link>
             </div>
           </div>
 

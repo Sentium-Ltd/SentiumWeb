@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
 import useEmblaCarousel from "embla-carousel-react";
 import type { Project } from "@/domain/projects";
 
@@ -128,15 +129,13 @@ export function ProjectCarousel({ projects }: { projects: Project[] }) {
                     {project.description}
                   </p>
 
-                  <div className="mt-auto pt-2">
-                    <a
-                      href={project.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                  <div className="mt-auto pt-2 flex flex-wrap items-center gap-x-5 gap-y-2">
+                    <Link
+                      href={`/projects/${project.id}/`}
                       className="inline-flex items-center gap-2 text-sm font-medium underline-offset-4 transition-all hover:underline"
                       style={{ color: "var(--color-fg)" }}
                     >
-                      Visit {project.name}
+                      Read the story
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="14"
@@ -148,6 +147,30 @@ export function ProjectCarousel({ projects }: { projects: Project[] }) {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         className="transition-transform group-hover:translate-x-0.5"
+                      >
+                        <path d="M5 12h14M13 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                    <a
+                      href={project.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-sm font-medium underline-offset-4 transition-all hover:underline"
+                      style={{ color: "var(--color-muted)" }}
+                    >
+                      {project.platform === "iOS"
+                        ? "App Store"
+                        : "Open site"}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       >
                         <path d="M7 17 17 7M9 7h8v8" />
                       </svg>
