@@ -85,44 +85,70 @@ export function Constellation({ size = 520 }: { size?: number }) {
         className="relative w-full h-full overflow-visible"
         style={{
           filter: "drop-shadow(0 25px 60px rgba(245,199,56,0.18))",
+          transformOrigin: `${CENTER}px ${CENTER}px`,
         }}
         animate={
           reduceMotion
             ? undefined
             : {
-                rotate: pointer.x * 4,
+                rotate: pointer.x * 8,
+                scale: 1 + Math.abs(pointer.y) * 0.02,
               }
         }
         transition={{ type: "spring", stiffness: 30, damping: 18 }}
       >
-        {/* Faint connecting rings */}
-        <circle
-          cx={CENTER}
-          cy={CENTER}
-          r="82"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="0.4"
-          opacity="0.18"
-          strokeDasharray="2 4"
-        />
-        <circle
-          cx={CENTER}
-          cy={CENTER}
-          r="60"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="0.4"
-          opacity="0.12"
-          strokeDasharray="1 3"
-        />
+        {/* Faint connecting rings - counter-rotate gently for parallax depth */}
+        <motion.g
+          style={{ transformOrigin: `${CENTER}px ${CENTER}px` }}
+          animate={reduceMotion ? undefined : { rotate: -360 }}
+          transition={
+            reduceMotion
+              ? undefined
+              : {
+                  duration: 60,
+                  repeat: Infinity,
+                  ease: "linear",
+                }
+          }
+        >
+          <circle
+            cx={CENTER}
+            cy={CENTER}
+            r="82"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="0.4"
+            opacity="0.18"
+            strokeDasharray="2 4"
+          />
+          <circle
+            cx={CENTER}
+            cy={CENTER}
+            r="60"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="0.4"
+            opacity="0.12"
+            strokeDasharray="1 3"
+          />
+        </motion.g>
+
+        {/* Inner group: continuous slow->fast->slow rotation cycle */}
+        <motion.g
+          style={{ transformOrigin: `${CENTER}px ${CENTER}px` }}
+          animate={reduceMotion ? undefined : { rotate: 360 }}
+          transition={
+            reduceMotion
+              ? undefined
+              : {
+                  duration: 22,
+                  repeat: Infinity,
+                  ease: [0.45, 0, 0.55, 1],
+                }
+          }
+        >
 
         {DOTS.map((dot, i) => {
-          // Distance from center (used for parallax magnitude)
-          const dxFromCenter = (dot.cx - CENTER) / CENTER;
-          const dyFromCenter = (dot.cy - CENTER) / CENTER;
-          const parallaxX = pointer.x * dxFromCenter * 6;
-          const parallaxY = pointer.y * dyFromCenter * 6;
           const phase = (i * 0.27) % 6;
 
           return (
@@ -137,8 +163,6 @@ export function Constellation({ size = 520 }: { size?: number }) {
                 reduceMotion
                   ? undefined
                   : {
-                      x: parallaxX,
-                      y: parallaxY,
                       scale: [1, 1.08, 1],
                       opacity: [0.92, 1, 0.92],
                     }
@@ -147,20 +171,10 @@ export function Constellation({ size = 520 }: { size?: number }) {
                 reduceMotion
                   ? undefined
                   : {
-                      x: { type: "spring", stiffness: 40, damping: 18 },
-                      y: { type: "spring", stiffness: 40, damping: 18 },
-                      scale: {
-                        duration: 4 + (i % 5) * 0.4,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: phase,
-                      },
-                      opacity: {
-                        duration: 4 + (i % 5) * 0.4,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: phase,
-                      },
+                      duration: 4 + (i % 5) * 0.4,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: phase,
                     }
               }
             />
@@ -175,8 +189,8 @@ export function Constellation({ size = 520 }: { size?: number }) {
             reduceMotion
               ? undefined
               : {
-                  scale: [1, 1.06, 1],
-                  rotate: [0, 8, 0],
+                  scale: [1, 1.08, 1],
+                  rotate: [0, 12, -6, 0],
                 }
           }
           transition={
@@ -189,6 +203,7 @@ export function Constellation({ size = 520 }: { size?: number }) {
                 }
           }
         />
+        </motion.g>
       </motion.svg>
     </div>
   );

@@ -1,4 +1,4 @@
-import { GraduationCap, HeartPulse, Plane } from "lucide-react";
+import { GraduationCap, HeartPulse, Plane, Wallet } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Reveal } from "@/ui/components";
 import { SectionHeading } from "@/ui/primitives";
@@ -32,6 +32,13 @@ const areas: Area[] = [
     Icon: Plane,
     accent: "var(--brand-orange)",
   },
+  {
+    title: "Finance",
+    description:
+      "Money tools that don't feel like spreadsheets. Calm, clear software for the bits of personal finance everyone secretly wants help with.",
+    Icon: Wallet,
+    accent: "var(--brand-purple)",
+  },
 ];
 
 export function FocusAreas() {
@@ -45,12 +52,12 @@ export function FocusAreas() {
         <Reveal>
           <SectionHeading
             eyebrow="What we focus on"
-            title="Three areas, one bar."
+            title="Four areas, one bar."
             description="We pick the work for the same reason we'd pick anything else: it's worth the time, it's a real problem, and we'd be a little embarrassed to ship something half-hearted."
           />
         </Reveal>
 
-        <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {areas.map((area, i) => (
             <Reveal key={area.title} delay={i * 0.1}>
               <article

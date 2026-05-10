@@ -20,6 +20,15 @@ export const projects: Project[] = [
     accent: "brand-sky",
   },
   {
+    id: "kidwise",
+    name: "KidWise",
+    tagline: "Practical life skills for the kids growing up next.",
+    description:
+      "A web app that turns the everyday stuff (money, time, communication, decisions) into bite-size lessons for kids who are about to need them.",
+    href: "https://kidwise.io/",
+    accent: "brand-blue",
+  },
+  {
     id: "makemycard",
     name: "MakeMyCard",
     tagline: "AI-powered greeting cards, made in seconds.",

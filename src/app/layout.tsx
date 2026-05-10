@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     template: "%s · Sentium",
   },
   description:
-    "Sentium is a small, focused technology studio designing and building consumer apps for learning, wellbeing, and the way people travel.",
+    "Sentium is a small, focused technology studio designing and building consumer apps across learning, wellbeing, travel, and personal finance. We plan, we build, we ship.",
   applicationName: "Sentium",
   keywords: [
     "Sentium",
@@ -31,8 +31,11 @@ export const metadata: Metadata = {
     "kids apps",
     "wellbeing",
     "travel",
+    "personal finance",
     "iOS apps",
     "Alfie Colouring",
+    "Alfie Puzzles",
+    "KidWise",
     "MakeMyCard",
   ],
   authors: [{ name: "Sentium Ltd" }],
@@ -42,7 +45,7 @@ export const metadata: Metadata = {
     url: "https://sentium.app",
     title: "Sentium - A studio for everyday software",
     description:
-      "We design and build consumer apps for learning, wellbeing, and the way people travel.",
+      "We design and build consumer apps across learning, wellbeing, travel, and personal finance. We plan, we build, we ship.",
     siteName: "Sentium",
   },
   twitter: {
