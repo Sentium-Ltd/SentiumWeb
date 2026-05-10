@@ -8,6 +8,7 @@ import { projects } from "@/domain/projects";
 const SITE_URL = "https://www.sentium.app";
 const ORG_ID = `${SITE_URL}/#organization`;
 const SITE_ID = `${SITE_URL}/#website`;
+const SERVICE_ID = `${SITE_URL}/#service`;
 
 interface SchemaThing {
   "@context"?: string | string[];
@@ -126,12 +127,46 @@ export function projectSchemas(): SchemaThing[] {
   });
 }
 
+export function serviceSchema(): SchemaThing {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": SERVICE_ID,
+    name: "Mobile and web app design and development",
+    description:
+      "End-to-end mobile and web app development - product strategy, design, engineering, and launch. We work on our own consumer products and partner with founders and teams who bring us a good idea.",
+    provider: { "@id": ORG_ID },
+    serviceType: [
+      "Mobile app development",
+      "iOS app development",
+      "Web app development",
+      "Consumer software design",
+      "Product strategy",
+    ],
+    areaServed: { "@type": "Place", name: "Worldwide" },
+    audience: {
+      "@type": "Audience",
+      audienceType: "Founders, product teams, and partners",
+    },
+    offers: {
+      "@type": "Offer",
+      availability: "https://schema.org/InStock",
+      priceSpecification: {
+        "@type": "PriceSpecification",
+        priceCurrency: "GBP",
+        description: "Bespoke - scoped per project",
+      },
+    },
+  };
+}
+
 export function structuredDataPayload() {
   return {
     "@context": "https://schema.org",
     "@graph": [
       organizationSchema(),
       websiteSchema(),
+      serviceSchema(),
       ...projectSchemas(),
     ],
   };

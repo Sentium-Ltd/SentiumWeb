@@ -7,7 +7,7 @@ export const projects: Project[] = [
     tagline: "AI-generated colouring pages for curious kids.",
     description:
       "Part of the Alfie suite of children's apps. Endless, instantly-generated colouring sheets that match whatever your child is into this week.",
-    href: "https://apps.apple.com/app/alfie-colouring",
+    href: "https://apps.apple.com/gb/app/alfie-colouring/id6762228600",
     accent: "brand-coral",
     platform: "iOS",
   },
