@@ -54,7 +54,7 @@
         font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif"
         font-size="28"
         font-weight="500"
-        fill="#9aa1ad">We plan. We build. We ship.</text>
+        fill="#9aa1ad"><tspan fill="#ef4d31" font-weight="600">You ask.</tspan> We plan. We build. We ship.</text>
 
   <!-- Domain -->
   <text x="90" y="560"

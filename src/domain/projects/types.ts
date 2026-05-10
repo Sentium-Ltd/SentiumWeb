@@ -8,6 +8,8 @@ export type ProjectAccent =
   | "brand-pink"
   | "brand-gold";
 
+export type ProjectPlatform = "iOS" | "Web";
+
 export interface Project {
   id: string;
   name: string;
@@ -15,6 +17,7 @@ export interface Project {
   description: string;
   href: string;
   accent: ProjectAccent;
+  platform: ProjectPlatform;
   imageSrc?: string;
   imageAlt?: string;
 }

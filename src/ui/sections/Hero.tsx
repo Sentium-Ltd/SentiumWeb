@@ -28,7 +28,7 @@ export function Hero() {
         <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">
           <div>
             <div
-              className="inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-semibold tracking-[0.05em] mb-7"
+              className="inline-flex flex-wrap items-center gap-x-2 gap-y-1 rounded-full px-3.5 py-1.5 text-xs font-semibold tracking-[0.05em] mb-7"
               style={{
                 background: "var(--color-card)",
                 border: "1px solid var(--color-line)",
@@ -39,6 +39,8 @@ export function Hero() {
                 className="inline-block h-1.5 w-1.5 rounded-full"
                 style={{ background: "var(--brand-mint)" }}
               />
+              <span style={{ color: "var(--brand-coral)" }}>You ask.</span>
+              <span style={{ color: "var(--color-muted)" }}>·</span>
               We plan.
               <span style={{ color: "var(--color-muted)" }}>·</span>
               We build.
@@ -56,8 +58,9 @@ export function Hero() {
               className="mt-7 max-w-xl text-lg sm:text-xl leading-relaxed"
               style={{ color: "var(--color-muted)" }}
             >
-              We design and build consumer apps across learning, wellbeing,
-              travel, and personal finance.
+              We design and build mobile and web apps across learning,
+              wellbeing, travel, and personal finance - for ourselves,
+              and for the people who bring us a good idea.
             </p>
 
             <div className="mt-9 flex flex-wrap items-center gap-3">

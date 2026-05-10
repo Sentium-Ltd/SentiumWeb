@@ -29,7 +29,7 @@ export function organizationSchema(): SchemaThing {
       url: `${SITE_URL}/branding/symbol.svg`,
     },
     description:
-      "A small, focused technology studio designing and building consumer apps across learning, wellbeing, travel, and personal finance.",
+      "A small, focused technology studio designing and building mobile and web apps across learning, wellbeing, travel, and personal finance. We work on our own products and partner with people who bring us a good idea.",
     foundingLocation: {
       "@type": "Place",
       address: {
@@ -58,7 +58,7 @@ export function organizationSchema(): SchemaThing {
       value: "16512683",
     },
     legalName: "Sentium Ltd",
-    slogan: "We plan. We build. We ship.",
+    slogan: "You ask. We plan. We build. We ship.",
     knowsAbout: [
       "Mobile app development",
       "iOS app development",
@@ -82,7 +82,7 @@ export function websiteSchema(): SchemaThing {
     url: SITE_URL,
     name: "Sentium",
     description:
-      "A studio for everyday software. We design and build consumer apps across learning, wellbeing, travel, and personal finance.",
+      "A studio for everyday software. We design and build mobile and web apps across learning, wellbeing, travel, and personal finance.",
     publisher: {
       "@id": ORG_ID,
     },

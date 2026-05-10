@@ -100,14 +100,13 @@ export function ProjectCarousel({ projects }: { projects: Project[] }) {
 
                 <div className="relative flex h-full flex-col gap-5 sm:gap-7">
                   <div
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-xl text-xs font-semibold uppercase tracking-widest"
+                    className="inline-flex h-7 w-fit items-center rounded-full px-3 text-[10px] font-bold uppercase tracking-[0.14em]"
                     style={{
-                      background: accentVar[project.accent],
-                      color: "white",
+                      background: `color-mix(in srgb, ${accentVar[project.accent]} 14%, transparent)`,
+                      color: accentVar[project.accent],
                     }}
-                    aria-hidden="true"
                   >
-                    {project.name.slice(0, 2)}
+                    {project.platform === "iOS" ? "iOS app" : "Web app"}
                   </div>
 
                   <div>

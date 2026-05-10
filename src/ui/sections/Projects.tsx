@@ -20,7 +20,7 @@ export function Projects() {
               eyebrow="Projects"
               title={
                 <>
-                  Things we&apos;ve <span className="gradient-text">shipped</span>.
+                  Some of the things we&apos;ve <span className="gradient-text">shipped</span>.
                 </>
               }
               description="Live in the App Store and on the open web. Each one started as something we wanted to exist."
