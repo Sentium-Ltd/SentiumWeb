@@ -18,7 +18,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://sentium.app"),
   title: {
-    default: "Sentium — A studio for everyday software",
+    default: "Sentium - A studio for everyday software",
     template: "%s · Sentium",
   },
   description:
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "https://sentium.app",
-    title: "Sentium — A studio for everyday software",
+    title: "Sentium - A studio for everyday software",
     description:
       "We design and build consumer apps for learning, wellbeing, and the way people travel.",
     siteName: "Sentium",

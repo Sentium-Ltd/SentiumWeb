@@ -25,7 +25,7 @@ export function About() {
             >
               Sentium is a small, focused technology studio building consumer
               products for everyday life. We design and ship our own apps
-              end-to-end — product, engineering, content — with a bias toward
+              end-to-end - product, engineering, content - with a bias toward
               privacy-first design and experiences families and individuals
               can trust.
             </p>
@@ -37,7 +37,7 @@ export function About() {
             >
               We work in tight iterations, ship to real people, and learn from
               what they tell us. Less ceremony, more shipping. Most of what we
-              make is for the people we know — kids, parents, friends — and
+              make is for the people we know - kids, parents, friends - and
               that keeps the bar honest.
             </p>
           </Reveal>

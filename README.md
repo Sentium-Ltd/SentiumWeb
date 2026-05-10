@@ -1,4 +1,4 @@
-# Sentium — sentium.app
+# Sentium - sentium.app
 
 The Sentium Ltd marketing site. Next.js 15 (static export) + Tailwind v4, hosted on Azure Static Web Apps with a linked Azure Function for the contact form.
 
@@ -9,7 +9,7 @@ The Sentium Ltd marketing site. Next.js 15 (static export) + Tailwind v4, hosted
 - **Framer Motion** for the hero constellation + section reveals
 - **Embla Carousel** for the projects strip
 - **Zod** for contact-form validation (shared schema between client and the Function)
-- **Azure Functions v4 (Node 20)** for `/api/contact` — uses **Resend** to email `support@sentium.app`
+- **Azure Functions v4 (Node 20)** for `/api/contact`, uses **Resend** to email `support@sentium.app`
 
 ## Project layout
 
@@ -70,7 +70,7 @@ Copy `.env.example` to `.env.local` for the Next side (none currently consumed a
 
 ## Deploy
 
-Hosted on **Azure Static Web Apps (Free tier)** with the `/api` folder linked as a managed Function. The GitHub Action that SWA generates on first deploy handles build + publish — leave it as-is.
+Hosted on **Azure Static Web Apps (Free tier)** with the `/api` folder linked as a managed Function. The GitHub Action that SWA generates on first deploy handles build + publish; leave it as-is.
 
 After provisioning, set the three Resend env vars in the Azure Portal under *Configuration → Application settings* on the Static Web App resource.
 

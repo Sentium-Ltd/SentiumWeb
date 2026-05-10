@@ -20,7 +20,7 @@ export function Contact() {
                     <span className="gradient-text">working on.</span>
                   </>
                 }
-                description="Press, partnerships, or just to say hi about something we made — we read everything and reply within a few working days."
+                description="Press, partnerships, or just to say hi about something we made. We read everything and reply within a few working days."
               />
               <div className="mt-8 space-y-2 text-sm">
                 <p style={{ color: "var(--color-muted)" }}>

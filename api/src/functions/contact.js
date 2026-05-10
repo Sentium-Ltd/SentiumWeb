@@ -82,7 +82,7 @@ app.http("contact", {
       };
     }
 
-    // Honeypot — silently accept and drop
+    // Honeypot - silently accept and drop
     if (parsed.data.hp && parsed.data.hp.trim().length > 0) {
       context.log("contact: honeypot triggered, dropping silently");
       return { status: 200, jsonBody: { ok: true } };
@@ -115,7 +115,7 @@ app.http("contact", {
       "Message:",
       parsed.data.message,
       "",
-      "—",
+      "--",
       "Sent via the contact form on sentium.app",
     ].join("\n");
 

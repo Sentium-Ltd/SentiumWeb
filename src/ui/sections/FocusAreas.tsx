@@ -14,21 +14,21 @@ const areas: Area[] = [
   {
     title: "Education",
     description:
-      "Apps that meet kids where their curiosity actually lives — drawing, stories, games — and sneak the learning in around the edges.",
+      "Apps that meet kids where their curiosity actually lives - drawing, stories, games - and sneak the learning in around the edges.",
     Icon: GraduationCap,
     accent: "var(--brand-coral)",
   },
   {
     title: "Health",
     description:
-      "Quiet, well-designed tools for everyday wellbeing — for the small habits that add up over months, not for the headline metrics.",
+      "Quiet, well-designed tools for everyday wellbeing - for the small habits that add up over months, not for the headline metrics.",
     Icon: HeartPulse,
     accent: "var(--brand-mint)",
   },
   {
     title: "Travel",
     description:
-      "Software for the way people actually plan and remember trips — light on friction, heavy on the bits that turn into stories later.",
+      "Software for the way people actually plan and remember trips - light on friction, heavy on the bits that turn into stories later.",
     Icon: Plane,
     accent: "var(--brand-orange)",
   },

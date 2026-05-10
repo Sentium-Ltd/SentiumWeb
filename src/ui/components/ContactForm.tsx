@@ -61,7 +61,7 @@ export function ContactForm() {
       if (res.status === 429) {
         setStatus({
           kind: "error",
-          message: "You've sent a few in a row — please wait a moment and try again.",
+          message: "You've sent a few in a row - please wait a moment and try again.",
         });
         return;
       }
@@ -191,7 +191,7 @@ export function ContactForm() {
         />
       </FieldShell>
 
-      {/* Honeypot — visually hidden, off-screen rather than display:none */}
+      {/* Honeypot - visually hidden, off-screen rather than display:none */}
       <div
         aria-hidden="true"
         style={{
