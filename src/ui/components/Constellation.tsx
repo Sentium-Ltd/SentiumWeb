@@ -99,19 +99,7 @@ export function Constellation({ size = 520 }: { size?: number }) {
         transition={{ type: "spring", stiffness: 30, damping: 18 }}
       >
         {/* Faint connecting rings - counter-rotate gently for parallax depth */}
-        <motion.g
-          style={{ transformBox: "fill-box", transformOrigin: "center" }}
-          animate={reduceMotion ? undefined : { rotate: -360 }}
-          transition={
-            reduceMotion
-              ? undefined
-              : {
-                  duration: 60,
-                  repeat: Infinity,
-                  ease: "linear",
-                }
-          }
-        >
+        <g className={reduceMotion ? undefined : "constellation-counter-spin"}>
           <circle
             cx={CENTER}
             cy={CENTER}
@@ -132,22 +120,10 @@ export function Constellation({ size = 520 }: { size?: number }) {
             opacity="0.12"
             strokeDasharray="1 3"
           />
-        </motion.g>
+        </g>
 
-        {/* Inner group: continuous slow->fast->slow rotation cycle */}
-        <motion.g
-          style={{ transformBox: "fill-box", transformOrigin: "center" }}
-          animate={reduceMotion ? undefined : { rotate: 360 }}
-          transition={
-            reduceMotion
-              ? undefined
-              : {
-                  duration: 22,
-                  repeat: Infinity,
-                  ease: [0.45, 0, 0.55, 1],
-                }
-          }
-        >
+        {/* Inner group: continuous rotation, CSS-driven for reliability */}
+        <g className={reduceMotion ? undefined : "constellation-spin"}>
 
         {DOTS.map((dot, i) => {
           const phase = (i * 0.27) % 6;
@@ -204,7 +180,7 @@ export function Constellation({ size = 520 }: { size?: number }) {
                 }
           }
         />
-        </motion.g>
+        </g>
       </motion.svg>
     </div>
   );
