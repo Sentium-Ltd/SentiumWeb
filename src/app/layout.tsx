@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter } from "next/font/google";
+import Script from "next/script";
 import { StructuredData } from "@/ui/components/StructuredData";
 import "./globals.css";
 
@@ -119,6 +120,12 @@ export default function RootLayout({
       <body className={`${fraunces.variable} ${inter.variable} antialiased`}>
         <StructuredData />
         {children}
+        <Script
+          id="cf-web-analytics"
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          strategy="afterInteractive"
+          data-cf-beacon='{"token": "be9e72bff2ce4d2094c2d7242dd927c8"}'
+        />
       </body>
     </html>
   );
