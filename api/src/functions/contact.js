@@ -129,7 +129,15 @@ app.http("contact", {
 
     if (error) {
       context.error("contact: resend send failed", error);
-      return { status: 500, jsonBody: { ok: false } };
+      const debug =
+        process.env.CONTACT_DEBUG === "1"
+          ? {
+              name: error.name,
+              message: error.message,
+              statusCode: error.statusCode,
+            }
+          : undefined;
+      return { status: 500, jsonBody: { ok: false, debug } };
     }
 
     return { status: 200, jsonBody: { ok: true } };

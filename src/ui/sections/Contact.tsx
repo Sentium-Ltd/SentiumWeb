@@ -27,11 +27,11 @@ export function Contact() {
                   Or write to us directly:
                 </p>
                 <a
-                  href="mailto:support@sentium.app"
+                  href="mailto:hello@sentium.app"
                   className="inline-flex items-center gap-2 font-medium underline underline-offset-4"
                   style={{ color: "var(--color-fg)" }}
                 >
-                  support@sentium.app
+                  hello@sentium.app
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="14"
