@@ -85,13 +85,14 @@ export function Constellation({ size = 520 }: { size?: number }) {
         className="relative w-full h-full overflow-visible"
         style={{
           filter: "drop-shadow(0 25px 60px rgba(245,199,56,0.18))",
-          transformOrigin: `${CENTER}px ${CENTER}px`,
+          transformBox: "fill-box",
+          transformOrigin: "center",
         }}
         animate={
           reduceMotion
             ? undefined
             : {
-                rotate: pointer.x * 8,
+                rotate: pointer.x * 10,
                 scale: 1 + Math.abs(pointer.y) * 0.02,
               }
         }
@@ -99,7 +100,7 @@ export function Constellation({ size = 520 }: { size?: number }) {
       >
         {/* Faint connecting rings - counter-rotate gently for parallax depth */}
         <motion.g
-          style={{ transformOrigin: `${CENTER}px ${CENTER}px` }}
+          style={{ transformBox: "fill-box", transformOrigin: "center" }}
           animate={reduceMotion ? undefined : { rotate: -360 }}
           transition={
             reduceMotion
@@ -135,7 +136,7 @@ export function Constellation({ size = 520 }: { size?: number }) {
 
         {/* Inner group: continuous slow->fast->slow rotation cycle */}
         <motion.g
-          style={{ transformOrigin: `${CENTER}px ${CENTER}px` }}
+          style={{ transformBox: "fill-box", transformOrigin: "center" }}
           animate={reduceMotion ? undefined : { rotate: 360 }}
           transition={
             reduceMotion
@@ -158,7 +159,7 @@ export function Constellation({ size = 520 }: { size?: number }) {
               cy={dot.cy}
               r={dot.r}
               fill={dot.fill}
-              style={{ transformOrigin: `${dot.cx}px ${dot.cy}px` }}
+              style={{ transformBox: "fill-box", transformOrigin: "center" }}
               animate={
                 reduceMotion
                   ? undefined
@@ -184,7 +185,7 @@ export function Constellation({ size = 520 }: { size?: number }) {
         <motion.path
           d={SPARKLE_PATH}
           fill="#f5c738"
-          style={{ transformOrigin: `${CENTER}px ${CENTER}px` }}
+          style={{ transformBox: "fill-box", transformOrigin: "center" }}
           animate={
             reduceMotion
               ? undefined
