@@ -11,6 +11,15 @@ export const projects: Project[] = [
     accent: "brand-coral",
   },
   {
+    id: "alfie-puzzles",
+    name: "Alfie Puzzles",
+    tagline: "Bite-size puzzle play for curious kids.",
+    description:
+      "Another from the Alfie suite. Quick, friendly puzzles for the half-hour after school, when little brains still want a workout but bedtime isn't far away.",
+    href: "https://apps.apple.com/gb/app/alfie-puzzles/id6762566734",
+    accent: "brand-sky",
+  },
+  {
     id: "makemycard",
     name: "MakeMyCard",
     tagline: "AI-powered greeting cards, made in seconds.",
