@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="bgGlow" cx="78%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#f5c738" stop-opacity="0.18"/>
+      <stop offset="40%" stop-color="#ef4d31" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#0e1014" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ef4d31"/>
+      <stop offset="50%" stop-color="#f5c738"/>
+      <stop offset="100%" stop-color="#5cbf7a"/>
+    </linearGradient>
+    <linearGradient id="rule" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f5c738" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#f5c738" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="markShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="20" stdDeviation="22" flood-color="#f5c738" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Base canvas -->
+  <rect width="1200" height="630" fill="#0e1014"/>
+  <rect width="1200" height="630" fill="url(#bgGlow)"/>
+
+  <!-- Subtle grid line accent on the left edge -->
+  <line x1="90" y1="220" x2="190" y2="220" stroke="url(#rule)" stroke-width="2"/>
+
+  <!-- Eyebrow -->
+  <text x="90" y="200"
+        font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="22"
+        font-weight="600"
+        letter-spacing="3"
+        fill="#f5c738">SENTIUM</text>
+
+  <!-- Headline -->
+  <text x="90" y="310"
+        font-family="'Fraunces', 'Times New Roman', Georgia, serif"
+        font-size="84"
+        font-weight="600"
+        fill="#f4f5f7"
+        letter-spacing="-2">A studio for</text>
+  <text x="90" y="400"
+        font-family="'Fraunces', 'Times New Roman', Georgia, serif"
+        font-size="84"
+        font-weight="600"
+        fill="url(#accent)"
+        letter-spacing="-2">everyday software.</text>
+
+  <!-- Tagline / catchphrase -->
+  <text x="90" y="480"
+        font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="28"
+        font-weight="500"
+        fill="#9aa1ad">We plan. We build. We ship.</text>
+
+  <!-- Domain -->
+  <text x="90" y="560"
+        font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="20"
+        font-weight="600"
+        letter-spacing="1"
+        fill="#f4f5f7">sentium.app</text>
+
+  <!-- Constellation mark -->
+  <g transform="translate(690, 105) scale(2.3117569352708056)" filter="url(#markShadow)">
+    <circle cx="65.46" cy="31.75" r="12.34" fill="#b3ba69"/>
+  <circle cx="90.88" cy="8.7" r="8.7" fill="#5cbf7a"/>
+  <circle cx="32.78" cy="32.74" r="8.7" fill="#3b88d5"/>
+  <circle cx="8.7" cy="90.81" r="8.7" fill="#a354d1"/>
+  <circle cx="32.74" cy="148.9" r="8.7" fill="#ef8f45"/>
+  <circle cx="90.81" cy="172.98" r="8.7" fill="#eda1cf"/>
+  <circle cx="148.9" cy="148.95" r="8.7" fill="#b3ba69"/>
+  <circle cx="172.98" cy="90.88" r="8.7" fill="#ef4d31"/>
+  <circle cx="148.95" cy="32.78" r="8.7" fill="#6dcaee"/>
+  <circle cx="31.11" cy="67.01" r="12.34" fill="#ef4d31"/>
+  <circle cx="31.75" cy="116.23" r="12.34" fill="#6dcaee"/>
+  <circle cx="67.01" cy="150.58" r="12.34" fill="#5cbf7a"/>
+  <circle cx="116.23" cy="149.94" r="12.34" fill="#3b88d5"/>
+  <circle cx="150.58" cy="114.68" r="12.34" fill="#a354d1"/>
+  <circle cx="149.94" cy="65.46" r="12.34" fill="#ef8f45"/>
+  <circle cx="114.68" cy="31.11" r="12.34" fill="#eda1cf"/>
+  <path d="M113.92,103.07l9.09-3.47c8.03-3.07,8.03-14.43,0-17.5l-9.09-3.47c-4.98-1.9-8.92-5.84-10.82-10.82l-3.47-9.09c-3.07-8.03-14.43-8.03-17.5,0l-3.47,9.09c-1.9,4.98-5.84,8.92-10.82,10.82l-9.09,3.47c-8.03,3.07-8.03,14.43,0,17.5l9.09,3.47c4.98,1.9,8.92,5.84,10.82,10.82l3.47,9.09c3.07,8.03,14.43,8.03,17.5,0l3.47-9.09c1.9-4.98,5.84-8.92,10.82-10.82Z" fill="#f5c738"/>
+  </g>
+</svg>

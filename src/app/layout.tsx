@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter } from "next/font/google";
+import { StructuredData } from "@/ui/components/StructuredData";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -15,8 +16,10 @@ const inter = Inter({
   display: "swap",
 });
 
+const SITE_URL = "https://www.sentium.app";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://sentium.app"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Sentium - A studio for everyday software",
     template: "%s · Sentium",
@@ -26,6 +29,7 @@ export const metadata: Metadata = {
   applicationName: "Sentium",
   keywords: [
     "Sentium",
+    "Sentium Ltd",
     "consumer apps",
     "education apps",
     "kids apps",
@@ -38,20 +42,46 @@ export const metadata: Metadata = {
     "KidWise",
     "MakeMyCard",
   ],
-  authors: [{ name: "Sentium Ltd" }],
+  authors: [{ name: "Sentium Ltd", url: SITE_URL }],
   creator: "Sentium Ltd",
+  publisher: "Sentium Ltd",
+  alternates: {
+    canonical: SITE_URL,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   openGraph: {
     type: "website",
-    url: "https://sentium.app",
+    url: SITE_URL,
     title: "Sentium - A studio for everyday software",
     description:
       "We design and build consumer apps across learning, wellbeing, travel, and personal finance. We plan, we build, we ship.",
     siteName: "Sentium",
+    locale: "en_GB",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Sentium - A studio for everyday software. We plan. We build. We ship.",
+        type: "image/png",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sentium",
-    description: "A studio for everyday software.",
+    title: "Sentium - A studio for everyday software",
+    description: "We plan. We build. We ship.",
+    images: ["/og-image.png"],
   },
   icons: {
     icon: [
@@ -60,6 +90,16 @@ export const metadata: Metadata = {
     ],
     apple: "/branding/apple-touch-icon.png",
   },
+  // Replace the empty strings below with verification tokens once obtained:
+  //   Google: https://search.google.com/search-console
+  //   Bing:   https://www.bing.com/webmasters
+  verification: {
+    google: "",
+    other: {
+      "msvalidate.01": "",
+    },
+  },
+  category: "technology",
 };
 
 export const viewport: Viewport = {
@@ -75,8 +115,9 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en-GB">
       <body className={`${fraunces.variable} ${inter.variable} antialiased`}>
+        <StructuredData />
         {children}
       </body>
     </html>

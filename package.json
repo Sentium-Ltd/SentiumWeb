@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "qr": "node scripts/generate-qr.mjs",
+    "og": "node scripts/generate-og.mjs",
     "swa": "swa start out --api-location api --run \"npm run build\""
   },
   "dependencies": {
