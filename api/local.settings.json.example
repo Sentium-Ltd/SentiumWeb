@@ -1,0 +1,15 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AzureWebJobsStorage": "",
+    "RESEND_API_KEY": "",
+    "RESEND_FROM": "Sentium <hello@sentium.app>",
+    "SUPPORT_EMAIL": "support@sentium.app"
+  },
+  "Host": {
+    "LocalHttpPort": 7071,
+    "CORS": "*",
+    "CORSCredentials": false
+  }
+}
