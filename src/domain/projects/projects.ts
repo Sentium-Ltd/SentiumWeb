@@ -4,23 +4,23 @@ export const projects: Project[] = [
   {
     id: "alfie-colouring",
     name: "Alfie Colouring",
-    tagline: "AI-generated colouring pages for curious kids.",
+    tagline: "Made-to-order colouring pages for curious kids.",
     description:
-      "Part of the Alfie suite of children's apps. Endless, instantly-generated colouring sheets that match whatever your child is into this week.",
+      "Part of the Alfie suite of children's apps. Endless colouring sheets, drawn on demand to match whatever your child is into this week.",
     longDescription:
-      "Most kids' colouring apps recycle the same hundred templates. Alfie Colouring takes a different approach: every page is generated on the fly from whatever your child types or asks for, so the catalogue is effectively infinite. \"A friendly dinosaur eating spaghetti.\" \"My cat as a pirate.\" \"Cement mixer with butterflies.\" The app turns the request into a clean, kid-appropriate line drawing in seconds, ready to colour in the app or print on paper.",
+      "Most kids' colouring apps recycle the same hundred templates. Alfie Colouring takes a different approach: every page is drawn on demand from whatever your child types or asks for, so the catalogue is effectively infinite. \"A friendly dinosaur eating spaghetti.\" \"My cat as a pirate.\" \"Cement mixer with butterflies.\" The app turns the request into a clean, kid-appropriate line drawing in seconds, ready to colour in the app or print on paper.",
     whyWeBuiltIt:
-      "The first version was for our own kid, who burned through every printable sheet on the internet within a fortnight. We realised the bottleneck wasn't drawing tools or storage - it was content. Generative AI was finally good enough to make new pages as fast as a four-year-old can ask for them, and friendly enough to be safe by default.",
+      "The first version was for our own kid, who burned through every printable sheet on the internet within a fortnight. We realised the bottleneck wasn't drawing tools or storage - it was content. We built something that could draw a new page as fast as a four-year-old can ask for one, and stay friendly enough to be safe by default.",
     features: [
-      "Type any prompt and get a printable colouring page in a few seconds",
-      "Built-in moderation so the requests stay age-appropriate without parents policing every input",
+      "Type any idea and get a printable colouring page in seconds",
+      "Built-in safeguards keep the requests age-appropriate without parents policing every input",
       "Save, print, or colour directly in the app",
       "No ads, no in-app upsells targeted at children",
       "Designed for ages 3-9 - reading isn't required",
     ],
     releaseYear: 2025,
     metaDescription:
-      "Alfie Colouring - an iOS app that generates a new printable colouring page from anything your child can imagine. Built by Sentium as part of the Alfie suite.",
+      "Alfie Colouring - an iOS app that draws a new printable colouring page from anything your child can imagine. Built by Sentium as part of the Alfie suite.",
     href: "https://apps.apple.com/gb/app/alfie-colouring/id6762228600",
     ctaLabel: "Get on the App Store",
     accent: "brand-coral",
