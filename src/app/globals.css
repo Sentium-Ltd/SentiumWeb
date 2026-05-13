@@ -135,13 +135,15 @@
 .constellation-spin {
   transform-box: fill-box;
   transform-origin: center;
-  animation: constellation-spin 28s linear infinite;
+  animation: constellation-spin 22s linear infinite;
+  will-change: transform;
 }
 
 .constellation-counter-spin {
   transform-box: fill-box;
   transform-origin: center;
-  animation: constellation-counter-spin 90s linear infinite;
+  animation: constellation-counter-spin 70s linear infinite;
+  will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {

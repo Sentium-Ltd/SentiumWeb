@@ -34,7 +34,14 @@ const DOTS: Dot[] = [
 const SPARKLE_PATH =
   "M113.92,103.07l9.09-3.47c8.03-3.07,8.03-14.43,0-17.5l-9.09-3.47c-4.98-1.9-8.92-5.84-10.82-10.82l-3.47-9.09c-3.07-8.03-14.43-8.03-17.5,0l-3.47,9.09c-1.9,4.98-5.84,8.92-10.82,10.82l-9.09,3.47c-8.03,3.07-8.03,14.43,0,17.5l9.09,3.47c4.98,1.9,8.92,5.84,10.82,10.82l3.47,9.09c3.07,8.03,14.43,8.03,17.5,0l3.47-9.09c1.9-4.98,5.84-8.92,10.82-10.82Z";
 
-export function Constellation({ size = 520 }: { size?: number }) {
+interface ConstellationProps {
+  /** Optional override for size. Otherwise the wrapper fills its parent. */
+  size?: number;
+  /** Tailwind / utility classes applied to the outer wrapper. */
+  className?: string;
+}
+
+export function Constellation({ size, className }: ConstellationProps) {
   const reduceMotion = useReducedMotion();
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const [pointer, setPointer] = useState({ x: 0, y: 0 });
@@ -66,16 +73,16 @@ export function Constellation({ size = 520 }: { size?: number }) {
   return (
     <div
       ref={wrapperRef}
-      className="relative aspect-square select-none"
-      style={{ width: size, maxWidth: "100%" }}
+      className={`relative aspect-square select-none mx-auto ${className ?? ""}`}
+      style={size ? { width: size, maxWidth: "100%" } : undefined}
       aria-hidden="true"
     >
-      {/* Soft glow halo */}
+      {/* Soft glow halo - replaces the expensive drop-shadow filter for mobile perf */}
       <div
-        className="absolute inset-[18%] rounded-full blur-3xl opacity-50"
+        className="absolute inset-[18%] rounded-full blur-3xl opacity-60"
         style={{
           background:
-            "radial-gradient(closest-side, rgba(245,199,56,0.35), rgba(245,199,56,0.05) 60%, transparent 75%)",
+            "radial-gradient(closest-side, rgba(245,199,56,0.4), rgba(245,199,56,0.06) 60%, transparent 75%)",
         }}
       />
 
@@ -84,9 +91,9 @@ export function Constellation({ size = 520 }: { size?: number }) {
         viewBox="0 0 181.68 181.68"
         className="relative w-full h-full overflow-visible"
         style={{
-          filter: "drop-shadow(0 25px 60px rgba(245,199,56,0.18))",
           transformBox: "fill-box",
           transformOrigin: "center",
+          willChange: "transform",
         }}
         animate={
           reduceMotion

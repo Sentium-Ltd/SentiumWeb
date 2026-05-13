@@ -91,8 +91,8 @@ export function Hero() {
             </div>
           </div>
 
-          <div className="relative flex items-center justify-center order-first lg:order-last">
-            <Constellation size={520} />
+          <div className="relative flex items-center justify-center">
+            <Constellation className="w-[240px] sm:w-[320px] md:w-[400px] lg:w-[520px]" />
           </div>
         </div>
       </div>
