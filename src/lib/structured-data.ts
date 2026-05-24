@@ -30,7 +30,7 @@ export function organizationSchema(): SchemaThing {
       url: `${SITE_URL}/branding/symbol.svg`,
     },
     description:
-      "A small, focused technology studio designing and building mobile and web apps across learning, wellbeing, travel, and personal finance. We work on our own products and partner with people who bring us a good idea.",
+      "A small, focused technology studio designing and building mobile and web apps across learning, wellbeing, travel, and finance. We work on our own products and partner with people who bring us a good idea.",
     foundingLocation: {
       "@type": "Place",
       address: {
@@ -64,7 +64,7 @@ export function organizationSchema(): SchemaThing {
       "Mobile app development",
       "iOS app development",
       "Children's education software",
-      "Personal finance software",
+      "Finance software",
       "Wellbeing apps",
       "Travel software",
     ],
@@ -83,7 +83,7 @@ export function websiteSchema(): SchemaThing {
     url: SITE_URL,
     name: "Sentium",
     description:
-      "A studio for everyday software. We design and build mobile and web apps across learning, wellbeing, travel, and personal finance.",
+      "A studio for everyday software. We design and build mobile and web apps across learning, wellbeing, travel, and finance.",
     publisher: {
       "@id": ORG_ID,
     },

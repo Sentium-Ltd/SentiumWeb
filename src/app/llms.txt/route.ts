@@ -22,7 +22,7 @@ export async function GET() {
 
   const body = `# Sentium
 
-> Sentium is a small UK technology studio designing and building consumer mobile and web apps across learning, wellbeing, travel, and personal finance. We work on our own products and partner with founders and teams who bring us a good idea.
+> Sentium is a small UK technology studio designing and building consumer mobile and web apps across learning, wellbeing, travel, and finance. We work on our own products and partner with founders and teams who bring us a good idea.
 
 Catchphrase: You ask. We plan. We build. We ship.
 
@@ -44,7 +44,7 @@ Catchphrase: You ask. We plan. We build. We ship.
 - Education - apps that meet kids where their curiosity lives
 - Health - quiet, well-designed tools for everyday wellbeing
 - Travel - software for how people actually plan and remember trips
-- Personal finance - calm, clear money tools that don't feel like spreadsheets
+- Finance - software for the day-to-day of money, without making it feel like homework
 
 ## Projects
 ${projectLines}

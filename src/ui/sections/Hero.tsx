@@ -60,8 +60,8 @@ export function Hero() {
               style={{ color: "var(--color-muted)" }}
             >
               We design and build mobile and web apps across learning,
-              wellbeing, travel, and personal finance - for ourselves,
-              and for the people who bring us a good idea.
+              wellbeing, travel, and finance - the ones we built for
+              ourselves, and the ones we built with people who asked.
             </p>
 
             <div className="mt-9 flex flex-wrap items-center gap-3">

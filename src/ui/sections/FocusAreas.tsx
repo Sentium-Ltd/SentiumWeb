@@ -35,7 +35,7 @@ const areas: Area[] = [
   {
     title: "Finance",
     description:
-      "Money tools that don't feel like spreadsheets. Calm, clear software for the bits of personal finance everyone secretly wants help with.",
+      "Software for the day-to-day of money - the bills, the goals, the bits everyone keeps meaning to sort out - without making it feel like homework.",
     Icon: Wallet,
     accent: "var(--brand-purple)",
   },
