@@ -66,8 +66,10 @@ export default function VelloSupport() {
 
                 <h3>How do I export my data?</h3>
                 <p>
-                  Email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> from your registered address asking for a
-                  data export. We'll send you a JSON bundle within 30 days, per UK GDPR Article 20 (right to data portability).
+                  In the app: <strong>Me → Settings → Download my data (JSON)</strong>. You get a JSON bundle of your
+                  full profile, care chats, events, wearable data and labs — the complete UK GDPR Article 20 (right to
+                  data portability) and Article 15 (right of access) set. If you'd rather we email it instead,
+                  contact <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> and we'll deliver within 30 days.
                 </p>
 
                 <h3>I forgot which email I signed up with</h3>
