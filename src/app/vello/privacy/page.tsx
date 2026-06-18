@@ -5,7 +5,7 @@ import { Reveal } from "@/ui/components";
 import { Footer, Header } from "@/ui/sections";
 
 const SITE_URL = "https://www.sentium.app";
-const LAST_UPDATED = "25 May 2026";
+const LAST_UPDATED = "18 June 2026";
 const SUPPORT_EMAIL = "support@sentium.app";
 
 export const metadata: Metadata = {
@@ -66,7 +66,7 @@ export default function VelloPrivacy() {
               <section>
                 <h2>3. What we collect and why</h2>
                 <ul>
-                  <li><strong>Account identity</strong> — email address, via Microsoft Entra External ID. Used to sign you in.</li>
+                  <li><strong>Account identity</strong> — your email address. You sign in via Sign in with Apple, Sign in with Google, or an email + password account you create with us. Used to sign you in.</li>
                   <li><strong>Bio</strong> — age, biological sex, blood type, height, weight, allergies. Used to personalise the AI's analysis. You decide what to share.</li>
                   <li><strong>Baselines, meds, lab results</strong> — long-term conditions, prescriptions, supplements, and self-entered blood marker values. Used as context for the AI.</li>
                   <li><strong>Daily logs</strong> — meals, hydration, mood, sleep, gut markers, cycle data, blood-pressure / glucose readings. Used to surface patterns.</li>
@@ -100,12 +100,14 @@ export default function VelloPrivacy() {
                 <h2>5. Where your data lives</h2>
                 <p>
                   All Vello data is stored in <strong>Microsoft Azure</strong>, in the <strong>UK South</strong> region
-                  (London datacentres). Data is encrypted in transit (TLS 1.3) and at rest (AES-256). Identity is
-                  managed by a separate Microsoft Entra External ID tenant, isolated from Sentium's internal systems.
+                  (London datacentres). Data is encrypted in transit (TLS 1.3) and at rest (AES-256). Authentication is
+                  delegated to your chosen sign-in provider — Apple, Google, or an email/password account managed by us
+                  (passwords are stored only as bcrypt hashes, never in plaintext).
                 </p>
                 <p>
                   The only category that leaves Azure is your typed prompt + a redacted summary of your profile when
                   you use the Care AI — these are sent to the Azure OpenAI service (also UK-based) for synthesis.
+                  Transactional emails (sign-up confirmations, password resets) are sent via Brevo on our behalf.
                 </p>
               </section>
             </Reveal>
@@ -127,7 +129,9 @@ export default function VelloPrivacy() {
                 <p>We share data only with the processors strictly required to run Vello:</p>
                 <ul>
                   <li><strong>Microsoft Azure</strong> — hosting, storage, AI inference. UK datacentres. Data Processing Agreement in place.</li>
-                  <li><strong>Microsoft Entra External ID</strong> — identity provider. Email + display name only.</li>
+                  <li><strong>Apple</strong> — Sign in with Apple. Receives only what's needed to confirm your identity; we never share your Vello content with Apple.</li>
+                  <li><strong>Google</strong> — Sign in with Google. Same scope: identity confirmation only.</li>
+                  <li><strong>Brevo</strong> (Sendinblue SAS) — transactional email delivery (sign-up confirmation, password reset). Receives your email address and the email's content. No health data.</li>
                   <li><strong>Expo</strong> (Expo Inc.) — push-notification delivery via Apple/Google push services. Only an opaque device token, no health data.</li>
                 </ul>
                 <p>We do not share with advertising networks, brokers, insurers, employers, or anyone else.</p>
@@ -144,7 +148,7 @@ export default function VelloPrivacy() {
                   <li><strong>Erase</strong> all your data (the in-app delete button does this; or email us).</li>
                   <li><strong>Restrict</strong> processing in specific circumstances.</li>
                   <li><strong>Object</strong> to specific processing on legitimate-interest grounds.</li>
-                  <li><strong>Data portability</strong> — receive your data in a machine-readable format. Email us and we'll send you a JSON export within 30 days.</li>
+                  <li><strong>Data portability</strong> — receive your data in a machine-readable format. Use <em>Settings → Export your data</em> in the app for an instant JSON download, or email us if you'd prefer we send it.</li>
                   <li><strong>Withdraw consent</strong> at any time — sign out and delete your account.</li>
                 </ul>
                 <p>
