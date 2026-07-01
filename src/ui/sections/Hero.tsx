@@ -5,7 +5,7 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 overflow-hidden grain"
+      className="relative pt-28 pb-14 sm:pt-36 sm:pb-16 overflow-hidden grain"
     >
       {/* Ambient background colour fields */}
       <div

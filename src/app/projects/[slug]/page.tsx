@@ -63,7 +63,7 @@ export default async function ProjectPage({ params }: Props) {
   return (
     <>
       <Header />
-      <main className="pt-32 pb-20 sm:pt-40 sm:pb-28 grain relative overflow-hidden">
+      <main className="pt-28 pb-14 sm:pt-36 sm:pb-16 grain relative overflow-hidden">
         <div
           aria-hidden="true"
           className="absolute -top-40 -right-32 h-[36rem] w-[36rem] rounded-full opacity-25 blur-3xl pointer-events-none"

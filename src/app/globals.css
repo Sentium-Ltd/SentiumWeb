@@ -19,16 +19,9 @@
   --color-header-bg: rgba(255, 255, 255, 0.72);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg: #0e1014;
-    --color-fg: #f4f5f7;
-    --color-muted: #9aa1ad;
-    --color-card: #161922;
-    --color-line: rgba(244, 245, 247, 0.08);
-    --color-header-bg: rgba(14, 16, 20, 0.6);
-  }
-}
+/* Site is intentionally light-themed regardless of OS preference.
+   The old prefers-color-scheme dark override has been removed so the
+   brand colours (gold/coral/mint) sit on a consistent white surface. */
 
 @theme inline {
   --color-bg: var(--color-bg);
@@ -56,6 +49,8 @@
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    /* Force light UA styles - form controls, scrollbars, etc. */
+    color-scheme: light;
   }
 
   body {

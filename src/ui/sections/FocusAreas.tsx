@@ -45,7 +45,7 @@ export function FocusAreas() {
   return (
     <section
       id="focus"
-      className="py-24 sm:py-32"
+      className="py-14 sm:py-20"
       style={{ background: "var(--color-card)" }}
     >
       <div className="container-prose">

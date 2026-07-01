@@ -29,7 +29,7 @@ export function Projects() {
   return (
     <section
       id="projects"
-      className="py-24 sm:py-32"
+      className="py-14 sm:py-20"
       style={{ background: "var(--color-card)" }}
     >
       <div className="container-prose">

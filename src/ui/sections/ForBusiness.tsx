@@ -45,7 +45,7 @@ const services: Service[] = [
 
 export function ForBusiness() {
   return (
-    <section id="business" className="py-24 sm:py-32">
+    <section id="business" className="py-14 sm:py-20">
       <div className="container-prose">
         <Reveal>
           <p

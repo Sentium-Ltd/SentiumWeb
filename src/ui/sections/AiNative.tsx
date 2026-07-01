@@ -54,7 +54,7 @@ const tiles: Tile[] = [
 
 export function AiNative() {
   return (
-    <section id="ai-native" className="py-24 sm:py-32">
+    <section id="ai-native" className="py-14 sm:py-20">
       <div className="container-prose">
         <Reveal>
           <div className="flex flex-wrap items-center justify-center gap-2 mb-12">

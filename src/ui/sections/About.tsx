@@ -3,7 +3,7 @@ import { SectionHeading } from "@/ui/primitives";
 
 export function About() {
   return (
-    <section id="about" className="py-24 sm:py-32">
+    <section id="about" className="py-14 sm:py-20">
       <div className="container-prose">
         <Reveal>
           <SectionHeading
