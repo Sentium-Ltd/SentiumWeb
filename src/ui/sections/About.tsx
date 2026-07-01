@@ -7,11 +7,11 @@ export function About() {
       <div className="container-prose">
         <Reveal>
           <SectionHeading
-            eyebrow="About"
+            eyebrow="About us"
             title={
               <>
-                A small team, building things <br className="hidden sm:block" />
-                <span className="gradient-text">we&apos;d want to use ourselves.</span>
+                We are a startup that makes software possible for the people who{" "}
+                <span style={{ color: "var(--brand-coral)" }}>couldn&apos;t build it alone.</span>
               </>
             }
           />
@@ -23,11 +23,10 @@ export function About() {
               className="text-lg leading-relaxed"
               style={{ color: "var(--color-muted)" }}
             >
-              Sentium is a small, focused technology studio building consumer
-              products for everyday life. We design and ship our own apps
-              end-to-end - product, engineering, content - with a bias toward
-              privacy-first design and experiences families and individuals
-              can trust.
+              Sentium is a UK technology startup building consumer products and
+              AI-native systems. We design and ship end-to-end from product
+              strategy, engineering, content with deep cloud expertise, scalable
+              architecture, and a bias toward shipping what actually works.
             </p>
           </Reveal>
           <Reveal delay={0.2}>
@@ -35,10 +34,10 @@ export function About() {
               className="text-lg leading-relaxed"
               style={{ color: "var(--color-muted)" }}
             >
-              We work in tight iterations, ship to real people, and learn from
-              what they tell us. Less ceremony, more shipping. Most of what we
-              make is for the people we know - kids, parents, friends - and
-              that keeps the bar honest.
+              Built by an ex-Microsoft Cloud Solution Architect, Azure-native by
+              default, cloud-agnostic by capability. Whatever you need built, we
+              build it. From a simple site to a full AI platform. If it matters
+              to you, it matters to us.
             </p>
           </Reveal>
         </div>

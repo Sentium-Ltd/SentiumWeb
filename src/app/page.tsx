@@ -1,8 +1,10 @@
 import {
   About,
+  AiNative,
   Contact,
   FocusAreas,
   Footer,
+  ForBusiness,
   Header,
   Hero,
   Projects,
@@ -14,8 +16,10 @@ export default function HomePage() {
       <Header />
       <main>
         <Hero />
+        <AiNative />
         <About />
         <FocusAreas />
+        <ForBusiness />
         <Projects />
         <Contact />
       </main>

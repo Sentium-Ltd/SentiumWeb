@@ -22,26 +22,30 @@ const SITE_URL = "https://www.sentium.app";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Sentium - A studio for everyday software",
+    default: "Sentium - Where AI becomes apps, agents, and automation",
     template: "%s · Sentium",
   },
   description:
-    "Sentium is a small, focused technology studio designing and building mobile and web apps across learning, wellbeing, travel, and finance. You ask, we plan, we build, we ship.",
+    "Sentium is a UK technology startup designing and shipping AI-native apps, agents, and automation. We turn real problems into shipped software. You ask, we plan, we build, we ship.",
   applicationName: "Sentium",
   keywords: [
     "Sentium",
     "Sentium Ltd",
+    "AI native",
+    "AI agents",
+    "AI automation",
     "consumer apps",
+    "Azure",
     "education apps",
-    "kids apps",
-    "wellbeing",
-    "travel",
-    "finance",
+    "health apps",
+    "finance apps",
     "iOS apps",
+    "Bettr.Now",
     "Alfie Colouring",
     "Alfie Puzzles",
     "KidWise",
     "MakeMyCard",
+    "Treso",
   ],
   authors: [{ name: "Sentium Ltd", url: SITE_URL }],
   creator: "Sentium Ltd",
@@ -63,9 +67,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: SITE_URL,
-    title: "Sentium - A studio for everyday software",
+    title: "Sentium - Where AI becomes apps, agents, and automation",
     description:
-      "We design and build mobile and web apps across learning, wellbeing, travel, and finance. You ask, we plan, we build, we ship.",
+      "We design, build, and ship AI-native apps, agents, and automation. Our goal is to fix real life problems. You ask, we plan, we build, we ship.",
     siteName: "Sentium",
     locale: "en_GB",
     images: [

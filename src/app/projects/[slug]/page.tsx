@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "@/domain/projects";
 import { Reveal, SentiumMark } from "@/ui/components";
+import { ProjectCta } from "@/ui/components/ProjectCta";
 import { About, Footer, Header } from "@/ui/sections";
 
 interface Props {
@@ -130,31 +131,7 @@ export default async function ProjectPage({ params }: Props) {
                 </p>
 
                 <div className="mt-9 flex flex-wrap items-center gap-3">
-                  <a
-                    href={project.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-full px-6 h-12 text-sm font-medium tracking-tight transition-all duration-300 hover:-translate-y-0.5"
-                    style={{
-                      background: accent,
-                      color: "white",
-                    }}
-                  >
-                    {project.ctaLabel}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M7 17 17 7M9 7h8v8" />
-                    </svg>
-                  </a>
+                  <ProjectCta project={project} accent={accent} />
                   <Link
                     href="/#contact"
                     className="inline-flex items-center gap-2 rounded-full px-5 h-12 text-sm font-medium hover:opacity-70 transition-opacity"
@@ -235,26 +212,20 @@ export default async function ProjectPage({ params }: Props) {
               <div className="grid sm:grid-cols-[1fr_auto] items-center gap-6">
                 <div>
                   <h2 className="font-display text-2xl sm:text-3xl tracking-tight">
-                    Try {project.name}
+                    {project.status === "live" ? `Try ${project.name}` : `Be first to try ${project.name}`}
                   </h2>
                   <p
                     className="mt-2 text-base"
                     style={{ color: "var(--color-muted)" }}
                   >
-                    {project.platform === "iOS"
-                      ? "Free on the App Store - no sign-up to start."
-                      : "Free in your browser - no install."}
+                    {project.status !== "live"
+                      ? "Drop your email and we'll let you know the moment it's ready."
+                      : project.platform === "iOS"
+                        ? "Free on the App Store - no sign-up to start."
+                        : "Free in your browser - no install."}
                   </p>
                 </div>
-                <a
-                  href={project.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-full px-6 h-12 text-sm font-medium hover:-translate-y-0.5 transition-all duration-300"
-                  style={{ background: accent, color: "white" }}
-                >
-                  {project.ctaLabel}
-                </a>
+                <ProjectCta project={project} accent={accent} />
               </div>
             </section>
           </Reveal>

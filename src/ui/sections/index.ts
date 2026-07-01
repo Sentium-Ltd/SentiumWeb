@@ -1,7 +1,9 @@
 export { Header } from "./Header";
 export { Hero } from "./Hero";
+export { AiNative } from "./AiNative";
 export { About } from "./About";
 export { FocusAreas } from "./FocusAreas";
+export { ForBusiness } from "./ForBusiness";
 export { Projects } from "./Projects";
 export { Contact } from "./Contact";
 export { Footer } from "./Footer";

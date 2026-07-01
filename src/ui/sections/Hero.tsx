@@ -50,23 +50,25 @@ export function Hero() {
             </div>
 
             <h1 className="font-display text-5xl sm:text-6xl md:text-7xl tracking-tight leading-[0.98]">
-              A studio for{" "}
-              <span className="gradient-text">everyday</span>{" "}
-              software.
+              Where AI becomes{" "}
+              <span style={{ color: "var(--brand-coral)" }}>
+                apps, agents, and automation
+              </span>
+              .
             </h1>
 
             <p
               className="mt-7 max-w-xl text-lg sm:text-xl leading-relaxed"
               style={{ color: "var(--color-muted)" }}
             >
-              We design and build mobile and web apps across learning,
-              wellbeing, travel, and finance - the ones we built for
-              ourselves, and the ones we built with people who asked.
+              We design, build, and ship AI-native Apps, Agents, and Automation.
+              Our goal is to fix real life problems. Got something in mind?
+              Let&apos;s make it real.
             </p>
 
             <div className="mt-9 flex flex-wrap items-center gap-3">
               <ButtonLink href="/#contact">
-                Start a conversation
+                Work with us
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -86,7 +88,7 @@ export function Hero() {
                 className="inline-flex items-center gap-2 rounded-full px-5 h-11 text-sm font-medium tracking-tight transition-colors hover:opacity-70"
                 style={{ color: "var(--color-fg)" }}
               >
-                See what we&apos;ve made
+                See what we&apos;ve built
               </Link>
             </div>
           </div>

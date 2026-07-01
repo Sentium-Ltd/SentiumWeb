@@ -5,8 +5,9 @@ import Link from "next/link";
 import { SentiumMark } from "@/ui/components";
 
 const NAV = [
+  { href: "/#ai-native", label: "AI-native" },
   { href: "/#about", label: "About" },
-  { href: "/#focus", label: "Focus" },
+  { href: "/#business", label: "For business" },
   { href: "/#projects", label: "Projects" },
   { href: "/#contact", label: "Contact" },
 ];

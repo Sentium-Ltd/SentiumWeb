@@ -14,14 +14,14 @@ const areas: Area[] = [
   {
     title: "Education",
     description:
-      "Apps that meet kids where their curiosity actually lives - drawing, stories, games - and sneak the learning in around the edges.",
+      "Apps for kids - puzzles, drawing, stories, maths - sneak the learning in around the edges.",
     Icon: GraduationCap,
     accent: "var(--brand-coral)",
   },
   {
     title: "Health",
     description:
-      "Quiet, well-designed tools for everyday wellbeing - for the small habits that add up over months, not for the headline metrics.",
+      "A world where every person owns their health. Knows their markers. Catches what matters early. Understands their body, and lives longer because of it.",
     Icon: HeartPulse,
     accent: "var(--brand-mint)",
   },
@@ -35,7 +35,7 @@ const areas: Area[] = [
   {
     title: "Finance",
     description:
-      "Software for the day-to-day of money - the bills, the goals, the bits everyone keeps meaning to sort out - without making it feel like homework.",
+      "Software for the day-to-day finance: the bills, the goals, the bits everyone keeps meaning to sort out - without making it feel like homework.",
     Icon: Wallet,
     accent: "var(--brand-purple)",
   },
@@ -52,8 +52,8 @@ export function FocusAreas() {
         <Reveal>
           <SectionHeading
             eyebrow="What we focus on"
-            title="Four areas, one bar."
-            description="We pick the work for the same reason we'd pick anything else: it's worth the time, it's a real problem, and we'd be a little embarrassed to ship something half-hearted."
+            title="Turn ideas into software"
+            description="How we choose what to build is simple: it has to matter to someone, and we have to believe we can do it well. We're not built for half-hearted."
           />
         </Reveal>
 

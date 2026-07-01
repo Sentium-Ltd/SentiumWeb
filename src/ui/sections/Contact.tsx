@@ -16,8 +16,8 @@ export function Contact() {
                 eyebrow="Get in touch"
                 title={
                   <>
-                    Tell us what you&apos;re <br className="hidden sm:block" />
-                    <span className="gradient-text">working on.</span>
+                    Partner with us, build with us, or just{" "}
+                    <span style={{ color: "var(--brand-coral)" }}>start a conversation.</span>
                   </>
                 }
                 description="Press, partnerships, or just to say hi about something we made. We read everything and reply within a few working days."

@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sentium - PREVIEW v2 (not live)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gold: #f5c738;
+      --coral: #ef4d31;
+      --orange: #ef8f45;
+      --mint: #5cbf7a;
+      --sky: #6dcaee;
+      --blue: #3b88d5;
+      --purple: #a354d1;
+      --pink: #eda1cf;
+      --olive: #b3ba69;
+      --bg: #ffffff;
+      --fg: #0e1014;
+      --muted: #6b7280;
+      --card: #f8f8fa;
+      --line: rgba(14, 16, 20, 0.08);
+    }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--fg); }
+    .font-display { font-family: 'Fraunces', Georgia, serif; }
+
+    @keyframes spin-cw { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+    @keyframes spin-ccw { from { transform: rotate(0); } to { transform: rotate(-360deg); } }
+    @keyframes pulse-dot { 0%,100% { transform: scale(1); opacity: 0.92; } 50% { transform: scale(1.08); opacity: 1; } }
+    .spin-cw { animation: spin-cw 22s linear infinite; transform-box: fill-box; transform-origin: center; will-change: transform; }
+    .spin-ccw { animation: spin-ccw 70s linear infinite; transform-box: fill-box; transform-origin: center; will-change: transform; }
+    .pulse-dot { animation: pulse-dot 4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+
+    /* Single-colour accent for emphasised words (replaced the rainbow gradient) */
+    .accent-text { color: #ef4d31; }
+
+    .container-prose { max-width: 1200px; margin-inline: auto; padding-inline: 1.25rem; }
+    @media (min-width: 768px) { .container-prose { padding-inline: 2rem; } }
+
+    .preview-banner {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: #fde68a; color: #78350f; font-weight: 600; font-size: 12px;
+      text-align: center; padding: 6px 16px; letter-spacing: 0.05em;
+      border-bottom: 1px solid #f59e0b;
+    }
+
+    /* ---- EDIT MODE ---- */
+    body.edit-mode { padding-right: 340px; }
+    body.edit-mode > header,
+    body.edit-mode > .preview-banner { right: 340px; }
+    body.edit-mode #editor { transform: translateX(0); }
+    body.edit-mode #enable-edit-btn { display: none; }
+
+    #editor {
+      position: fixed; top: 0; right: 0; bottom: 0; width: 340px;
+      background: #ffffff; border-left: 1px solid #e5e7eb;
+      z-index: 101; transform: translateX(100%);
+      transition: transform 0.3s ease; overflow-y: auto;
+      box-shadow: -8px 0 30px rgba(0,0,0,0.06);
+    }
+
+    #enable-edit-btn {
+      position: fixed; bottom: 24px; right: 24px; z-index: 60;
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #0e1014; color: #fff;
+      padding: 12px 20px; border-radius: 999px;
+      font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
+      box-shadow: 0 10px 30px rgba(14,16,20,0.25);
+      cursor: pointer; border: none;
+    }
+    #enable-edit-btn:hover { background: #1f2937; transform: translateY(-1px); }
+
+    body.edit-mode [data-editable] {
+      outline: 1px dashed transparent;
+      transition: outline-color 0.15s, background 0.15s;
+      cursor: text; border-radius: 3px;
+    }
+    body.edit-mode [data-editable]:hover {
+      outline-color: rgba(239, 77, 49, 0.5);
+      background: rgba(239, 77, 49, 0.04);
+    }
+    body.edit-mode [data-editable]:focus {
+      outline: 2px solid #ef4d31;
+      outline-offset: 4px;
+      background: rgba(239, 77, 49, 0.05);
+    }
+    body.edit-mode [data-editable].dirty {
+      outline-color: rgba(92, 191, 122, 0.55);
+    }
+    body.edit-mode [data-editable].dirty::after {
+      content: "edited";
+      position: absolute; transform: translate(8px, -6px);
+      font-size: 9px; font-weight: 700;
+      background: #5cbf7a; color: #fff;
+      padding: 2px 6px; border-radius: 999px;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    #toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translate(-50%, 120%);
+      background: #0e1014; color: #fff;
+      padding: 12px 22px; border-radius: 999px;
+      font-size: 13px; font-weight: 500;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      z-index: 200; transition: transform 0.3s ease;
+    }
+    #toast.show { transform: translate(-50%, 0); }
+
+    .grain::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      opacity: 0.035; mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+  </style>
+</head>
+<body class="pt-9">
+
+<div class="preview-banner">
+  PREVIEW v2 - revised after feedback. Existing UI/UX preserved, light-themed additions only. Not committed.
+</div>
+
+<!-- ============================================================== -->
+<!-- HEADER (existing design)                                       -->
+<!-- ============================================================== -->
+<header class="fixed top-9 inset-x-0 z-40 transition-all duration-300" style="background:rgba(255,255,255,0.72); backdrop-filter:saturate(140%) blur(12px); border-bottom:1px solid var(--line);">
+  <div class="container-prose flex h-16 items-center justify-between">
+    <a href="#top" class="flex items-center gap-2.5 group">
+      <svg viewBox="0 0 181.68 181.68" width="28" height="28">
+        <circle cx="65.46" cy="31.75" r="12.34" fill="#b3ba69"/>
+        <circle cx="90.88" cy="8.7" r="8.7" fill="#5cbf7a"/>
+        <circle cx="32.78" cy="32.74" r="8.7" fill="#3b88d5"/>
+        <circle cx="8.7" cy="90.81" r="8.7" fill="#a354d1"/>
+        <circle cx="32.74" cy="148.9" r="8.7" fill="#ef8f45"/>
+        <circle cx="90.81" cy="172.98" r="8.7" fill="#eda1cf"/>
+        <circle cx="148.9" cy="148.95" r="8.7" fill="#b3ba69"/>
+        <circle cx="172.98" cy="90.88" r="8.7" fill="#ef4d31"/>
+        <circle cx="148.95" cy="32.78" r="8.7" fill="#6dcaee"/>
+        <circle cx="31.11" cy="67.01" r="12.34" fill="#ef4d31"/>
+        <circle cx="31.75" cy="116.23" r="12.34" fill="#6dcaee"/>
+        <circle cx="67.01" cy="150.58" r="12.34" fill="#5cbf7a"/>
+        <circle cx="116.23" cy="149.94" r="12.34" fill="#3b88d5"/>
+        <circle cx="150.58" cy="114.68" r="12.34" fill="#a354d1"/>
+        <circle cx="149.94" cy="65.46" r="12.34" fill="#ef8f45"/>
+        <circle cx="114.68" cy="31.11" r="12.34" fill="#eda1cf"/>
+        <path d="M113.92,103.07l9.09-3.47c8.03-3.07,8.03-14.43,0-17.5l-9.09-3.47c-4.98-1.9-8.92-5.84-10.82-10.82l-3.47-9.09c-3.07-8.03-14.43-8.03-17.5,0l-3.47,9.09c-1.9,4.98-5.84,8.92-10.82,10.82l-9.09,3.47c-8.03,3.07-8.03,14.43,0,17.5l9.09,3.47c4.98,1.9,8.92,5.84,10.82,10.82l3.47,9.09c3.07,8.03,14.43,8.03,17.5,0l3.47-9.09c1.9-4.98,5.84-8.92,10.82-10.82Z" fill="#f5c738"/>
+      </svg>
+      <span class="font-display text-xl tracking-tight">Sentium</span>
+    </a>
+    <nav class="hidden sm:flex items-center gap-1 text-sm font-medium">
+      <a href="#about" class="px-3 py-2 rounded-full">About</a>
+      <a href="#ai-native" class="px-3 py-2 rounded-full">AI-native</a>
+      <a href="#focus" class="px-3 py-2 rounded-full">Focus</a>
+      <a href="#business" class="px-3 py-2 rounded-full">For business</a>
+      <a href="#projects" class="px-3 py-2 rounded-full">Projects</a>
+      <a href="#contact" class="px-3 py-2 rounded-full">Contact</a>
+    </nav>
+    <a href="#contact" class="sm:hidden text-sm font-medium underline underline-offset-4">Contact</a>
+  </div>
+</header>
+
+<!-- ============================================================== -->
+<!-- HERO (existing design preserved - only copy/CTA changes)       -->
+<!-- ============================================================== -->
+<section id="top" class="relative pt-32 pb-20 sm:pt-40 sm:pb-28 overflow-hidden grain">
+  <!-- ambient halos -->
+  <div aria-hidden="true" class="absolute -top-32 -left-32 h-[40rem] w-[40rem] rounded-full opacity-30 blur-3xl"
+       style="background: radial-gradient(closest-side, rgba(245,199,56,0.6), transparent 70%);"></div>
+  <div aria-hidden="true" class="absolute -bottom-40 -right-40 h-[36rem] w-[36rem] rounded-full opacity-20 blur-3xl"
+       style="background: radial-gradient(closest-side, rgba(91,192,232,0.55), transparent 70%);"></div>
+
+  <div class="container-prose relative">
+    <div class="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">
+      <div>
+        <!-- Eyebrow pill (existing catchphrase) -->
+        <div class="inline-flex flex-wrap items-center gap-x-2 gap-y-1 rounded-full px-3.5 py-1.5 text-xs font-semibold tracking-[0.05em] mb-7"
+             style="background:var(--card); border:1px solid var(--line); color:var(--fg);">
+          <span class="inline-block h-1.5 w-1.5 rounded-full" style="background:var(--mint);"></span>
+          <span style="color:var(--coral);">You ask.</span>
+          <span style="color:var(--muted);">·</span> We plan.
+          <span style="color:var(--muted);">·</span> We build.
+          <span style="color:var(--muted);">·</span> We ship.
+        </div>
+
+        <!-- NEW HEADLINE -->
+        <h1 class="font-display text-5xl sm:text-6xl md:text-7xl tracking-tight leading-[0.98]">
+          Where AI becomes <span class="accent-text">apps, agents, and automation</span>.
+        </h1>
+
+        <!-- NEW SUBLINE (existing rhythm + AI angle) -->
+        <p class="mt-7 max-w-xl text-lg sm:text-xl leading-relaxed" style="color:var(--muted);">
+          We design, build, and ship AI-native apps, agents, and automation that turn
+          real problems into shipped software - the ones we built for ourselves, and
+          the ones we built with people who came to us with one.
+        </p>
+
+        <!-- NEW CTAs per pic 2 -->
+        <div class="mt-9 flex flex-wrap items-center gap-3">
+          <a href="#contact"
+             class="inline-flex items-center justify-center gap-2 rounded-full px-6 h-12 text-sm font-semibold tracking-tight transition-all duration-300 hover:-translate-y-0.5"
+             style="background:linear-gradient(135deg, #f5c738 0%, #ef8f45 100%); color:#0e1014; box-shadow:0 8px 30px rgba(245,199,56,0.4);">
+            Work with us
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#projects"
+             class="inline-flex items-center justify-center gap-2 rounded-full px-6 h-12 text-sm font-semibold tracking-tight transition-all hover:-translate-y-0.5"
+             style="border:1px solid var(--line); color:var(--fg); background:transparent;">
+            See what we&apos;ve built
+          </a>
+        </div>
+
+        <!-- Tag pills per pic 2 -->
+        <div class="mt-6 flex flex-wrap items-center gap-x-3.5 gap-y-1.5 text-[10px] font-bold tracking-[0.14em]" style="color:var(--muted);">
+          <span class="inline-flex items-center gap-1.5"><span class="w-1 h-1 rounded-full" style="background:var(--mint);"></span>EX-MICROSOFT</span>
+          <span class="inline-flex items-center gap-1.5"><span class="w-1 h-1 rounded-full" style="background:var(--mint);"></span>AZURE-NATIVE</span>
+          <span class="inline-flex items-center gap-1.5"><span class="w-1 h-1 rounded-full" style="background:var(--mint);"></span>PRIVACY-FIRST</span>
+          <span class="inline-flex items-center gap-1.5"><span class="w-1 h-1 rounded-full" style="background:var(--mint);"></span>RAPID DELIVERY</span>
+        </div>
+      </div>
+
+      <!-- Constellation (existing rotating mark) -->
+      <div class="relative flex items-center justify-center">
+        <div class="relative aspect-square w-[240px] sm:w-[320px] md:w-[400px] lg:w-[520px] mx-auto">
+          <div class="absolute inset-[18%] rounded-full blur-3xl opacity-60"
+               style="background: radial-gradient(closest-side, rgba(245,199,56,0.4), rgba(245,199,56,0.06) 60%, transparent 75%);"></div>
+          <svg viewBox="0 0 181.68 181.68" class="w-full h-full overflow-visible">
+            <g class="spin-ccw">
+              <circle cx="90.84" cy="90.84" r="82" fill="none" stroke="#0e1014" stroke-width="0.4" opacity="0.18" stroke-dasharray="2 4"/>
+              <circle cx="90.84" cy="90.84" r="60" fill="none" stroke="#0e1014" stroke-width="0.4" opacity="0.12" stroke-dasharray="1 3"/>
+            </g>
+            <g class="spin-cw">
+              <circle cx="65.46" cy="31.75" r="12.34" fill="#b3ba69" class="pulse-dot" style="animation-delay:0.0s;"/>
+              <circle cx="90.88" cy="8.7" r="8.7" fill="#5cbf7a" class="pulse-dot" style="animation-delay:0.3s;"/>
+              <circle cx="32.78" cy="32.74" r="8.7" fill="#3b88d5" class="pulse-dot" style="animation-delay:0.6s;"/>
+              <circle cx="8.7" cy="90.81" r="8.7" fill="#a354d1" class="pulse-dot" style="animation-delay:0.9s;"/>
+              <circle cx="32.74" cy="148.9" r="8.7" fill="#ef8f45" class="pulse-dot" style="animation-delay:1.2s;"/>
+              <circle cx="90.81" cy="172.98" r="8.7" fill="#eda1cf" class="pulse-dot" style="animation-delay:1.5s;"/>
+              <circle cx="148.9" cy="148.95" r="8.7" fill="#b3ba69" class="pulse-dot" style="animation-delay:1.8s;"/>
+              <circle cx="172.98" cy="90.88" r="8.7" fill="#ef4d31" class="pulse-dot" style="animation-delay:2.1s;"/>
+              <circle cx="148.95" cy="32.78" r="8.7" fill="#6dcaee" class="pulse-dot" style="animation-delay:2.4s;"/>
+              <circle cx="31.11" cy="67.01" r="12.34" fill="#ef4d31" class="pulse-dot" style="animation-delay:0.4s;"/>
+              <circle cx="31.75" cy="116.23" r="12.34" fill="#6dcaee" class="pulse-dot" style="animation-delay:0.8s;"/>
+              <circle cx="67.01" cy="150.58" r="12.34" fill="#5cbf7a" class="pulse-dot" style="animation-delay:1.2s;"/>
+              <circle cx="116.23" cy="149.94" r="12.34" fill="#3b88d5" class="pulse-dot" style="animation-delay:1.6s;"/>
+              <circle cx="150.58" cy="114.68" r="12.34" fill="#a354d1" class="pulse-dot" style="animation-delay:2.0s;"/>
+              <circle cx="149.94" cy="65.46" r="12.34" fill="#ef8f45" class="pulse-dot" style="animation-delay:2.4s;"/>
+              <circle cx="114.68" cy="31.11" r="12.34" fill="#eda1cf" class="pulse-dot" style="animation-delay:2.8s;"/>
+              <path d="M113.92,103.07l9.09-3.47c8.03-3.07,8.03-14.43,0-17.5l-9.09-3.47c-4.98-1.9-8.92-5.84-10.82-10.82l-3.47-9.09c-3.07-8.03-14.43-8.03-17.5,0l-3.47,9.09c-1.9,4.98-5.84,8.92-10.82,10.82l-9.09,3.47c-8.03,3.07-8.03,14.43,0,17.5l9.09,3.47c4.98,1.9,8.92,5.84,10.82,10.82l3.47,9.09c3.07,8.03,14.43,8.03,17.5,0l3.47-9.09c1.9-4.98,5.84-8.92,10.82-10.82Z" fill="#f5c738"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== -->
+<!-- AI-NATIVE section (NEW, LIGHT THEME)                            -->
+<!-- The 3 cluster pills + "Build Intelligent" line integrated here  -->
+<!-- ============================================================== -->
+<section id="ai-native" class="py-24 sm:py-32" style="background:var(--bg);">
+  <div class="container-prose">
+    <div class="text-center max-w-3xl mx-auto">
+      <p class="text-xs font-bold uppercase tracking-[0.22em] mb-5" style="color:var(--coral);">
+        BUILD INTELLIGENT &nbsp;·&nbsp; SHIP FAST &nbsp;·&nbsp; SCALE ANYTHING
+      </p>
+
+      <!-- Three category pills - on-brand colours -->
+      <div class="flex flex-wrap items-center justify-center gap-2 mb-10">
+        <span class="inline-flex items-center px-4 h-9 rounded-full text-xs font-semibold tracking-wide"
+              style="background:rgba(163,84,209,0.14); color:var(--purple);">Agentic AI</span>
+        <span class="inline-flex items-center px-4 h-9 rounded-full text-xs font-semibold tracking-wide"
+              style="background:rgba(92,191,122,0.16); color:var(--mint);">Automation</span>
+        <span class="inline-flex items-center px-4 h-9 rounded-full text-xs font-semibold tracking-wide"
+              style="background:rgba(239,143,69,0.14); color:var(--orange);">App Studio</span>
+      </div>
+
+      <h2 class="font-display text-4xl sm:text-5xl md:text-6xl tracking-tight leading-[1.05] mb-5">
+        The AI-native studio<br/>
+        <span class="accent-text">for things that actually work.</span>
+      </h2>
+      <p class="text-base sm:text-lg" style="color:var(--muted);">
+        Apps. Agents. Automation. One company.
+      </p>
+    </div>
+
+    <!-- Three tiles - synced to brand palette (purple / mint / orange) -->
+    <div class="mt-14 grid sm:grid-cols-3 gap-4 sm:gap-5 text-left">
+      <article class="rounded-3xl p-7 sm:p-8 transition-all duration-300 hover:-translate-y-1"
+               style="background:rgba(163,84,209,0.07); border:1px solid rgba(163,84,209,0.2);">
+        <h3 class="font-display text-3xl font-semibold mb-3" style="color:var(--purple);">Apps</h3>
+        <p class="text-base font-semibold mb-3" style="color:var(--fg);">Consumer health. Education. Fintech.</p>
+        <p class="text-sm" style="color:var(--muted);">Products people open daily.</p>
+      </article>
+      <article class="rounded-3xl p-7 sm:p-8 transition-all duration-300 hover:-translate-y-1"
+               style="background:rgba(92,191,122,0.09); border:1px solid rgba(92,191,122,0.24);">
+        <h3 class="font-display text-3xl font-semibold mb-3" style="color:var(--mint);">Agents</h3>
+        <p class="text-base font-semibold mb-3" style="color:var(--fg);">Autonomous. Context-aware. Always on.</p>
+        <p class="text-sm" style="color:var(--muted);">AI that acts, not just answers.</p>
+      </article>
+      <article class="rounded-3xl p-7 sm:p-8 transition-all duration-300 hover:-translate-y-1"
+               style="background:rgba(239,143,69,0.08); border:1px solid rgba(239,143,69,0.24);">
+        <h3 class="font-display text-3xl font-semibold mb-3" style="color:var(--orange);">Automation</h3>
+        <p class="text-base font-semibold mb-3" style="color:var(--fg);">Workflows. Payroll. Pipelines. Zero manual loops.</p>
+        <p class="text-sm" style="color:var(--muted);">Time back. Every time.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== -->
+<!-- ABOUT (revised copy, premium positioning, no "small team")     -->
+<!-- ============================================================== -->
+<section id="about" class="py-24 sm:py-32">
+  <div class="container-prose">
+    <p class="text-xs font-semibold uppercase tracking-[0.18em] mb-3" style="color:var(--coral);">About</p>
+    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl tracking-tight leading-[1.05] max-w-2xl">
+      A focused studio for organisations who want it
+      <span class="accent-text">done right.</span>
+    </h2>
+
+    <div class="mt-12 grid md:grid-cols-2 gap-10 max-w-4xl">
+      <p class="text-lg leading-relaxed" style="color:var(--muted);">
+        Sentium is a UK technology studio building consumer products and AI-native systems
+        for organisations that take their software seriously. We design and ship end-to-end -
+        product strategy, engineering, content - with deep cloud expertise, privacy-first
+        architecture, and a bias toward shipping what actually works.
+      </p>
+      <p class="text-lg leading-relaxed" style="color:var(--muted);">
+        Built by an ex-Microsoft Cloud Solution Architect, we bring the engineering rigour
+        of enterprise to teams that need to move at startup speed. Azure-native by default,
+        cloud-agnostic by capability. We partner with founders, product teams, and operators
+        who want a studio that ships - not a consultancy that produces decks.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== -->
+<!-- FOCUS AREAS (kept as is - 4 cards: Education/Health/Travel/Finance) -->
+<!-- ============================================================== -->
+<section id="focus" class="py-24 sm:py-32" style="background:var(--card);">
+  <div class="container-prose">
+    <p class="text-xs font-semibold uppercase tracking-[0.18em] mb-3" style="color:var(--coral);">What we focus on</p>
+    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl tracking-tight leading-[1.05]">Four areas, one bar.</h2>
+    <p class="mt-5 text-base sm:text-lg leading-relaxed max-w-2xl" style="color:var(--muted);">
+      We pick the work for the same reason we&apos;d pick anything else: it&apos;s worth the time,
+      it&apos;s a real problem, and we&apos;d be a little embarrassed to ship something half-hearted.
+    </p>
+
+    <div class="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <!-- Education -->
+      <article class="relative rounded-3xl p-7 sm:p-8 overflow-hidden transition-all duration-300 hover:-translate-y-1"
+               style="background:var(--bg); border:1px solid var(--line);">
+        <span aria-hidden="true" class="absolute inset-x-0 top-0 h-[3px]" style="background:var(--coral);"></span>
+        <div class="inline-flex h-11 w-11 items-center justify-center rounded-2xl mb-5"
+             style="background:rgba(239,77,49,0.1); color:var(--coral);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>
+        </div>
+        <h3 class="font-display text-2xl tracking-tight mb-3">Education</h3>
+        <p class="text-sm sm:text-base leading-relaxed" style="color:var(--muted);">
+          Apps that meet kids where their curiosity actually lives - drawing, stories, games -
+          and sneak the learning in around the edges.
+        </p>
+      </article>
+
+      <!-- Health -->
+      <article class="relative rounded-3xl p-7 sm:p-8 overflow-hidden transition-all duration-300 hover:-translate-y-1"
+               style="background:var(--bg); border:1px solid var(--line);">
+        <span aria-hidden="true" class="absolute inset-x-0 top-0 h-[3px]" style="background:var(--mint);"></span>
+        <div class="inline-flex h-11 w-11 items-center justify-center rounded-2xl mb-5"
+             style="background:rgba(92,191,122,0.12); color:var(--mint);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5"/><path d="M2 12h2.88l1.79-3.58a.5.5 0 0 1 .9.04l3.66 9.08a.5.5 0 0 0 .9.04l1.79-3.58H22"/></svg>
+        </div>
+        <h3 class="font-display text-2xl tracking-tight mb-3">Health</h3>
+        <p class="text-sm sm:text-base leading-relaxed" style="color:var(--muted);">
+          Quiet, well-designed tools for everyday wellbeing - for the small habits that
+          add up over months, not for the headline metrics.
+        </p>
+      </article>
+
+      <!-- Travel -->
+      <article class="relative rounded-3xl p-7 sm:p-8 overflow-hidden transition-all duration-300 hover:-translate-y-1"
+               style="background:var(--bg); border:1px solid var(--line);">
+        <span aria-hidden="true" class="absolute inset-x-0 top-0 h-[3px]" style="background:var(--orange);"></span>
+        <div class="inline-flex h-11 w-11 items-center justify-center rounded-2xl mb-5"
+             style="background:rgba(239,143,69,0.12); color:var(--orange);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
+        </div>
+        <h3 class="font-display text-2xl tracking-tight mb-3">Travel</h3>
+        <p class="text-sm sm:text-base leading-relaxed" style="color:var(--muted);">
+          Software for the way people actually plan and remember trips - light on friction,
+          heavy on the bits that turn into stories later.
+        </p>
+      </article>
+
+      <!-- Finance -->
+      <article class="relative rounded-3xl p-7 sm:p-8 overflow-hidden transition-all duration-300 hover:-translate-y-1"
+               style="background:var(--bg); border:1px solid var(--line);">
+        <span aria-hidden="true" class="absolute inset-x-0 top-0 h-[3px]" style="background:var(--purple);"></span>
+        <div class="inline-flex h-11 w-11 items-center justify-center rounded-2xl mb-5"
+             style="background:rgba(163,84,209,0.12); color:var(--purple);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
+        </div>
+        <h3 class="font-display text-2xl tracking-tight mb-3">Finance</h3>
+        <p class="text-sm sm:text-base leading-relaxed" style="color:var(--muted);">
+          Software for the day-to-day of money - the bills, the goals, the bits everyone
+          keeps meaning to sort out - without making it feel like homework.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== -->
+<!-- FOR BUSINESS section (NEW, LIGHT theme adaptation of pic 3)    -->
+<!-- ============================================================== -->
+<section id="business" class="py-24 sm:py-32">
+  <div class="container-prose">
+    <p class="text-xs font-semibold uppercase tracking-[0.18em] mb-3" style="color:var(--coral);">
+      <span class="inline-block w-6 h-px mr-2 align-middle" style="background:var(--coral);"></span>
+      FOR BUSINESS
+    </p>
+    <h2 class="font-display text-4xl sm:text-5xl md:text-6xl tracking-tight leading-[1.05] mb-6">
+      Your business, but <span class="accent-text">faster.</span>
+    </h2>
+    <p class="text-base sm:text-lg leading-relaxed max-w-2xl mb-16" style="color:var(--muted);">
+      Most teams don&apos;t have an AI problem - they have a &quot;where do we even start&quot; problem.
+      We do. Here&apos;s where it usually hurts, and what we do about it.
+    </p>
+
+    <div class="grid lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-16">
+      <!-- Pain Q + answer list - grid keeps Q/A on the same row even when Q wraps -->
+      <div style="border-top:1px solid var(--line);">
+        <div class="grid grid-cols-1 sm:grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-2 py-6" style="border-bottom:1px solid var(--line);">
+          <p class="font-display text-xl sm:text-2xl leading-snug">Still doing it by hand?</p>
+          <a class="font-semibold inline-flex items-center gap-1 hover:opacity-70 text-sm sm:text-base whitespace-nowrap sm:text-right" style="color:var(--coral);">We automate it <span>→</span></a>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-2 py-6" style="border-bottom:1px solid var(--line);">
+          <p class="font-display text-xl sm:text-2xl leading-snug">Data everywhere, answers nowhere?</p>
+          <a class="font-semibold inline-flex items-center gap-1 hover:opacity-70 text-sm sm:text-base whitespace-nowrap sm:text-right" style="color:var(--coral);">We turn it into decisions <span>→</span></a>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-2 py-6" style="border-bottom:1px solid var(--line);">
+          <p class="font-display text-xl sm:text-2xl leading-snug">Know you need AI, no clue where to start?</p>
+          <a class="font-semibold inline-flex items-center gap-1 hover:opacity-70 text-sm sm:text-base whitespace-nowrap sm:text-right" style="color:var(--coral);">We map it, then build it <span>→</span></a>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-2 py-6" style="border-bottom:1px solid var(--line);">
+          <p class="font-display text-xl sm:text-2xl leading-snug">Tools that don&apos;t talk to each other?</p>
+          <a class="font-semibold inline-flex items-center gap-1 hover:opacity-70 text-sm sm:text-base whitespace-nowrap sm:text-right" style="color:var(--coral);">We connect the stack <span>→</span></a>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-2 py-6" style="border-bottom:1px solid var(--line);">
+          <p class="font-display text-xl sm:text-2xl leading-snug">Growing fast, breaking faster?</p>
+          <a class="font-semibold inline-flex items-center gap-1 hover:opacity-70 text-sm sm:text-base whitespace-nowrap sm:text-right" style="color:var(--coral);">We make it scale <span>→</span></a>
+        </div>
+      </div>
+
+      <!-- Service cards 2x2 -->
+      <div class="grid sm:grid-cols-2 gap-4">
+        <article class="rounded-2xl p-7" style="background:var(--card); border:1px solid var(--line);">
+          <p class="text-xs font-semibold mb-6" style="color:var(--muted);">01</p>
+          <h3 class="font-display text-2xl sm:text-3xl mb-3" style="color:var(--orange);">Automate</h3>
+          <p class="text-sm leading-relaxed" style="color:var(--muted);">Agents that do the work, not just chat. Set them loose on the repetitive stuff.</p>
+        </article>
+        <article class="rounded-2xl p-7" style="background:var(--card); border:1px solid var(--line);">
+          <p class="text-xs font-semibold mb-6" style="color:var(--muted);">02</p>
+          <h3 class="font-display text-2xl sm:text-3xl mb-3" style="color:var(--mint);">Build</h3>
+          <p class="text-sm leading-relaxed" style="color:var(--muted);">Real products, end to end. Azure-native, fast, and yours to keep.</p>
+        </article>
+        <article class="rounded-2xl p-7" style="background:var(--card); border:1px solid var(--line);">
+          <p class="text-xs font-semibold mb-6" style="color:var(--muted);">03</p>
+          <h3 class="font-display text-2xl sm:text-3xl mb-3" style="color:var(--purple);">Transform</h3>
+          <p class="text-sm leading-relaxed" style="color:var(--muted);">Rethink the workflow. Strip the friction. Ship leaner ops.</p>
+        </article>
+        <article class="rounded-2xl p-7" style="background:var(--card); border:1px solid var(--line);">
+          <p class="text-xs font-semibold mb-6" style="color:var(--muted);">04</p>
+          <h3 class="font-display text-2xl sm:text-3xl mb-3" style="color:var(--coral);">Advise</h3>
+          <p class="text-sm leading-relaxed" style="color:var(--muted);">An AI strategy that fits your reality. Zero buzzwords, all roadmap.</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="mt-14 flex flex-wrap items-center justify-center gap-6">
+      <a href="#contact" class="inline-flex items-center gap-2 px-7 h-12 rounded-full text-sm font-semibold transition-transform hover:-translate-y-0.5"
+         style="background:linear-gradient(135deg, #f5c738 0%, #ef8f45 100%); color:#0e1014; box-shadow:0 8px 30px rgba(245,199,56,0.4);">
+        Book a call
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+      <p class="text-sm" style="color:var(--muted);">Built by an ex-Microsoft Cloud Solution Architect.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== -->
+<!-- PROJECTS (redesigned per pic 4, LIGHT theme)                    -->
+<!-- ============================================================== -->
+<section id="projects" class="py-24 sm:py-32" style="background:var(--card);">
+  <div class="container-prose">
+    <p class="text-xs font-semibold uppercase tracking-[0.18em] mb-3" style="color:var(--coral);">
+      <span class="inline-block w-6 h-px mr-2 align-middle" style="background:var(--coral);"></span>
+      WHAT WE&apos;VE BUILT
+    </p>
+    <h2 class="font-display text-4xl sm:text-5xl md:text-6xl tracking-tight leading-[1.05] mb-12 max-w-3xl">
+      Products we&apos;re proud to <span class="accent-text">put our name on.</span>
+    </h2>
+
+    <!-- Flagship: Bettr.Now -->
+    <article class="rounded-3xl p-8 sm:p-10 mb-6 relative overflow-hidden"
+             style="background:var(--bg); border:1px solid var(--line); border-left:4px solid var(--mint);">
+      <div class="grid lg:grid-cols-[1.3fr_1fr] gap-8 lg:gap-12">
+        <div>
+          <div class="flex flex-wrap items-center gap-3 mb-6">
+            <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em]" style="color:var(--mint);">
+              <span class="w-2 h-2 rounded-full" style="background:var(--mint);"></span> HEALTH &amp; LONGEVITY
+            </span>
+            <span class="ml-auto inline-flex items-center px-3 h-7 rounded-full text-xs font-bold uppercase tracking-wider"
+                  style="background:rgba(92,191,122,0.14); color:#065f46;">FLAGSHIP</span>
+          </div>
+          <h3 class="font-display text-4xl sm:text-5xl mb-5 tracking-tight">Bettr.Now</h3>
+          <p class="text-base sm:text-lg leading-relaxed max-w-xl mb-7" style="color:var(--muted);">
+            Know your <span style="color:var(--mint); font-weight:600;">bettr age</span>. Real blood tests,
+            AI that reads them like a story (not a wall of numbers), and your whole health in one place.
+            Better - now.
+          </p>
+          <a href="/projects/bettr-now/" class="font-semibold inline-flex items-center gap-1 hover:opacity-70" style="color:var(--mint);">
+            Explore Bettr.Now <span>→</span>
+          </a>
+        </div>
+        <div class="space-y-3">
+          <div class="rounded-2xl p-5" style="background:var(--card); border:1px solid var(--line);">
+            <p class="font-display text-xl mb-1" style="color:var(--mint);">No jargon</p>
+            <p class="text-sm" style="color:var(--muted);">every result explained, no medical degree needed</p>
+          </div>
+          <div class="rounded-2xl p-5" style="background:var(--card); border:1px solid var(--line);">
+            <p class="font-display text-xl mb-1" style="color:var(--purple);">Synced</p>
+            <p class="text-sm" style="color:var(--muted);">wearable integration, so your daily signals count too</p>
+          </div>
+          <div class="rounded-2xl p-5" style="background:var(--card); border:1px solid var(--line);">
+            <p class="font-display text-xl mb-1" style="color:var(--blue);">Optimal</p>
+            <p class="text-sm" style="color:var(--muted);">not just &quot;normal&quot; - see where you should be</p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Grid of 5 other products -->
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <!-- Alfie Puzzles -->
+      <article class="rounded-3xl p-7 relative overflow-hidden transition-all hover:-translate-y-1" style="background:var(--bg); border:1px solid var(--line); border-left:4px solid var(--coral);">
+        <div class="flex items-center justify-between mb-5">
+          <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em]" style="color:var(--coral);">
+            <span class="w-2 h-2 rounded-full" style="background:var(--coral);"></span> KIDS
+          </span>
+          <span class="inline-flex items-center px-3 h-6 rounded-full text-[10px] font-bold uppercase tracking-wider"
+                style="background:rgba(92,191,122,0.14); color:#065f46;">LIVE</span>
+        </div>
+        <h3 class="font-display text-2xl mb-3">Alfie Puzzles</h3>
+        <p class="text-sm leading-relaxed mb-5" style="color:var(--muted);">
+          Puzzles that grow with your kid. Calm, clever, and completely ad-free - screen time that doesn&apos;t feel like a fight.
+        </p>
+        <a href="https://apps.apple.com/gb/app/alfie-puzzles/id6762566734" target="_blank" rel="noopener" class="text-sm font-semibold inline-flex items-center gap-1 hover:opacity-70" style="color:var(--coral);">
+          On the App Store <span>→</span>
+        </a>
+      </article>
+
+      <!-- Alfie Colouring -->
+      <article class="rounded-3xl p-7 relative overflow-hidden transition-all hover:-translate-y-1" style="background:var(--bg); border:1px solid var(--line); border-left:4px solid var(--coral);">
+        <div class="flex items-center justify-between mb-5">
+          <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em]" style="color:var(--coral);">
+            <span class="w-2 h-2 rounded-full" style="background:var(--coral);"></span> KIDS
+          </span>
+          <span class="inline-flex items-center px-3 h-6 rounded-full text-[10px] font-bold uppercase tracking-wider"
+                style="background:rgba(92,191,122,0.14); color:#065f46;">LIVE</span>
+        </div>
+        <h3 class="font-display text-2xl mb-3">Alfie Colouring</h3>
+        <p class="text-sm leading-relaxed mb-5" style="color:var(--muted);">
+          Colour, create, calm down. Safe, gentle and ad-free - the kind of app parents are actually happy to hand over.
+        </p>
+        <a href="https://apps.apple.com/gb/app/alfie-colouring/id6762228600" target="_blank" rel="noopener" class="text-sm font-semibold inline-flex items-center gap-1 hover:opacity-70" style="color:var(--coral);">
+          On the App Store <span>→</span>
+        </a>
+      </article>
+
+      <!-- Treso -->
+      <article class="rounded-3xl p-7 relative overflow-hidden transition-all hover:-translate-y-1" style="background:var(--bg); border:1px solid var(--line); border-left:4px solid var(--purple);">
+        <div class="flex items-center justify-between mb-5">
+          <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em]" style="color:var(--purple);">
+            <span class="w-2 h-2 rounded-full" style="background:var(--purple);"></span> FINANCE
+          </span>
+          <span class="inline-flex items-center px-3 h-6 rounded-full text-[10px] font-bold uppercase tracking-wider"
+                style="background:rgba(14,16,20,0.07); color:var(--muted);">COMING SOON</span>
+        </div>
+        <h3 class="font-display text-2xl mb-3">Treso</h3>
+        <p class="text-sm leading-relaxed mb-5" style="color:var(--muted);">
+          Money admin, handled. Less spreadsheet, more sorted - financial clarity for people who&apos;d rather not think about it.
+        </p>
+        <button type="button" data-signup-product="treso" class="text-sm font-semibold inline-flex items-center gap-1 hover:opacity-70" style="color:var(--purple);">
+          Get early access <span>→</span>
+        </button>
+      </article>
+
+      <!-- MakeMyCard -->
+      <article class="rounded-3xl p-7 relative overflow-hidden transition-all hover:-translate-y-1" style="background:var(--bg); border:1px solid var(--line); border-left:4px solid var(--orange);">
+        <div class="flex items-center justify-between mb-5">
+          <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em]" style="color:var(--orange);">
+            <span class="w-2 h-2 rounded-full" style="background:var(--orange);"></span> CREATIVE
+          </span>
+          <span class="inline-flex items-center px-3 h-6 rounded-full text-[10px] font-bold uppercase tracking-wider"
+                style="background:rgba(14,16,20,0.07); color:var(--muted);">COMING SOON · RELAUNCH</span>
+        </div>
+        <h3 class="font-display text-2xl mb-3">MakeMyCard</h3>
+        <p class="text-sm leading-relaxed mb-5" style="color:var(--muted);">
+          AI cards that actually feel personal. Back, rebuilt, and better - for the moments a generic e-card just won&apos;t do.
+        </p>
+        <button type="button" data-signup-product="makemycard" class="text-sm font-semibold inline-flex items-center gap-1 hover:opacity-70" style="color:var(--orange);">
+          Get notified <span>→</span>
+        </button>
+      </article>
+
+      <!-- KidWise (kept per feedback) -->
+      <article class="rounded-3xl p-7 relative overflow-hidden transition-all hover:-translate-y-1" style="background:var(--bg); border:1px solid var(--line); border-left:4px solid var(--blue);">
+        <div class="flex items-center justify-between mb-5">
+          <span class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em]" style="color:var(--blue);">
+            <span class="w-2 h-2 rounded-full" style="background:var(--blue);"></span> EDUCATION
+          </span>
+          <span class="inline-flex items-center px-3 h-6 rounded-full text-[10px] font-bold uppercase tracking-wider"
+                style="background:rgba(92,191,122,0.14); color:#065f46;">LIVE</span>
+        </div>
+        <h3 class="font-display text-2xl mb-3">KidWise</h3>
+        <p class="text-sm leading-relaxed mb-5" style="color:var(--muted);">
+          Practical life skills for the kids growing up next. Money, time, communication, decisions -
+          in bite-size lessons they actually open.
+        </p>
+        <a href="https://kidwise.io/" target="_blank" rel="noopener" class="text-sm font-semibold inline-flex items-center gap-1 hover:opacity-70" style="color:var(--blue);">
+          Visit kidwise.io <span>→</span>
+        </a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== -->
+<!-- CONTACT (existing - placeholder for reference)                  -->
+<!-- ============================================================== -->
+<section id="contact" class="py-24 sm:py-32">
+  <div class="container-prose">
+    <p class="text-xs font-semibold uppercase tracking-[0.18em] mb-3" style="color:var(--coral);">Get in touch</p>
+    <h2 class="font-display text-4xl sm:text-5xl tracking-tight leading-[1.05] max-w-2xl">
+      Tell us what you&apos;re <span class="accent-text">working on.</span>
+    </h2>
+    <p class="mt-5 text-base sm:text-lg" style="color:var(--muted);">
+      (Existing contact form unchanged - preview omits it for brevity.)
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================== -->
+<!-- FOOTER (existing)                                               -->
+<!-- ============================================================== -->
+<footer class="py-12 border-t" style="border-color:var(--line);">
+  <div class="container-prose flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="flex items-center gap-2.5 text-sm font-semibold">
+      <svg viewBox="0 0 181.68 181.68" width="22" height="22">
+        <circle cx="65.46" cy="31.75" r="12.34" fill="#b3ba69"/>
+        <circle cx="90.88" cy="8.7" r="8.7" fill="#5cbf7a"/>
+        <circle cx="32.78" cy="32.74" r="8.7" fill="#3b88d5"/>
+        <circle cx="8.7" cy="90.81" r="8.7" fill="#a354d1"/>
+        <circle cx="32.74" cy="148.9" r="8.7" fill="#ef8f45"/>
+        <circle cx="90.81" cy="172.98" r="8.7" fill="#eda1cf"/>
+        <circle cx="148.9" cy="148.95" r="8.7" fill="#b3ba69"/>
+        <circle cx="172.98" cy="90.88" r="8.7" fill="#ef4d31"/>
+        <circle cx="148.95" cy="32.78" r="8.7" fill="#6dcaee"/>
+        <circle cx="31.11" cy="67.01" r="12.34" fill="#ef4d31"/>
+        <circle cx="31.75" cy="116.23" r="12.34" fill="#6dcaee"/>
+        <circle cx="67.01" cy="150.58" r="12.34" fill="#5cbf7a"/>
+        <circle cx="116.23" cy="149.94" r="12.34" fill="#3b88d5"/>
+        <circle cx="150.58" cy="114.68" r="12.34" fill="#a354d1"/>
+        <circle cx="149.94" cy="65.46" r="12.34" fill="#ef8f45"/>
+        <circle cx="114.68" cy="31.11" r="12.34" fill="#eda1cf"/>
+        <path d="M113.92,103.07l9.09-3.47c8.03-3.07,8.03-14.43,0-17.5l-9.09-3.47c-4.98-1.9-8.92-5.84-10.82-10.82l-3.47-9.09c-3.07-8.03-14.43-8.03-17.5,0l-3.47,9.09c-1.9,4.98-5.84,8.92-10.82,10.82l-9.09,3.47c-8.03,3.07-8.03,14.43,0,17.5l9.09,3.47c4.98,1.9,8.92,5.84,10.82,10.82l3.47,9.09c3.07,8.03,14.43,8.03,17.5,0l3.47-9.09c1.9-4.98,5.84-8.92,10.82-10.82Z" fill="#f5c738"/>
+      </svg>
+      <span class="font-display text-base">Sentium</span>
+    </div>
+    <p class="text-xs" style="color:var(--muted);">© 2026 Sentium Ltd · Company number 16512683 · Registered in England &amp; Wales</p>
+  </div>
+</footer>
+
+<!-- ============================================================== -->
+<!-- SIGNUP MODAL                                                    -->
+<!-- ============================================================== -->
+<div id="signup-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4" style="background:rgba(10,13,18,0.65); backdrop-filter:blur(4px);">
+  <div class="bg-white rounded-2xl max-w-md w-full p-8 sm:p-10 relative shadow-2xl">
+    <button type="button" onclick="closeSignup()" aria-label="Close" class="absolute top-4 right-4 w-9 h-9 rounded-full hover:bg-slate-100 inline-flex items-center justify-center text-slate-400 hover:text-slate-700">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+
+    <div id="signup-form-wrap">
+      <p class="text-xs font-bold uppercase tracking-[0.18em] mb-2" id="signup-product-label" style="color:#7c3aed;">Treso · Early access</p>
+      <h3 class="font-display text-3xl mb-3">Get on the early-access list.</h3>
+      <p class="text-sm mb-6" style="color:var(--muted);">
+        We&apos;ll drop you a note when it&apos;s ready to try. No spam, no sales pitch - just a one-line
+        update when there&apos;s something new.
+      </p>
+      <form id="signup-form" onsubmit="submitSignup(event)" class="space-y-3">
+        <label class="block">
+          <span class="block text-sm font-medium mb-2">Your email</span>
+          <input type="email" required name="email" placeholder="you@example.com"
+            class="w-full rounded-xl px-4 py-3 text-sm border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-300" />
+        </label>
+        <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-6 h-12 rounded-full text-sm font-semibold transition-transform hover:-translate-y-0.5"
+                style="background:linear-gradient(135deg, #f5c738 0%, #ef8f45 100%); color:#0e1014;">
+          Keep me informed
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+        <p class="text-xs text-center" style="color:var(--muted);">We&apos;ll only use this to email you about <span id="signup-product-name">Treso</span>.</p>
+      </form>
+    </div>
+
+    <div id="signup-success" class="hidden text-center py-4">
+      <div class="mx-auto w-14 h-14 rounded-full flex items-center justify-center mb-5" style="background:var(--mint);">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h3 class="font-display text-3xl mb-2">Thank you.</h3>
+      <p class="text-sm mb-6" style="color:var(--muted);">You&apos;re on the list. We&apos;ll be in touch the moment there&apos;s something to show.</p>
+      <button type="button" onclick="closeSignup()" class="inline-flex items-center justify-center px-6 h-11 rounded-full text-sm font-semibold border hover:bg-slate-50" style="border-color:var(--line);">
+        Done
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================== -->
+<!-- IN-PAGE EDITOR                                                  -->
+<!-- ============================================================== -->
+<button id="enable-edit-btn" onclick="enableEditMode()" title="Enable edit mode">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+  Edit text
+</button>
+
+<aside id="editor">
+  <header class="px-5 pt-5 pb-4 border-b sticky top-0 bg-white z-10" style="border-color:#e5e7eb;">
+    <div class="flex items-center justify-between mb-1">
+      <h2 class="font-display text-xl font-semibold">Edit text</h2>
+      <button onclick="disableEditMode()" aria-label="Close editor"
+              class="w-8 h-8 rounded-full inline-flex items-center justify-center hover:bg-slate-100 text-slate-400 hover:text-slate-700">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <p class="text-xs text-slate-500 leading-relaxed">
+      Click any text on the left to edit. Edited blocks turn green.
+      Click <strong>Export</strong> to copy your changes to clipboard.
+    </p>
+  </header>
+
+  <div class="p-5 space-y-3">
+    <button onclick="exportChanges()" class="w-full inline-flex items-center justify-center gap-2 px-5 h-11 rounded-full text-sm font-semibold transition-transform hover:-translate-y-0.5" style="background:linear-gradient(135deg, #f5c738 0%, #ef8f45 100%); color:#0e1014;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+      Export changes
+    </button>
+    <button onclick="resetAll()" class="w-full inline-flex items-center justify-center gap-2 px-5 h-10 rounded-full text-xs font-semibold border hover:bg-slate-50" style="border-color:#e5e7eb; color:#6b7280;">
+      Reset everything to original
+    </button>
+    <div id="edit-stats" class="text-xs text-center" style="color:#9ca3af;">No edits yet</div>
+  </div>
+
+  <div class="px-5 pb-6">
+    <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400 mb-2">Jump to section</p>
+    <nav class="grid grid-cols-2 gap-1 text-xs font-medium">
+      <a href="#top" class="px-2 py-1.5 rounded hover:bg-slate-50 text-slate-700">Hero</a>
+      <a href="#ai-native" class="px-2 py-1.5 rounded hover:bg-slate-50 text-slate-700">AI-native</a>
+      <a href="#about" class="px-2 py-1.5 rounded hover:bg-slate-50 text-slate-700">About</a>
+      <a href="#focus" class="px-2 py-1.5 rounded hover:bg-slate-50 text-slate-700">Focus areas</a>
+      <a href="#business" class="px-2 py-1.5 rounded hover:bg-slate-50 text-slate-700">For business</a>
+      <a href="#projects" class="px-2 py-1.5 rounded hover:bg-slate-50 text-slate-700">Projects</a>
+    </nav>
+  </div>
+
+  <div class="px-5 pb-6 border-t pt-5" style="border-color:#e5e7eb;">
+    <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400 mb-2">Tips</p>
+    <ul class="text-xs text-slate-600 space-y-2 leading-relaxed list-disc pl-4">
+      <li>Click on text to edit it inline.</li>
+      <li>Coloured accent words (in coral) can be edited too - keep them in <code class="text-[10px] bg-slate-100 px-1 rounded">&lt;span class="accent-text"&gt;</code> if you want to keep the colour.</li>
+      <li>Use <kbd class="text-[10px] bg-slate-100 px-1 rounded border border-slate-200">Esc</kbd> to deselect.</li>
+      <li>Refresh the page to discard all edits.</li>
+    </ul>
+  </div>
+</aside>
+
+<div id="toast"></div>
+
+<script>
+  // ------ Edit mode wiring ------
+  const ORIGINAL_TEXT = new Map();
+  let editModeOn = false;
+
+  function getEditableElements() {
+    return Array.from(document.querySelectorAll(
+      'section h1, section h2, section h3, section h4, section p, section span, section a, section button, section li, section label'
+    )).filter((el) => {
+      if (el.closest('#editor') || el.closest('#signup-modal') || el.closest('.preview-banner')) return false;
+      // Skip elements whose only children are other editable elements
+      if (el.querySelector('h1, h2, h3, p, button')) return false;
+      // Skip the SVG icons / arrows
+      if (el.querySelector('svg') && el.textContent.trim().length === 0) return false;
+      // Skip non-text utility spans
+      if (el.tagName === 'SPAN' && el.textContent.trim().length === 0) return false;
+      // Skip pure icon-holding spans
+      if (el.classList.contains('w-1') || el.classList.contains('w-1.5') || el.classList.contains('w-2')) return false;
+      return el.textContent.trim().length > 0;
+    });
+  }
+
+  function enableEditMode() {
+    if (editModeOn) return;
+    editModeOn = true;
+    document.body.classList.add('edit-mode');
+    getEditableElements().forEach((el) => {
+      el.setAttribute('data-editable', 'true');
+      el.setAttribute('contenteditable', 'true');
+      el.setAttribute('spellcheck', 'true');
+      if (!ORIGINAL_TEXT.has(el)) ORIGINAL_TEXT.set(el, el.innerHTML.trim());
+      el.addEventListener('input', onEdit);
+    });
+    updateStats();
+  }
+
+  function disableEditMode() {
+    if (!editModeOn) return;
+    editModeOn = false;
+    document.body.classList.remove('edit-mode');
+    document.querySelectorAll('[data-editable]').forEach((el) => {
+      el.removeAttribute('contenteditable');
+      el.removeEventListener('input', onEdit);
+    });
+  }
+
+  function onEdit(e) {
+    const el = e.currentTarget;
+    const original = ORIGINAL_TEXT.get(el) ?? '';
+    if (el.innerHTML.trim() !== original) {
+      el.classList.add('dirty');
+    } else {
+      el.classList.remove('dirty');
+    }
+    updateStats();
+  }
+
+  function updateStats() {
+    const dirtyCount = document.querySelectorAll('[data-editable].dirty').length;
+    const total = document.querySelectorAll('[data-editable]').length;
+    const stats = document.getElementById('edit-stats');
+    if (dirtyCount === 0) stats.textContent = `No edits yet (${total} blocks editable)`;
+    else stats.textContent = `${dirtyCount} edit${dirtyCount === 1 ? '' : 's'} pending`;
+  }
+
+  function sectionLabel(el) {
+    const section = el.closest('section');
+    const id = section?.id || '';
+    return ({
+      'top': 'Hero',
+      'ai-native': 'AI-native',
+      'about': 'About',
+      'focus': 'Focus areas',
+      'business': 'For business',
+      'projects': 'Projects',
+      'contact': 'Contact',
+    })[id] || id || 'Other';
+  }
+
+  function fieldLabel(el) {
+    // Try to find a nearby heading for context
+    const heading = el.closest('article, header, div')?.querySelector('h1, h2, h3')?.textContent?.trim();
+    const tag = el.tagName.toLowerCase();
+    if (heading && heading !== el.textContent.trim()) return `${heading} (${tag})`;
+    return tag;
+  }
+
+  function stripHtml(html) {
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    return tmp.textContent.replace(/\s+/g, ' ').trim();
+  }
+
+  function exportChanges() {
+    const dirty = Array.from(document.querySelectorAll('[data-editable].dirty'));
+    if (dirty.length === 0) {
+      showToast('No edits to export. Click any text to edit, then try again.');
+      return;
+    }
+
+    const grouped = {};
+    dirty.forEach((el) => {
+      const section = sectionLabel(el);
+      if (!grouped[section]) grouped[section] = [];
+      grouped[section].push({
+        label: fieldLabel(el),
+        before: stripHtml(ORIGINAL_TEXT.get(el) ?? ''),
+        after: stripHtml(el.innerHTML),
+      });
+    });
+
+    let md = `# Sentium preview - text edits (${dirty.length} change${dirty.length === 1 ? '' : 's'})\n\n`;
+    for (const [section, items] of Object.entries(grouped)) {
+      md += `## ${section}\n\n`;
+      items.forEach((it) => {
+        md += `**${it.label}**\n`;
+        md += `- Before: ${it.before || '(empty)'}\n`;
+        md += `- After:  ${it.after || '(empty)'}\n\n`;
+      });
+    }
+
+    navigator.clipboard.writeText(md).then(
+      () => showToast(`Copied ${dirty.length} edit${dirty.length === 1 ? '' : 's'} to clipboard. Paste in chat.`),
+      () => {
+        // Fallback: open a dialog with the text selectable
+        const w = window.open('', '_blank');
+        if (w) { w.document.body.innerText = md; }
+        else showToast('Could not copy. Check console for the export.');
+        console.log(md);
+      }
+    );
+  }
+
+  function resetAll() {
+    if (!confirm('Reset all edits to the original text?')) return;
+    document.querySelectorAll('[data-editable]').forEach((el) => {
+      const original = ORIGINAL_TEXT.get(el);
+      if (original != null) el.innerHTML = original;
+      el.classList.remove('dirty');
+    });
+    updateStats();
+    showToast('Reset to original text.');
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.activeElement?.getAttribute('contenteditable') === 'true') {
+      document.activeElement.blur();
+    }
+  });
+
+  // ------ Signup modal ------
+  const PRODUCT_LABELS = {
+    treso: { name: 'Treso', tag: 'Treso · Early access', accent: '#a354d1' },
+    makemycard: { name: 'MakeMyCard', tag: 'MakeMyCard · Notify me', accent: '#ef8f45' },
+  };
+  function openSignup(productKey) {
+    const product = PRODUCT_LABELS[productKey] || PRODUCT_LABELS.treso;
+    document.getElementById('signup-product-label').innerText = product.tag;
+    document.getElementById('signup-product-label').style.color = product.accent;
+    document.getElementById('signup-product-name').innerText = product.name;
+    document.getElementById('signup-form-wrap').classList.remove('hidden');
+    document.getElementById('signup-success').classList.add('hidden');
+    document.getElementById('signup-form').reset();
+    const modal = document.getElementById('signup-modal');
+    modal.classList.remove('hidden'); modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeSignup() {
+    const modal = document.getElementById('signup-modal');
+    modal.classList.add('hidden'); modal.classList.remove('flex');
+    document.body.style.overflow = '';
+  }
+  function submitSignup(e) {
+    e.preventDefault();
+    // Preview only - in the real build this POSTs to /api/signup
+    document.getElementById('signup-form-wrap').classList.add('hidden');
+    document.getElementById('signup-success').classList.remove('hidden');
+  }
+  document.querySelectorAll('[data-signup-product]').forEach((btn) => {
+    btn.addEventListener('click', () => openSignup(btn.getAttribute('data-signup-product')));
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSignup(); });
+  document.getElementById('signup-modal').addEventListener('click', (e) => {
+    if (e.target.id === 'signup-modal') closeSignup();
+  });
+</script>
+
+</body>
+</html>
