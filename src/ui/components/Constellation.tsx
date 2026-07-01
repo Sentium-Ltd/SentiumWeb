@@ -1,194 +1,293 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
-
-interface Dot {
-  cx: number;
-  cy: number;
-  r: number;
-  fill: string;
-}
-
-const CENTER = 90.84;
-
-const DOTS: Dot[] = [
-  { cx: 65.46, cy: 31.75, r: 12.34, fill: "#b3ba69" },
-  { cx: 90.88, cy: 8.7, r: 8.7, fill: "#5cbf7a" },
-  { cx: 32.78, cy: 32.74, r: 8.7, fill: "#3b88d5" },
-  { cx: 8.7, cy: 90.81, r: 8.7, fill: "#a354d1" },
-  { cx: 32.74, cy: 148.9, r: 8.7, fill: "#ef8f45" },
-  { cx: 90.81, cy: 172.98, r: 8.7, fill: "#eda1cf" },
-  { cx: 148.9, cy: 148.95, r: 8.7, fill: "#b3ba69" },
-  { cx: 172.98, cy: 90.88, r: 8.7, fill: "#ef4d31" },
-  { cx: 148.95, cy: 32.78, r: 8.7, fill: "#6dcaee" },
-  { cx: 31.11, cy: 67.01, r: 12.34, fill: "#ef4d31" },
-  { cx: 31.75, cy: 116.23, r: 12.34, fill: "#6dcaee" },
-  { cx: 67.01, cy: 150.58, r: 12.34, fill: "#5cbf7a" },
-  { cx: 116.23, cy: 149.94, r: 12.34, fill: "#3b88d5" },
-  { cx: 150.58, cy: 114.68, r: 12.34, fill: "#a354d1" },
-  { cx: 149.94, cy: 65.46, r: 12.34, fill: "#ef8f45" },
-  { cx: 114.68, cy: 31.11, r: 12.34, fill: "#eda1cf" },
-];
-
-const SPARKLE_PATH =
-  "M113.92,103.07l9.09-3.47c8.03-3.07,8.03-14.43,0-17.5l-9.09-3.47c-4.98-1.9-8.92-5.84-10.82-10.82l-3.47-9.09c-3.07-8.03-14.43-8.03-17.5,0l-3.47,9.09c-1.9,4.98-5.84,8.92-10.82,10.82l-9.09,3.47c-8.03,3.07-8.03,14.43,0,17.5l9.09,3.47c4.98,1.9,8.92,5.84,10.82,10.82l3.47,9.09c3.07,8.03,14.43,8.03,17.5,0l3.47-9.09c1.9-4.98,5.84-8.92,10.82-10.82Z";
-
-interface ConstellationProps {
-  /** Optional override for size. Otherwise the wrapper fills its parent. */
+interface Props {
+  /** Optional pixel override; otherwise the wrapper fills its parent. */
   size?: number;
-  /** Tailwind / utility classes applied to the outer wrapper. */
   className?: string;
 }
 
-export function Constellation({ size, className }: ConstellationProps) {
-  const reduceMotion = useReducedMotion();
-  const wrapperRef = useRef<HTMLDivElement | null>(null);
-  const [pointer, setPointer] = useState({ x: 0, y: 0 });
+interface PlanetConfig {
+  id: string;
+  color: string;
+  connectorTo: [number, number];
+  connectorDashed?: boolean;
+  labelText?: string;
+  subText?: string;
+  labelBaseline: [number, number];
+  subBaseline: [number, number];
+  labelColor?: string;
+  orbitCenter: [number, number];
+  dotInitial: [number, number];
+  dotRadius: number;
+  dotDashedOutline?: boolean;
+  orbitDuration: string;
+  twinkleDelay: string;
+}
 
-  useEffect(() => {
-    if (reduceMotion) return;
-    const isCoarse =
-      typeof window !== "undefined" &&
-      window.matchMedia("(pointer: coarse)").matches;
-    if (isCoarse) return;
+const PLANETS: PlanetConfig[] = [
+  {
+    id: "bettr",
+    color: "var(--brand-mint)",
+    connectorTo: [403, 162],
+    labelText: "Bettr.Now",
+    subText: "HEALTH",
+    labelBaseline: [403, 158],
+    subBaseline: [403, 172],
+    orbitCenter: [403, 165],
+    dotInitial: [403, 133],
+    dotRadius: 7,
+    orbitDuration: "18s",
+    twinkleDelay: "0s",
+  },
+  {
+    id: "alfie",
+    color: "var(--brand-coral)",
+    connectorTo: [428, 340],
+    labelText: "Alfie",
+    subText: "KIDS",
+    labelBaseline: [428, 336],
+    subBaseline: [428, 350],
+    orbitCenter: [428, 343],
+    dotInitial: [464, 343],
+    dotRadius: 7,
+    orbitDuration: "22s",
+    twinkleDelay: "0.8s",
+  },
+  {
+    id: "treso",
+    color: "var(--brand-purple)",
+    connectorTo: [245, 432],
+    labelText: "Treso",
+    subText: "FINANCE",
+    labelBaseline: [245, 428],
+    subBaseline: [245, 442],
+    orbitCenter: [245, 435],
+    dotInitial: [245, 467],
+    dotRadius: 7,
+    orbitDuration: "26s",
+    twinkleDelay: "1.6s",
+  },
+  {
+    id: "makemycard",
+    color: "var(--brand-orange)",
+    connectorTo: [105, 318],
+    labelText: "MakeMyCard",
+    subText: "CREATIVE",
+    labelBaseline: [105, 314],
+    subBaseline: [105, 328],
+    orbitCenter: [105, 321],
+    dotInitial: [73, 321],
+    dotRadius: 7,
+    orbitDuration: "20s",
+    twinkleDelay: "2.4s",
+  },
+  {
+    id: "your-business",
+    color: "var(--color-fg)",
+    connectorTo: [104, 172],
+    connectorDashed: true,
+    // labelText / subText intentionally omitted - the spoke is here but the
+    // label is not, per design.
+    labelBaseline: [104, 168],
+    subBaseline: [104, 181],
+    orbitCenter: [104, 172],
+    dotInitial: [104, 140],
+    dotRadius: 8,
+    dotDashedOutline: true,
+    orbitDuration: "24s",
+    twinkleDelay: "3.2s",
+  },
+];
 
-    const onMove = (e: MouseEvent) => {
-      const el = wrapperRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      const dx = (e.clientX - cx) / rect.width;
-      const dy = (e.clientY - cy) / rect.height;
-      setPointer({
-        x: Math.max(-0.5, Math.min(0.5, dx)),
-        y: Math.max(-0.5, Math.min(0.5, dy)),
-      });
-    };
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [reduceMotion]);
+const CENTER: [number, number] = [260, 260];
 
+const LABEL_FONT_MAIN =
+  "var(--font-inter), Inter, system-ui, -apple-system, sans-serif";
+
+const SPARKLE_PATH =
+  "M260 222 L267 253 L298 260 L267 267 L260 298 L253 267 L222 260 L253 253 Z";
+
+const AMBIENT_TWINKLES: Array<{
+  cx: number;
+  cy: number;
+  r: number;
+  opacity: number;
+  delay: string;
+}> = [
+  { cx: 340, cy: 92, r: 2, opacity: 0.5, delay: "0s" },
+  { cx: 150, cy: 110, r: 1.6, opacity: 0.4, delay: "1.6s" },
+  { cx: 420, cy: 220, r: 1.8, opacity: 0.4, delay: "2.4s" },
+  { cx: 100, cy: 400, r: 1.6, opacity: 0.4, delay: "0.8s" },
+];
+
+export function Constellation({ size, className }: Props) {
   return (
     <div
-      ref={wrapperRef}
       className={`relative aspect-square select-none mx-auto ${className ?? ""}`}
       style={size ? { width: size, maxWidth: "100%" } : undefined}
       aria-hidden="true"
     >
-      {/* Soft glow halo - replaces the expensive drop-shadow filter for mobile perf */}
+      {/* Soft glow halo behind the sparkle */}
       <div
-        className="absolute inset-[18%] rounded-full blur-3xl opacity-60"
+        className="absolute inset-[22%] rounded-full blur-3xl opacity-60 pointer-events-none"
         style={{
           background:
-            "radial-gradient(closest-side, rgba(245,199,56,0.4), rgba(245,199,56,0.06) 60%, transparent 75%)",
+            "radial-gradient(closest-side, rgba(245,199,56,0.42), rgba(245,199,56,0.06) 60%, transparent 75%)",
         }}
       />
 
-      <motion.svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 181.68 181.68"
+      <svg
+        viewBox="0 0 520 520"
         className="relative w-full h-full overflow-visible"
-        style={{
-          transformBox: "fill-box",
-          transformOrigin: "center",
-          willChange: "transform",
-        }}
-        animate={
-          reduceMotion
-            ? undefined
-            : {
-                rotate: pointer.x * 10,
-                scale: 1 + Math.abs(pointer.y) * 0.02,
-              }
-        }
-        transition={{ type: "spring", stiffness: 30, damping: 18 }}
+        xmlns="http://www.w3.org/2000/svg"
       >
-        {/* Faint connecting rings - counter-rotate gently for parallax depth */}
-        <g className={reduceMotion ? undefined : "constellation-counter-spin"}>
-          <circle
-            cx={CENTER}
-            cy={CENTER}
-            r="82"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="0.4"
-            opacity="0.18"
-            strokeDasharray="2 4"
-          />
-          <circle
-            cx={CENTER}
-            cy={CENTER}
-            r="60"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="0.4"
-            opacity="0.12"
-            strokeDasharray="1 3"
-          />
-        </g>
-
-        {/* Inner group: continuous rotation, CSS-driven for reliability */}
-        <g className={reduceMotion ? undefined : "constellation-spin"}>
-
-        {DOTS.map((dot, i) => {
-          const phase = (i * 0.27) % 6;
-
-          return (
-            <motion.circle
-              key={i}
-              cx={dot.cx}
-              cy={dot.cy}
-              r={dot.r}
-              fill={dot.fill}
-              style={{ transformBox: "fill-box", transformOrigin: "center" }}
-              animate={
-                reduceMotion
-                  ? undefined
-                  : {
-                      scale: [1, 1.08, 1],
-                      opacity: [0.92, 1, 0.92],
-                    }
-              }
-              transition={
-                reduceMotion
-                  ? undefined
-                  : {
-                      duration: 4 + (i % 5) * 0.4,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: phase,
-                    }
-              }
-            />
-          );
-        })}
-
-        <motion.path
-          d={SPARKLE_PATH}
-          fill="#f5c738"
-          style={{ transformBox: "fill-box", transformOrigin: "center" }}
-          animate={
-            reduceMotion
-              ? undefined
-              : {
-                  scale: [1, 1.08, 1],
-                  rotate: [0, 12, -6, 0],
-                }
-          }
-          transition={
-            reduceMotion
-              ? undefined
-              : {
-                  duration: 9,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }
-          }
+        {/* Static decorative rings */}
+        <circle
+          cx={CENTER[0]}
+          cy={CENTER[1]}
+          r="120"
+          fill="none"
+          stroke="var(--color-fg)"
+          strokeOpacity="0.10"
+          strokeWidth="1"
+          strokeDasharray="2 7"
         />
-        </g>
-      </motion.svg>
+        <circle
+          cx={CENTER[0]}
+          cy={CENTER[1]}
+          r="190"
+          fill="none"
+          stroke="var(--color-fg)"
+          strokeOpacity="0.06"
+          strokeWidth="1"
+          strokeDasharray="2 9"
+        />
+
+        {/* Static connectors from sparkle to each planet's label */}
+        {PLANETS.map((p) => (
+          <line
+            key={`c-${p.id}`}
+            x1={CENTER[0]}
+            y1={CENTER[1]}
+            x2={p.connectorTo[0]}
+            y2={p.connectorTo[1]}
+            stroke="var(--color-fg)"
+            strokeOpacity={p.connectorDashed ? 0.22 : 0.16}
+            strokeWidth="1"
+            strokeDasharray={p.connectorDashed ? "2 3" : undefined}
+          />
+        ))}
+
+        {/* Ambient twinkles - pulse in place */}
+        {AMBIENT_TWINKLES.map((t, i) => (
+          <circle
+            key={`amb-${i}`}
+            cx={t.cx}
+            cy={t.cy}
+            r={t.r}
+            fill="var(--color-fg)"
+            opacity={t.opacity}
+            style={{
+              transformBox: "fill-box",
+              transformOrigin: "center",
+              animation: `constellation-v1-twinkle 4s ease-in-out ${t.delay} infinite`,
+            }}
+          />
+        ))}
+
+        {/* Core glow behind the sparkle */}
+        <circle
+          cx={CENTER[0]}
+          cy={CENTER[1]}
+          r="58"
+          fill="var(--brand-gold)"
+          opacity="0.18"
+          style={{
+            transformBox: "fill-box",
+            transformOrigin: "center",
+            animation: "constellation-v1-pulse 5s ease-in-out infinite",
+          }}
+        />
+
+        {/* Central sparkle - static */}
+        <path d={SPARKLE_PATH} fill="var(--brand-gold)" />
+
+        {/* Planet spokes: static labels + locally orbiting dots */}
+        {PLANETS.map((p) => (
+          <g key={p.id}>
+            {p.labelText && (
+              <text
+                x={p.labelBaseline[0]}
+                y={p.labelBaseline[1]}
+                textAnchor="middle"
+                style={{
+                  fontFamily: LABEL_FONT_MAIN,
+                  fontSize: 15,
+                  fontWeight: 600,
+                  letterSpacing: "-0.01em",
+                  fill: p.labelColor ?? "var(--color-fg)",
+                }}
+              >
+                {p.labelText}
+              </text>
+            )}
+            {p.subText && (
+              <text
+                x={p.subBaseline[0]}
+                y={p.subBaseline[1]}
+                textAnchor="middle"
+                style={{
+                  fontFamily: LABEL_FONT_MAIN,
+                  fontSize: 9.5,
+                  fontWeight: 600,
+                  letterSpacing: "0.14em",
+                  fill: "var(--color-muted)",
+                }}
+              >
+                {p.subText}
+              </text>
+            )}
+
+            {/* Local orbit group: rotates the dot around the label center */}
+            <g
+              style={{
+                transformBox: "view-box",
+                transformOrigin: `${p.orbitCenter[0]}px ${p.orbitCenter[1]}px`,
+                animation: `constellation-v1-orbit ${p.orbitDuration} linear infinite`,
+                willChange: "transform",
+              }}
+            >
+              {/* Inner group: dot pulses in place while orbit spins */}
+              <g
+                style={{
+                  transformBox: "fill-box",
+                  transformOrigin: "center",
+                  animation: `constellation-v1-twinkle 4s ease-in-out ${p.twinkleDelay} infinite`,
+                }}
+              >
+                {p.dotDashedOutline ? (
+                  <circle
+                    cx={p.dotInitial[0]}
+                    cy={p.dotInitial[1]}
+                    r={p.dotRadius}
+                    fill="none"
+                    stroke={p.color}
+                    strokeWidth="1.6"
+                    strokeDasharray="3 3"
+                  />
+                ) : (
+                  <circle
+                    cx={p.dotInitial[0]}
+                    cy={p.dotInitial[1]}
+                    r={p.dotRadius}
+                    fill={p.color}
+                  />
+                )}
+              </g>
+            </g>
+          </g>
+        ))}
+      </svg>
     </div>
   );
 }

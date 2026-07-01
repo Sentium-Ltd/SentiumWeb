@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sentium - Constellation options (preview)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#0A0B14;
+    --ink-2:#11121E;
+    --ink-3:#191B2A;
+    --paper:#F7F5EF;
+    --line:rgba(255,255,255,.10);
+    --gold:#F4B53F;
+    --gold-hi:#FFD27A;
+    --mint:#34D39A;
+    --coral:#FF6B5C;
+    --violet:#7C83FF;
+    --amber:#FF9F45;
+    --blue:#3b88d5;
+    --purple:#a354d1;
+    --pink:#eda1cf;
+    --olive:#b3ba69;
+    --sky:#6dcaee;
+    --on-dark:#ECEDF4;
+    --on-dark-mut:#9197AC;
+    --display:'Space Grotesk',sans-serif;
+    --body:'Inter',sans-serif;
+    --mono:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:var(--body);
+    background:var(--ink);
+    color:var(--on-dark);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    padding:48px 24px 96px;
+  }
+
+  h1,h2,h3{font-family:var(--display);letter-spacing:-.02em;line-height:1.1;font-weight:600}
+
+  .wrap{max-width:1240px;margin:0 auto}
+  .intro{max-width:720px;margin-bottom:40px}
+  .intro .eyebrow{
+    font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:14px;display:inline-flex;align-items:center;gap:9px;
+  }
+  .intro .eyebrow::before{content:"";width:18px;height:1px;background:var(--gold);opacity:.7}
+  .intro h1{font-size:34px;margin-bottom:14px}
+  .intro p{color:var(--on-dark-mut);font-size:15.5px}
+
+  .grid{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:24px;
+  }
+  .opt{
+    background:var(--ink-2);border:1px solid var(--line);border-radius:22px;
+    overflow:hidden;display:flex;flex-direction:column;
+  }
+  .opt-visual{
+    position:relative;aspect-ratio:1/1;
+    background:radial-gradient(600px 400px at 78% 12%, rgba(244,181,63,.08), transparent 60%),
+               radial-gradient(500px 400px at 12% 90%, rgba(124,131,255,.08), transparent 60%);
+    display:flex;align-items:center;justify-content:center;
+    border-bottom:1px solid var(--line);
+  }
+  .opt-visual svg{width:96%;height:auto;max-width:520px}
+  .opt-body{padding:22px 24px 26px}
+  .opt-tag{
+    font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:8px;
+  }
+  .opt-body h2{font-size:22px;margin-bottom:10px}
+  .opt-body p{color:var(--on-dark-mut);font-size:14.5px}
+  .opt-body .caveat{margin-top:12px;font-family:var(--mono);font-size:11.5px;color:var(--on-dark-mut);letter-spacing:.02em}
+
+  /* --- shared animations --- */
+  @keyframes pulse{0%,100%{opacity:.55}50%{opacity:1}}
+  @keyframes twinkle{0%,100%{opacity:.45;transform:scale(.92)}50%{opacity:1;transform:scale(1.06)}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes drift{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+  @keyframes soft-orbit-a{to{transform:rotate(360deg)}}
+  @keyframes soft-orbit-b{to{transform:rotate(-360deg)}}
+
+  .core-glow{animation:pulse 5s ease-in-out infinite;transform-origin:260px 260px}
+  .twinkle{animation:twinkle 4s ease-in-out infinite;transform-origin:center;transform-box:fill-box}
+  .drift{animation:drift 9s ease-in-out infinite}
+  .ring-spin{transform-origin:260px 260px;animation:spin 64s linear infinite}
+  .ring-spin-rev{transform-origin:260px 260px;animation:spin 90s linear infinite reverse}
+  .orbit-slow-cw{transform-origin:260px 260px;animation:soft-orbit-a 55s linear infinite}
+  .orbit-slow-ccw{transform-origin:260px 260px;animation:soft-orbit-b 85s linear infinite}
+
+  /* --- V1: each planet DOT revolves locally around its own label. --- */
+  /* Everything else (labels, connectors, rings, sparkle) is static. */
+  .dot-local{transform-box:view-box;will-change:transform}
+  .dot-local-1{transform-origin:403px 162px;animation:local-orbit 18s linear infinite}
+  .dot-local-2{transform-origin:428px 340px;animation:local-orbit 22s linear infinite}
+  .dot-local-3{transform-origin:245px 432px;animation:local-orbit 26s linear infinite}
+  .dot-local-4{transform-origin:105px 318px;animation:local-orbit 20s linear infinite}
+  .dot-local-5{transform-origin:104px 172px;animation:local-orbit 24s linear infinite}
+  @keyframes local-orbit{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+  .t1{animation-delay:0s}.t2{animation-delay:.8s}.t3{animation-delay:1.6s}
+  .t4{animation-delay:2.4s}.t5{animation-delay:3.2s}.t6{animation-delay:4s}
+
+  .star-label{font-family:var(--mono);font-size:11px;letter-spacing:.04em;fill:var(--on-dark)}
+  .star-sub{font-family:var(--mono);font-size:8.5px;letter-spacing:.05em;fill:var(--on-dark-mut);text-transform:uppercase}
+
+  /* --- selector helper --- */
+  .footer-note{
+    margin-top:44px;padding:22px 26px;background:var(--ink-2);border:1px solid var(--line);
+    border-radius:16px;color:var(--on-dark-mut);font-size:14.5px;
+  }
+  .footer-note strong{color:var(--on-dark)}
+
+  @media (max-width:900px){
+    .grid{grid-template-columns:1fr}
+    .intro h1{font-size:26px}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="intro">
+    <span class="eyebrow">Preview only</span>
+    <h1>Rotating mark — pick one</h1>
+    <p>
+      Four takes on the constellation for the hero. All keep the gold sparkle in the middle
+      (no "Sentium Core" text), orbit at a similar cadence, and use the existing brand palette.
+      They differ in density, labels, and how loud the "your business joins us" story is.
+    </p>
+  </div>
+
+  <div class="grid">
+
+    <!-- ==================================================================== -->
+    <!-- OPTION 1: FAITHFUL + LOCAL PLANET ORBITS                              -->
+    <!-- Each planet dot slowly circles ITS OWN label. The constellation as    -->
+    <!-- a whole is static - connectors, labels, rings, sparkle all stay put.  -->
+    <!-- ==================================================================== -->
+    <div class="opt">
+      <div class="opt-visual">
+        <svg viewBox="0 0 520 520" role="img" aria-label="Option 1">
+          <!-- static orbit rings (decorative) -->
+          <circle cx="260" cy="260" r="120" fill="none" stroke="rgba(244,181,63,.20)" stroke-width="1" stroke-dasharray="2 7"/>
+          <circle cx="260" cy="260" r="190" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="1" stroke-dasharray="2 9"/>
+
+          <!-- static connectors from sparkle to each label -->
+          <g stroke="rgba(255,255,255,.14)" stroke-width="1">
+            <line x1="260" y1="260" x2="403" y2="162"/>
+            <line x1="260" y1="260" x2="428" y2="340"/>
+            <line x1="260" y1="260" x2="245" y2="432"/>
+            <line x1="260" y1="260" x2="105" y2="318"/>
+            <line x1="260" y1="260" x2="104" y2="172" stroke-dasharray="2 3"/>
+          </g>
+
+          <!-- ambient background twinkles -->
+          <circle class="twinkle drift" cx="340" cy="92" r="2" fill="#fff" opacity=".5"/>
+          <circle class="twinkle t3" cx="150" cy="110" r="1.6" fill="#fff" opacity=".4"/>
+          <circle class="twinkle t4 drift" cx="420" cy="220" r="1.8" fill="#fff" opacity=".4"/>
+          <circle class="twinkle t2" cx="100" cy="400" r="1.6" fill="#fff" opacity=".4"/>
+
+          <!-- core glow + sparkle (static) -->
+          <circle class="core-glow" cx="260" cy="260" r="58" fill="#F4B53F" opacity=".18"/>
+          <path d="M260 222 L267 253 L298 260 L267 267 L260 298 L253 267 L222 260 L253 253 Z" fill="#F4B53F"/>
+
+          <!-- ===== Bettr.Now ===== -->
+          <text x="403" y="158" text-anchor="middle" class="star-label">Bettr.Now</text>
+          <text x="403" y="171" text-anchor="middle" class="star-sub">Health</text>
+          <g class="dot-local dot-local-1">
+            <g class="twinkle t1"><circle cx="403" cy="132" r="7" fill="#34D39A"/></g>
+          </g>
+
+          <!-- ===== Alfie ===== -->
+          <text x="428" y="336" text-anchor="middle" class="star-label">Alfie</text>
+          <text x="428" y="349" text-anchor="middle" class="star-sub">Kids</text>
+          <g class="dot-local dot-local-2">
+            <g class="twinkle t2"><circle cx="466" cy="340" r="7" fill="#FF6B5C"/></g>
+          </g>
+
+          <!-- ===== Treso ===== -->
+          <text x="245" y="428" text-anchor="middle" class="star-label">Treso</text>
+          <text x="245" y="441" text-anchor="middle" class="star-sub">Finance</text>
+          <g class="dot-local dot-local-3">
+            <g class="twinkle t3"><circle cx="245" cy="464" r="7" fill="#7C83FF"/></g>
+          </g>
+
+          <!-- ===== MakeMyCard ===== -->
+          <text x="105" y="314" text-anchor="middle" class="star-label">MakeMyCard</text>
+          <text x="105" y="327" text-anchor="middle" class="star-sub">Creative</text>
+          <g class="dot-local dot-local-4">
+            <g class="twinkle t4"><circle cx="67" cy="318" r="7" fill="#FF9F45"/></g>
+          </g>
+
+          <!-- ===== Your business ===== -->
+          <text x="104" y="168" text-anchor="middle" class="star-label" style="fill:#fff">Your business</text>
+          <text x="104" y="181" text-anchor="middle" class="star-sub">You're next</text>
+          <g class="dot-local dot-local-5">
+            <g class="twinkle t5"><circle cx="104" cy="140" r="7" fill="none" stroke="#fff" stroke-width="1.6" stroke-dasharray="3 3"/></g>
+          </g>
+        </svg>
+      </div>
+      <div class="opt-body">
+        <div class="opt-tag">V1 · Faithful (local planet orbits)</div>
+        <h2>Each dot revolves around its own label</h2>
+        <p>
+          Constellation as a whole is static - the sparkle, connectors, rings, and labels don't
+          move. What DOES move: each product's dot slowly circles its own label at a fixed radius,
+          each at its own speed (18-26s per lap). Feels like five little product planets each
+          quietly orbiting the name of their star.
+        </p>
+        <p class="caveat">This is the one you picked, this time with local orbital motion only.</p>
+      </div>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- OPTION 2: MINIMAL - dots only, no labels, no connectors               -->
+    <!-- ==================================================================== -->
+    <div class="opt">
+      <div class="opt-visual">
+        <svg viewBox="0 0 520 520" role="img" aria-label="Option 2">
+          <!-- orbit rings (single subtle) -->
+          <g class="ring-spin"><circle cx="260" cy="260" r="140" fill="none" stroke="rgba(244,181,63,.14)" stroke-width="1" stroke-dasharray="1 6"/></g>
+          <g class="ring-spin-rev"><circle cx="260" cy="260" r="200" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1" stroke-dasharray="1 8"/></g>
+          <!-- ambient -->
+          <circle class="twinkle" cx="360" cy="80" r="1.5" fill="#fff" opacity=".35"/>
+          <circle class="twinkle t3" cx="120" cy="440" r="1.4" fill="#fff" opacity=".3"/>
+          <circle class="twinkle t4" cx="450" cy="410" r="1.4" fill="#fff" opacity=".3"/>
+          <circle class="twinkle t2" cx="80" cy="140" r="1.3" fill="#fff" opacity=".3"/>
+          <!-- core glow + sparkle -->
+          <circle class="core-glow" cx="260" cy="260" r="65" fill="#F4B53F" opacity=".14"/>
+          <path d="M260 214 L269 251 L306 260 L269 269 L260 306 L251 269 L214 260 L251 251 Z" fill="#F4B53F"/>
+          <!-- rotating outer group of coloured dots -->
+          <g class="orbit-slow-cw">
+            <circle class="twinkle t1" cx="400" cy="260" r="9" fill="#34D39A"/>
+            <circle class="twinkle t2" cx="260" cy="400" r="9" fill="#FF6B5C"/>
+            <circle class="twinkle t3" cx="120" cy="260" r="9" fill="#7C83FF"/>
+            <circle class="twinkle t4" cx="260" cy="120" r="9" fill="#FF9F45"/>
+          </g>
+          <!-- inner rotating small dots -->
+          <g class="orbit-slow-ccw">
+            <circle class="twinkle t3" cx="360" cy="160" r="5" fill="#F4B53F"/>
+            <circle class="twinkle t4" cx="360" cy="360" r="5" fill="#eda1cf"/>
+            <circle class="twinkle t5" cx="160" cy="360" r="5" fill="#6dcaee"/>
+            <circle class="twinkle t1" cx="160" cy="160" r="5" fill="#a354d1"/>
+          </g>
+        </svg>
+      </div>
+      <div class="opt-body">
+        <div class="opt-tag">V2 · Minimal</div>
+        <h2>Dots only, no labels, no connectors</h2>
+        <p>
+          Two concentric rings of brand-coloured dots orbiting the sparkle - each dot subtly stands
+          for a product but never tells you which. Reads as pure "brand mark in motion", not as a
+          product diagram. Closest in spirit to the current site's constellation.
+        </p>
+        <p class="caveat">Best if you want the mark quietly on-brand, no explanation required.</p>
+      </div>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- OPTION 3: DENSE - all products + subtle labels                        -->
+    <!-- ==================================================================== -->
+    <div class="opt">
+      <div class="opt-visual">
+        <svg viewBox="0 0 520 520" role="img" aria-label="Option 3">
+          <!-- rings -->
+          <g class="ring-spin"><circle cx="260" cy="260" r="130" fill="none" stroke="rgba(244,181,63,.16)" stroke-width="1" stroke-dasharray="2 7"/></g>
+          <g class="ring-spin-rev"><circle cx="260" cy="260" r="205" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="1" stroke-dasharray="2 9"/></g>
+
+          <!-- ambient -->
+          <circle class="twinkle drift" cx="340" cy="72" r="1.6" fill="#fff" opacity=".4"/>
+          <circle class="twinkle t3" cx="150" cy="90" r="1.4" fill="#fff" opacity=".3"/>
+          <circle class="twinkle t4" cx="450" cy="220" r="1.6" fill="#fff" opacity=".3"/>
+
+          <!-- core + sparkle -->
+          <circle class="core-glow" cx="260" cy="260" r="52" fill="#F4B53F" opacity=".18"/>
+          <path d="M260 226 L266 254 L294 260 L266 266 L260 294 L254 266 L226 260 L254 254 Z" fill="#F4B53F"/>
+
+          <!-- product stars around inner ring (r=130), 6 products + your business -->
+          <!-- Bettr.Now (top) -->
+          <g class="twinkle t1"><circle cx="260" cy="130" r="8" fill="#34D39A"/></g>
+          <text x="260" y="112" text-anchor="middle" class="star-label">Bettr.Now</text>
+          <text x="260" y="123" text-anchor="middle" class="star-sub">Health</text>
+
+          <!-- Alfie Puzzles (top-right) -->
+          <g class="twinkle t2"><circle cx="373" cy="195" r="7" fill="#FF6B5C"/></g>
+          <text x="405" y="184" text-anchor="middle" class="star-label">Alfie Puzzles</text>
+          <text x="405" y="196" text-anchor="middle" class="star-sub">Kids</text>
+
+          <!-- Alfie Colouring (bottom-right) -->
+          <g class="twinkle t3"><circle cx="373" cy="325" r="7" fill="#FF6B5C"/></g>
+          <text x="405" y="345" text-anchor="middle" class="star-label">Alfie Colouring</text>
+          <text x="405" y="358" text-anchor="middle" class="star-sub">Kids</text>
+
+          <!-- Treso (bottom) -->
+          <g class="twinkle t4"><circle cx="260" cy="390" r="7.5" fill="#7C83FF"/></g>
+          <text x="260" y="414" text-anchor="middle" class="star-label">Treso</text>
+          <text x="260" y="425" text-anchor="middle" class="star-sub">Finance</text>
+
+          <!-- MakeMyCard (bottom-left) -->
+          <g class="twinkle t5"><circle cx="147" cy="325" r="7" fill="#FF9F45"/></g>
+          <text x="115" y="345" text-anchor="middle" class="star-label">MakeMyCard</text>
+          <text x="115" y="358" text-anchor="middle" class="star-sub">Creative</text>
+
+          <!-- KidWise (top-left) -->
+          <g class="twinkle t6"><circle cx="147" cy="195" r="7" fill="#3b88d5"/></g>
+          <text x="115" y="184" text-anchor="middle" class="star-label">KidWise</text>
+          <text x="115" y="196" text-anchor="middle" class="star-sub">Education</text>
+
+          <!-- Your business (far outer ring) -->
+          <g class="twinkle t1"><circle cx="440" cy="80" r="9" fill="none" stroke="#fff" stroke-width="1.6" stroke-dasharray="3 3"/></g>
+          <text x="440" y="62" text-anchor="middle" class="star-label" style="fill:#fff">Your business</text>
+          <text x="440" y="74" text-anchor="middle" class="star-sub">You're next</text>
+        </svg>
+      </div>
+      <div class="opt-body">
+        <div class="opt-tag">V3 · Dense</div>
+        <h2>All six Sentium products + your business</h2>
+        <p>
+          Splits Alfie into Puzzles and Colouring and brings KidWise into the picture, so every
+          shipped product has a star. "Your business" hangs off the outer orbit as an outlier
+          waiting to be pulled in. Denser but more honest about the portfolio.
+        </p>
+        <p class="caveat">Best if you want to show the depth of the studio at a glance.</p>
+      </div>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- OPTION 4: BRAND FUSION - keeps existing 8-dot mark + product outer    -->
+    <!-- ==================================================================== -->
+    <div class="opt">
+      <div class="opt-visual">
+        <svg viewBox="0 0 520 520" role="img" aria-label="Option 4">
+          <!-- ambient far ring -->
+          <g class="ring-spin"><circle cx="260" cy="260" r="220" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1" stroke-dasharray="1 9"/></g>
+
+          <!-- existing 8-dot brand ring, kept close (scaled from the real Sentium mark) -->
+          <g class="orbit-slow-cw">
+            <!-- eight medium dots at radius 100 -->
+            <circle class="twinkle" cx="260" cy="160" r="9" fill="#5cbf7a"/>
+            <circle class="twinkle t1" cx="331" cy="189" r="9" fill="#6dcaee"/>
+            <circle class="twinkle t2" cx="360" cy="260" r="9" fill="#ef4d31"/>
+            <circle class="twinkle t3" cx="331" cy="331" r="9" fill="#eda1cf"/>
+            <circle class="twinkle t4" cx="260" cy="360" r="9" fill="#b3ba69"/>
+            <circle class="twinkle t5" cx="189" cy="331" r="9" fill="#ef8f45"/>
+            <circle class="twinkle t6" cx="160" cy="260" r="9" fill="#a354d1"/>
+            <circle class="twinkle" cx="189" cy="189" r="9" fill="#3b88d5"/>
+          </g>
+
+          <!-- ambient -->
+          <circle class="twinkle drift" cx="70" cy="60" r="1.6" fill="#fff" opacity=".4"/>
+          <circle class="twinkle t3" cx="470" cy="90" r="1.4" fill="#fff" opacity=".3"/>
+          <circle class="twinkle t4" cx="440" cy="450" r="1.6" fill="#fff" opacity=".3"/>
+
+          <!-- core + sparkle -->
+          <circle class="core-glow" cx="260" cy="260" r="55" fill="#F4B53F" opacity=".2"/>
+          <path d="M260 220 L268 252 L300 260 L268 268 L260 300 L252 268 L220 260 L252 252 Z" fill="#F4B53F"/>
+
+          <!-- outer product stars (labels smaller so brand ring stays hero) -->
+          <g class="twinkle t1"><circle cx="415" cy="115" r="7" fill="#34D39A"/></g>
+          <text x="415" y="100" text-anchor="middle" class="star-sub" style="fill:#34D39A">BETTR.NOW</text>
+
+          <g class="twinkle t2"><circle cx="450" cy="360" r="6" fill="#FF6B5C"/></g>
+          <text x="450" y="380" text-anchor="middle" class="star-sub" style="fill:#FF6B5C">ALFIE</text>
+
+          <g class="twinkle t3"><circle cx="170" cy="450" r="6" fill="#7C83FF"/></g>
+          <text x="170" y="470" text-anchor="middle" class="star-sub" style="fill:#7C83FF">TRESO</text>
+
+          <g class="twinkle t4"><circle cx="72" cy="300" r="6" fill="#FF9F45"/></g>
+          <text x="72" y="320" text-anchor="middle" class="star-sub" style="fill:#FF9F45">MAKEMYCARD</text>
+
+          <!-- your business (outer, dashed) -->
+          <g class="twinkle t5"><circle cx="95" cy="130" r="8" fill="none" stroke="#fff" stroke-width="1.6" stroke-dasharray="3 3"/></g>
+          <text x="95" y="112" text-anchor="middle" class="star-sub" style="fill:#fff">YOUR BUSINESS</text>
+        </svg>
+      </div>
+      <div class="opt-body">
+        <div class="opt-tag">V4 · Brand fusion</div>
+        <h2>Existing constellation + product stars orbiting further out</h2>
+        <p>
+          Keeps the current 16-dot Sentium mark alive (a ring of brand-coloured dots rotating
+          around the sparkle), then adds product stars in a wider orbit with small caps labels.
+          Most continuous with what's already there, adds the new "product constellation" idea
+          as an outer layer.
+        </p>
+        <p class="caveat">Best if you don't want to lose brand recognition from the current mark.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">
+    Reply with <strong>V1</strong>, <strong>V2</strong>, <strong>V3</strong> or <strong>V4</strong>
+    (or a mix — e.g. "V4 but with labels like V1") and I'll swap it into the live
+    <code>Constellation.tsx</code> component. Everything else on the site stays as-is.
+  </div>
+
+</div>
+
+</body>
+</html>

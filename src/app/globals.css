@@ -184,6 +184,38 @@
   will-change: transform;
 }
 
+/* V1 constellation: each product-star dot revolves locally around its label. */
+@keyframes constellation-v1-orbit {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes constellation-v1-twinkle {
+  0%,
+  100% {
+    transform: scale(0.92);
+    opacity: 0.92;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+}
+
+@keyframes constellation-v1-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
