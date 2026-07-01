@@ -1,0 +1,36 @@
+name: Monthly signup digest
+
+on:
+  schedule:
+    # 08:00 UTC on the 1st of every month
+    - cron: "0 8 1 * *"
+  workflow_dispatch:
+    inputs:
+      window_days:
+        description: "How many days back to include (default 30)"
+        required: false
+        default: "30"
+      skip_if_empty:
+        description: "Skip sending the email if there are no new signups (1 = yes)"
+        required: false
+        default: "0"
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci --ignore-scripts
+      - name: Send digest
+        run: node scripts/send-signup-digest.mjs
+        env:
+          STORAGE_CONNECTION_STRING: ${{ secrets.STORAGE_CONNECTION_STRING }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_FROM: ${{ secrets.RESEND_FROM }}
+          SUPPORT_EMAIL: ${{ secrets.SUPPORT_EMAIL }}
+          DIGEST_DAYS: ${{ github.event.inputs.window_days || '30' }}
+          DIGEST_SKIP_IF_EMPTY: ${{ github.event.inputs.skip_if_empty || '0' }}

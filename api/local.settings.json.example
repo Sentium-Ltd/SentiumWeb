@@ -5,7 +5,8 @@
     "AzureWebJobsStorage": "",
     "RESEND_API_KEY": "",
     "RESEND_FROM": "Sentium <hello@sentium.app>",
-    "SUPPORT_EMAIL": "support@sentium.app"
+    "SUPPORT_EMAIL": "support@sentium.app",
+    "STORAGE_CONNECTION_STRING": ""
   },
   "Host": {
     "LocalHttpPort": 7071,
