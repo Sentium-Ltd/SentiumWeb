@@ -13,7 +13,7 @@ interface Service {
 }
 
 const pains: Pain[] = [
-  { question: "Still doing it by hand?", answer: "We automate it" },
+  { question: "Repetitive work eating your time?", answer: "We automate it" },
   { question: "Data everywhere, answers nowhere?", answer: "We turn it into decisions" },
   { question: "Know you need AI, no clue where to start?", answer: "We map it, then build it" },
   { question: "Tools that don't talk to each other?", answer: "We connect the stack" },

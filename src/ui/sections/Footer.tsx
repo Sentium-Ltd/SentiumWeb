@@ -1,7 +1,6 @@
 import { SentiumMark } from "@/ui/components";
 
 export function Footer() {
-  const year = new Date().getFullYear();
   return (
     <footer
       className="py-12 border-t"
@@ -60,7 +59,7 @@ export function Footer() {
             borderColor: "var(--color-line)",
           }}
         >
-          © {year} Sentium Ltd · Company number 16512683 · Registered in
+          © 2025 Sentium Ltd · Company number 16512683 · Registered in
           England &amp; Wales ·{" "}
           <a
             href="mailto:support@sentium.app"
