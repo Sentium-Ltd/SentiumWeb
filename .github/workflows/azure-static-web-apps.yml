@@ -28,7 +28,10 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
           app_location: "/"
-          api_location: "api"
+          # api_location intentionally empty - Functions live on the linked
+          # backend Function App (func-sentium-web) with Always On, deployed
+          # by .github/workflows/functions-deploy.yml.
+          api_location: ""
           output_location: "out"
 
   close_pull_request_job:

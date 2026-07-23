@@ -47,20 +47,38 @@ function safeRowKey(email) {
     .slice(0, 200);
 }
 
-let cachedClient = null;
-async function getTableClient(connectionString) {
-  if (cachedClient) return cachedClient;
-  const client = TableClient.fromConnectionString(connectionString, "signups", {
-    allowInsecureConnection: false,
-  });
-  // createTable is idempotent - swallow "already exists"
-  try {
-    await client.createTable();
-  } catch (err) {
-    if (err?.statusCode !== 409) throw err;
+// Non-cryptographic IP hash - only used to spot spam bursts in the table,
+// never displayed to end users.
+function hashIp(ip) {
+  let h = 5381;
+  for (let i = 0; i < ip.length; i += 1) {
+    h = (h * 33) ^ ip.charCodeAt(i);
   }
-  cachedClient = client;
-  return client;
+  return (h >>> 0).toString(16);
+}
+
+// Cache the TableClient at module level. fromConnectionString is synchronous,
+// so there's no race condition when the Function App instance is cold and
+// two requests arrive simultaneously. The old caching pattern awaited
+// createTable() inside a shared promise and could wedge every subsequent
+// request if the first init hung on a slow Storage response - that's the
+// 30-second timeout we saw in the wild.
+let cachedClient = null;
+function getTableClient(connectionString) {
+  if (!cachedClient) {
+    cachedClient = TableClient.fromConnectionString(connectionString, "signups");
+  }
+  return cachedClient;
+}
+
+// Node 17+; falls back to a manual controller if the runtime is older
+function timeoutSignal(ms) {
+  if (typeof AbortSignal !== "undefined" && typeof AbortSignal.timeout === "function") {
+    return AbortSignal.timeout(ms);
+  }
+  const ctrl = new AbortController();
+  setTimeout(() => ctrl.abort(), ms).unref?.();
+  return ctrl.signal;
 }
 
 app.http("signup", {
@@ -91,33 +109,43 @@ app.http("signup", {
       return { status: 500, jsonBody: { ok: false } };
     }
 
+    const entity = {
+      partitionKey: parsed.data.product,
+      rowKey: safeRowKey(parsed.data.email),
+      email: parsed.data.email,
+      product: parsed.data.product,
+      createdAt: new Date().toISOString(),
+      source: "sentium.app",
+      ipHash: hashIp(ip),
+    };
+
     try {
-      const client = await getTableClient(conn);
-      const entity = {
-        partitionKey: parsed.data.product,
-        rowKey: safeRowKey(parsed.data.email),
-        email: parsed.data.email,
-        product: parsed.data.product,
-        createdAt: new Date().toISOString(),
-        source: "sentium.app",
-        ipHash: hashIp(ip),
-      };
-      await client.upsertEntity(entity, "Merge");
+      const client = getTableClient(conn);
+      // Hard 10s timeout so a slow / hung Storage connection can't wedge
+      // the Function beyond a reasonable window. Prevents the 30s+ hangs
+      // that were catching users on the previous implementation.
+      const opts = { abortSignal: timeoutSignal(10_000) };
+      try {
+        await client.upsertEntity(entity, "Merge", opts);
+      } catch (err) {
+        // Table might not exist yet on a fresh environment. Create it and
+        // retry once - the createTable call is idempotent.
+        if (err?.statusCode === 404) {
+          await client.createTable();
+          await client.upsertEntity(entity, "Merge", opts);
+        } else {
+          throw err;
+        }
+      }
       context.log(`signup: stored ${parsed.data.email} for ${parsed.data.product}`);
       return { status: 200, jsonBody: { ok: true } };
     } catch (err) {
+      if (err?.name === "AbortError" || err?.name === "TimeoutError") {
+        context.error("signup: storage call timed out after 10s");
+        return { status: 504, jsonBody: { ok: false, error: "storage_timeout" } };
+      }
       context.error("signup: table upsert failed", err);
       return { status: 500, jsonBody: { ok: false } };
     }
   },
 });
-
-// Non-cryptographic IP hash - only used to spot spam bursts in the table,
-// never displayed to end users.
-function hashIp(ip) {
-  let h = 5381;
-  for (let i = 0; i < ip.length; i += 1) {
-    h = (h * 33) ^ ip.charCodeAt(i);
-  }
-  return (h >>> 0).toString(16);
-}
