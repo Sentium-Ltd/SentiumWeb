@@ -3,14 +3,14 @@ import type { Project } from "./types";
 export const projects: Project[] = [
   {
     id: "bettr-now",
-    name: "Bettr.Now",
-    tagline: "Know your bettr age.",
+    name: "bettr.now",
+    tagline: "Know your metabolic age.",
     description:
-      "Know your bettr age. Everything your body's telling you, gathered in one place so you can own your health. Spot what matters early. Live longer. Better. Now.",
+      "Know your metabolic age. Everything your body's telling you, gathered in one place so you can own your health. Spot what matters early. Live longer. Live bettr.now",
     longDescription:
-      "Bettr.Now brings your health data into one place: real blood tests, wearable signals, and AI that reads them like a story instead of a wall of numbers. The result is a clear picture of where you stand today, where you should be, and what to do next. It's built for people who want to own their health without turning it into a full-time job.",
+      "bettr.now brings your health data into one place: real blood tests, wearable signals, and AI that reads them like a story instead of a wall of numbers. The result is a clear picture of where you stand today, where you should be, and what to do next. It's built for people who want to own their health without turning it into a full-time job.",
     whyWeBuiltIt:
-      "Most personal health tools stop at showing you data. The interesting part - what does this actually mean for me, and what do I do about it - gets left to the reader. Bettr.Now was built to close that gap: real biomarker science, clear explanations, and a shared language you can bring to your GP.",
+      "Most personal health tools stop at showing you data. The interesting part - what does this actually mean for me, and what do I do about it - gets left to the reader. bettr.now was built to close that gap: real biomarker science, clear explanations, and a shared language you can bring to your GP.",
     features: [
       "Real blood tests, not surveys - actual biomarker panels",
       "Every result explained in plain language, no medical degree needed",
@@ -20,7 +20,7 @@ export const projects: Project[] = [
     ],
     releaseYear: 2026,
     metaDescription:
-      "Bettr.Now - real blood tests, wearable data, and AI that reads them like a story. Own your health. Built by Sentium.",
+      "bettr.now - real blood tests, wearable data, and AI that reads them like a story. Own your health. Built by Sentium.",
     href: "https://bettr.now",
     ctaLabel: "Visit bettr.now",
     accent: "brand-mint",
@@ -101,23 +101,18 @@ export const projects: Project[] = [
   {
     id: "treso",
     name: "Treso",
-    tagline: "Money admin, handled.",
-    description:
-      "Money admin, handled. Less spreadsheet, more sorted - financial clarity for people who'd rather not think about it.",
+    tagline: "Coming soon.",
+    description: "A new finance app in the works.",
     longDescription:
-      "Treso takes the recurring, low-fun parts of personal finance - the bills, the goals, the sub you forgot you signed up for, the money admin that piles up - and turns them into a single calm surface you check once and move on from. Built for people who'd rather spend their attention almost anywhere else, but still want the money side of life to be in order.",
+      "A new finance app in the works. More to share soon - drop your email if you'd like to be first to know.",
     whyWeBuiltIt:
-      "Most personal finance apps either optimise for the spreadsheet crowd (dashboards, charts, categories) or for the guilt-driven budgeting crowd. Neither shape fits the biggest audience: people who just want their money to be handled. Treso is our attempt at that third path.",
+      "Because the day-to-day of money should feel less like homework. That's all we're saying for now.",
     features: [
-      "Everything money-admin in one calm place - bills, subs, goals, receipts",
-      "Automations that clear the low-fun tasks without needing to be watched",
-      "Clear picture of where you actually stand, without a spreadsheet",
-      "Privacy-first by design - your money data is yours",
-      "No dark patterns, no upsells, no gamification",
+      "Coming soon",
     ],
     releaseYear: 2026,
     metaDescription:
-      "Treso - money admin, handled. A web app for the people who'd rather not think about personal finance. Built by Sentium.",
+      "Treso - a new finance app by Sentium. Coming soon.",
     href: "",
     ctaLabel: "Get early access",
     accent: "brand-purple",

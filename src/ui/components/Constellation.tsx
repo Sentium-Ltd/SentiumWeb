@@ -13,6 +13,8 @@ interface PlanetConfig {
   connectorDashed?: boolean;
   labelText?: string;
   subText?: string;
+  /** Anchor to scroll to when the label is clicked. Omit to disable. */
+  href?: string;
   labelBaseline: [number, number];
   subBaseline: [number, number];
   labelColor?: string;
@@ -29,8 +31,9 @@ const PLANETS: PlanetConfig[] = [
     id: "bettr",
     color: "var(--brand-mint)",
     connectorTo: [403, 162],
-    labelText: "Bettr.Now",
+    labelText: "bettr.now",
     subText: "HEALTH",
+    href: "/#project-bettr-now",
     labelBaseline: [403, 158],
     subBaseline: [403, 172],
     orbitCenter: [403, 165],
@@ -45,6 +48,7 @@ const PLANETS: PlanetConfig[] = [
     connectorTo: [428, 340],
     labelText: "Alfie",
     subText: "KIDS",
+    href: "/#project-alfie-puzzles",
     labelBaseline: [428, 336],
     subBaseline: [428, 350],
     orbitCenter: [428, 343],
@@ -59,6 +63,7 @@ const PLANETS: PlanetConfig[] = [
     connectorTo: [245, 432],
     labelText: "Treso",
     subText: "FINANCE",
+    href: "/#project-treso",
     labelBaseline: [245, 428],
     subBaseline: [245, 442],
     orbitCenter: [245, 435],
@@ -73,6 +78,7 @@ const PLANETS: PlanetConfig[] = [
     connectorTo: [105, 318],
     labelText: "MakeMyCard",
     subText: "CREATIVE",
+    href: "/#project-makemycard",
     labelBaseline: [105, 314],
     subBaseline: [105, 328],
     orbitCenter: [105, 321],
@@ -86,8 +92,8 @@ const PLANETS: PlanetConfig[] = [
     color: "var(--color-fg)",
     connectorTo: [104, 172],
     connectorDashed: true,
-    // labelText / subText intentionally omitted - the spoke is here but the
-    // label is not, per design.
+    // labelText / subText / href intentionally omitted - the spoke is here
+    // but no label and no click target, per design.
     labelBaseline: [104, 168],
     subBaseline: [104, 181],
     orbitCenter: [104, 172],
@@ -212,40 +218,60 @@ export function Constellation({ size, className }: Props) {
         {/* Central sparkle - static */}
         <path d={SPARKLE_PATH} fill="var(--brand-gold)" />
 
-        {/* Planet spokes: static labels + locally orbiting dots */}
-        {PLANETS.map((p) => (
+        {/* Planet spokes: static labels + locally orbiting dots.
+            When a spoke has an href, its label + sub-label are wrapped in
+            an <a> so clicking scrolls to the matching product card. */}
+        {PLANETS.map((p) => {
+          const labels = (
+            <>
+              {p.labelText && (
+                <text
+                  x={p.labelBaseline[0]}
+                  y={p.labelBaseline[1]}
+                  textAnchor="middle"
+                  style={{
+                    fontFamily: LABEL_FONT_MAIN,
+                    fontSize: 15,
+                    fontWeight: 600,
+                    letterSpacing: "-0.01em",
+                    fill: p.labelColor ?? "var(--color-fg)",
+                  }}
+                >
+                  {p.labelText}
+                </text>
+              )}
+              {p.subText && (
+                <text
+                  x={p.subBaseline[0]}
+                  y={p.subBaseline[1]}
+                  textAnchor="middle"
+                  style={{
+                    fontFamily: LABEL_FONT_MAIN,
+                    fontSize: 9.5,
+                    fontWeight: 600,
+                    letterSpacing: "0.14em",
+                    fill: "var(--color-muted)",
+                  }}
+                >
+                  {p.subText}
+                </text>
+              )}
+            </>
+          );
+
+          return (
           <g key={p.id}>
-            {p.labelText && (
-              <text
-                x={p.labelBaseline[0]}
-                y={p.labelBaseline[1]}
-                textAnchor="middle"
-                style={{
-                  fontFamily: LABEL_FONT_MAIN,
-                  fontSize: 15,
-                  fontWeight: 600,
-                  letterSpacing: "-0.01em",
-                  fill: p.labelColor ?? "var(--color-fg)",
-                }}
+            {p.href && p.labelText ? (
+              <a
+                href={p.href}
+                aria-label={`Jump to ${p.labelText}`}
+                className="constellation-label-link"
+                style={{ cursor: "pointer" }}
               >
-                {p.labelText}
-              </text>
-            )}
-            {p.subText && (
-              <text
-                x={p.subBaseline[0]}
-                y={p.subBaseline[1]}
-                textAnchor="middle"
-                style={{
-                  fontFamily: LABEL_FONT_MAIN,
-                  fontSize: 9.5,
-                  fontWeight: 600,
-                  letterSpacing: "0.14em",
-                  fill: "var(--color-muted)",
-                }}
-              >
-                {p.subText}
-              </text>
+                {labels}
+              </a>
+            ) : (
+              labels
             )}
 
             {/* Local orbit group: rotates the dot around the label center */}
@@ -286,7 +312,8 @@ export function Constellation({ size, className }: Props) {
               </g>
             </g>
           </g>
-        ))}
+          );
+        })}
       </svg>
     </div>
   );

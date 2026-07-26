@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     "health apps",
     "finance apps",
     "iOS apps",
-    "Bettr.Now",
+    "bettr.now",
     "Alfie Colouring",
     "Alfie Puzzles",
     "KidWise",

@@ -83,11 +83,13 @@ function FlagshipCard({ project }: { project: Project }) {
   const accent = accentVar[project.accent];
   return (
     <article
+      id={`project-${project.id}`}
       className="rounded-3xl p-8 sm:p-10 relative overflow-hidden"
       style={{
         background: "var(--color-bg)",
         border: "1px solid var(--color-line)",
         borderLeft: `4px solid ${accent}`,
+        scrollMarginTop: "90px",
       }}
     >
       <div className="grid lg:grid-cols-[1.3fr_1fr] gap-8 lg:gap-12">
@@ -120,15 +122,19 @@ function FlagshipCard({ project }: { project: Project }) {
             className="text-base sm:text-lg leading-relaxed max-w-xl mb-7"
             style={{ color: "var(--color-muted)" }}
           >
-            {project.description.split(/(bettr age)/i).map((part, i) =>
-              part.toLowerCase() === "bettr age" ? (
-                <span key={i} style={{ color: accent, fontWeight: 600 }}>
-                  {part}
-                </span>
-              ) : (
-                <span key={i}>{part}</span>
-              ),
-            )}
+            {project.description
+              .split(/(metabolic age|bettr\.now)/i)
+              .map((part, i) => {
+                const lower = part.toLowerCase();
+                if (lower === "metabolic age" || lower === "bettr.now") {
+                  return (
+                    <span key={i} style={{ color: accent, fontWeight: 600 }}>
+                      {part}
+                    </span>
+                  );
+                }
+                return <span key={i}>{part}</span>;
+              })}
           </p>
           <div className="flex flex-wrap items-center gap-4">
             <Link
@@ -194,11 +200,13 @@ function ProjectCard({
 
   return (
     <article
+      id={`project-${project.id}`}
       className="h-full rounded-3xl p-7 relative overflow-hidden transition-all duration-300 hover:-translate-y-1 flex flex-col"
       style={{
         background: "var(--color-bg)",
         border: "1px solid var(--color-line)",
         borderLeft: `4px solid ${accent}`,
+        scrollMarginTop: "90px",
       }}
     >
       <div className="flex items-center justify-between mb-5">
