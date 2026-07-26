@@ -4,9 +4,9 @@ export const projects: Project[] = [
   {
     id: "bettr-now",
     name: "bettr.now",
-    tagline: "Know your metabolic age.",
+    tagline: "Know your biological age.",
     description:
-      "Know your metabolic age. Everything your body's telling you, gathered in one place so you can own your health. Spot what matters early. Live longer. Live bettr.now",
+      "Know your biological age. Everything your body's telling you, gathered in one place so you can own your health. Spot what matters early. Live longer. Live bettr.now",
     longDescription:
       "bettr.now brings your health data into one place: real blood tests, wearable signals, and AI that reads them like a story instead of a wall of numbers. The result is a clear picture of where you stand today, where you should be, and what to do next. It's built for people who want to own their health without turning it into a full-time job.",
     whyWeBuiltIt:

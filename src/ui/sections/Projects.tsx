@@ -123,10 +123,10 @@ function FlagshipCard({ project }: { project: Project }) {
             style={{ color: "var(--color-muted)" }}
           >
             {project.description
-              .split(/(metabolic age|bettr\.now)/i)
+              .split(/(biological age|bettr\.now)/i)
               .map((part, i) => {
                 const lower = part.toLowerCase();
-                if (lower === "metabolic age" || lower === "bettr.now") {
+                if (lower === "biological age" || lower === "bettr.now") {
                   return (
                     <span key={i} style={{ color: accent, fontWeight: 600 }}>
                       {part}
