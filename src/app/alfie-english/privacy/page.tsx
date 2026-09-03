@@ -11,7 +11,7 @@ const SUPPORT_EMAIL = "support@sentium.app";
 export const metadata: Metadata = {
   title: "Learn English with Alfie — Privacy policy",
   description:
-    "What Learn English with Alfie collects about your child, what it deliberately doesn't, and how to delete it. UK GDPR, ICO Age Appropriate Design Code and COPPA aligned.",
+    "Almost nothing about your child leaves the device. What Learn English with Alfie collects, what it deliberately doesn't, and how to erase it. UK GDPR, ICO Age Appropriate Design Code and COPPA aligned.",
   alternates: { canonical: `${SITE_URL}/alfie-english/privacy/` },
 };
 
@@ -63,9 +63,13 @@ export default function AlfieEnglishPrivacy() {
                 <ul>
                   <li><strong>We do not show ads.</strong> Ever.</li>
                   <li><strong>We do not track your child</strong> across apps or the web.</li>
-                  <li><strong>By default, everything stays on your child's device.</strong> Cloud features are off until you turn them on.</li>
+                  <li>
+                    <strong>Almost nothing about your child ever leaves the device.</strong> There is no
+                    account on our servers, no cloud profile, and no progress database with your child's
+                    name in it.
+                  </li>
+                  <li><strong>We do not know who your child is.</strong> We could not produce a file about them if we tried.</li>
                   <li><strong>Nothing leaves the United Kingdom.</strong></li>
-                  <li><strong>You can export or delete everything</strong> at any time from the Parent Dashboard.</li>
                 </ul>
               </section>
             </Reveal>
@@ -89,40 +93,60 @@ export default function AlfieEnglishPrivacy() {
 
             <Reveal>
               <section>
-                <h2>2. What we collect, and why</h2>
-
-                <h3>On your child's device only &mdash; never sent to our servers</h3>
+                <h2>2. What stays on the device</h2>
+                <p>
+                  All of the following is stored on your child's iPhone or iPad and is never transmitted
+                  to us:
+                </p>
                 <ul>
-                  <li>Your child's first name, age and chosen native language, to personalise the experience.</li>
-                  <li>Learning progress and pronunciation scores, to choose the right next lesson.</li>
-                  <li>Voice journal recordings, stored on the device unless you opt in to cloud backup.</li>
+                  <li>Your child's first name, age and chosen native language.</li>
+                  <li>Learning progress, stars, gems and badges.</li>
+                  <li>Pronunciation scores and history.</li>
+                  <li>Voice journal recordings.</li>
+                  <li>The Sign in with Apple identifier, held in the device Keychain.</li>
                 </ul>
+                <p>Deleting the app removes all of it.</p>
+              </section>
+            </Reveal>
 
-                <h3>Sent to our servers only if you opt in</h3>
+            <Reveal>
+              <section>
+                <h2>3. What actually leaves the device</h2>
+                <p>Three things, and only three:</p>
                 <ul>
-                  <li><strong>Progress sync</strong> &mdash; so progress survives a change of device.</li>
-                  <li><strong>Voice journal cloud backup</strong> &mdash; so recordings can be replayed across devices.</li>
-                  <li><strong>Practice reminders</strong> &mdash; your child's profile ID is stored so a notification can be delivered.</li>
-                  <li><strong>Crash reports</strong> &mdash; standard diagnostics via Azure Application Insights. No IP address is stored and no behavioural profile is built.</li>
-                </ul>
-
-                <h3>Always collected</h3>
-                <ul>
-                  <li>Your Apple ID, through Sign in with Apple, so you can reach your account and we can email a data export if you ask for one.</li>
-                  <li>Your subscription status, which is managed by Apple.</li>
+                  <li>
+                    <strong>Lesson content requests.</strong> The app asks our servers for lessons,
+                    illustrations and audio. These requests carry no information about your child &mdash;
+                    they name a lesson, not a person.
+                  </li>
+                  <li>
+                    <strong>Pronunciation scoring.</strong> When your child practises speaking, a short
+                    recording of the phrase is sent to our server, which forwards it to Microsoft Azure's
+                    speech-scoring service and returns a score. The recording carries{" "}
+                    <strong>no name, no account, no device identifier and no profile ID</strong> &mdash;
+                    nothing that could connect it to your child. We do not write it to any database or
+                    storage, and it is discarded once the score comes back. Neither we nor Microsoft use
+                    it to train anything.
+                  </li>
+                  <li>
+                    <strong>Subscription checks.</strong> If you subscribe, the App Store receipt is sent
+                    to our server so we can confirm the subscription is genuine. It contains Apple's
+                    transaction identifiers and no information about your child.
+                  </li>
                 </ul>
               </section>
             </Reveal>
 
             <Reveal>
               <section>
-                <h2>3. What we never collect</h2>
+                <h2>4. What we never collect</h2>
                 <ul>
                   <li>IP addresses in logs</li>
                   <li>The device advertising identifier (IDFA)</li>
                   <li>Device fingerprints</li>
                   <li>Precise or approximate location</li>
                   <li>Contacts, photos or camera access</li>
+                  <li>Your email address</li>
                   <li>Anything at all for advertising or marketing profiling</li>
                 </ul>
               </section>
@@ -130,11 +154,23 @@ export default function AlfieEnglishPrivacy() {
 
             <Reveal>
               <section>
-                <h2>4. Speech, and what happens to your child's voice</h2>
+                <h2>5. Sign in with Apple</h2>
                 <p>
-                  Pronunciation practice runs on the device. Where a recording is sent to our servers to
-                  be scored, it is used for that single purpose and then discarded. Recordings are never
-                  used to train any model, by us or by anyone else.
+                  Signing in is optional &mdash; the app works without it. When you do sign in, Apple
+                  gives the app an identifier for you, and that identifier is stored in the device
+                  Keychain. <strong>It is never sent to us.</strong> We do not receive your name or
+                  email, we hold no account record for you, and we cannot identify you from anything in
+                  the app.
+                </p>
+              </section>
+            </Reveal>
+
+            <Reveal>
+              <section>
+                <h2>6. Speech, and what happens to your child's voice</h2>
+                <p>
+                  Pronunciation recordings are used to produce a score and nothing else, as described
+                  above. They are never used to train any model, by us or by anyone else.
                 </p>
                 <p>
                   Every line Alfie speaks was written and reviewed by us in advance.{" "}
@@ -147,72 +183,91 @@ export default function AlfieEnglishPrivacy() {
 
             <Reveal>
               <section>
-                <h2>5. Who we share data with</h2>
+                <h2>7. Who we share data with</h2>
                 <p>Only the following processors, each under a data processing agreement:</p>
                 <ul>
-                  <li><strong>Apple</strong> &mdash; identity, payments and notifications.</li>
-                  <li><strong>Microsoft Azure</strong> &mdash; backend hosting, in UK data centres.</li>
-                </ul>
-                <p>We never sell data, and we never share data with advertisers.</p>
-              </section>
-            </Reveal>
-
-            <Reveal>
-              <section>
-                <h2>6. How long we keep things</h2>
-                <ul>
-                  <li><strong>Voice recordings in the cloud</strong> &mdash; 90 days, unless you archive them.</li>
-                  <li><strong>Progress data in the cloud</strong> &mdash; kept while your account is active, and deleted within 30 days of account deletion.</li>
-                  <li><strong>Crash reports</strong> &mdash; 90 days.</li>
-                </ul>
-              </section>
-            </Reveal>
-
-            <Reveal>
-              <section>
-                <h2>7. Your rights</h2>
-                <p>At any time, from the Parent Dashboard, you can:</p>
-                <ul>
-                  <li>Export everything we hold about your child, as JSON plus audio files, emailed to you.</li>
-                  <li>Delete an individual child profile.</li>
-                  <li>Delete your entire account, which erases everything within 30 days.</li>
-                  <li>Change which categories of data sync to the cloud.</li>
+                  <li><strong>Apple</strong> &mdash; payments and subscription management.</li>
+                  <li>
+                    <strong>Microsoft Azure</strong> &mdash; hosting for lesson content, in UK data
+                    centres, and the speech-scoring service described above.
+                  </li>
                 </ul>
                 <p>
-                  Withdrawing consent takes effect immediately. If you turn off voice cloud backup, any
-                  voice data we hold is deleted within 24 hours.
+                  We never sell data and we never share data with advertisers. There are no analytics
+                  SDKs, advertising SDKs or third-party trackers of any kind in this app.
                 </p>
               </section>
             </Reveal>
 
             <Reveal>
               <section>
-                <h2>8. Parental consent</h2>
+                <h2>8. How long we keep things</h2>
                 <p>
-                  We rely on your Apple ID to establish that an adult set the account up, and a parental
-                  gate &mdash; a short arithmetic problem &mdash; stands in front of settings, the Parent
+                  We do not retain personal data, because we do not receive any. Pronunciation recordings
+                  exist only for the seconds it takes to score them, and are never stored.
+                </p>
+              </section>
+            </Reveal>
+
+            <Reveal>
+              <section>
+                <h2>9. Your rights</h2>
+                <p>
+                  Under the UK GDPR you have the right to access, correct, erase, restrict and port your
+                  personal data, and to object to its processing. In practice, for this app:
+                </p>
+                <ul>
+                  <li>
+                    <strong>Erasure and access are immediate and in your hands.</strong> Everything about
+                    your child lives on the device. Delete a child profile in the Parent Dashboard, or
+                    delete the app, and it is gone. We hold no copy.
+                  </li>
+                  <li>
+                    <strong>If you make an access request to us,</strong> we will almost certainly have
+                    nothing to give you, because we hold nothing tied to your child. We will confirm that
+                    in writing.
+                  </li>
+                  <li>
+                    <strong>To exercise any right, or to ask us anything at all,</strong> email{" "}
+                    <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>. We respond within 30 days,
+                    usually far sooner.
+                  </li>
+                </ul>
+              </section>
+            </Reveal>
+
+            <Reveal>
+              <section>
+                <h2>10. Parental consent</h2>
+                <p>
+                  We rely on your Apple ID to establish that an adult set the app up, and a parental gate
+                  &mdash; a short arithmetic problem &mdash; stands in front of settings, the Parent
                   Dashboard and anything involving payment. We do not use birthday-entry gates, which
-                  children learn to defeat.
+                  children quickly learn to defeat.
+                </p>
+                <p>
+                  Because we collect no personal data from children, we do not rely on parental consent
+                  as a lawful basis for processing children's data &mdash; there is none to process.
                 </p>
               </section>
             </Reveal>
 
             <Reveal>
               <section>
-                <h2>9. Children's rights</h2>
+                <h2>11. Children's rights</h2>
                 <p>
                   Under the UK GDPR, the ICO's Age Appropriate Design Code and COPPA, your child has the
                   right to privacy, to data minimisation, and to freedom from commercial exploitation.
                   This app was designed around those rights rather than retrofitted to comply with them:
-                  the local-first default, the absence of any advertising or analytics SDK, and the
-                  consent gate on every outbound network call all come from that starting point.
+                  the local-first default, the absence of any advertising or analytics SDK, and a consent
+                  gate compiled into every outbound network call all follow from that starting point.
                 </p>
               </section>
             </Reveal>
 
             <Reveal>
               <section>
-                <h2>10. Security</h2>
+                <h2>12. Security</h2>
                 <ul>
                   <li>All data in transit uses TLS 1.3.</li>
                   <li>All data at rest in Azure is encrypted.</li>
@@ -224,17 +279,34 @@ export default function AlfieEnglishPrivacy() {
 
             <Reveal>
               <section>
-                <h2>11. International transfers</h2>
+                <h2>13. International transfers</h2>
                 <p>
                   There are none. All processing happens in the United Kingdom, in Azure's UK South
-                  region. No personal data leaves the UK.
+                  region.
                 </p>
               </section>
             </Reveal>
 
             <Reveal>
               <section>
-                <h2>12. Changes to this policy</h2>
+                <h2>14. Features that do not exist yet</h2>
+                <p>
+                  Stated for transparency, because the app contains the consent scaffolding for them: we
+                  have built the machinery for optional cloud progress sync, cloud backup of voice
+                  recordings, practice reminders, and anonymous usage analytics.{" "}
+                  <strong>None of these are implemented, and none of them run.</strong> No such data is
+                  collected today.
+                </p>
+                <p>
+                  If we ever switch one on, it will be off by default, will require you to opt in, and we
+                  will update this policy and tell you at least 30 days beforehand.
+                </p>
+              </section>
+            </Reveal>
+
+            <Reveal>
+              <section>
+                <h2>15. Changes to this policy</h2>
                 <p>
                   We will tell you in the app and by email at least 30 days before any material change
                   takes effect.
@@ -244,14 +316,14 @@ export default function AlfieEnglishPrivacy() {
 
             <Reveal>
               <section>
-                <h2>13. Contact</h2>
+                <h2>16. Contact</h2>
                 <p>
                   <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
                 </p>
                 <p style={{ opacity: 0.75 }}>
                   <em>
-                    In one line: we collect as little as we can, we don't advertise, nothing leaves the
-                    UK, and you control all of it.
+                    In one line: your child's data stays on your child's device. We don't advertise, we
+                    don't track, and we don't have a file on anyone.
                   </em>
                 </p>
               </section>

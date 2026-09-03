@@ -90,18 +90,20 @@ export default function AlfieEnglishSupport() {
                   by Apple.
                 </p>
 
-                <h3>How do I export my child's data?</h3>
+                <h3>How do I delete my child's data?</h3>
                 <p>
-                  Parent Dashboard &rarr; Export data. You get a JSON bundle plus any voice journal audio,
-                  emailed to the account address &mdash; the UK GDPR Article 15 and Article 20 set. If
-                  you'd rather we send it manually, email{" "}
-                  <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> and we'll deliver within 30 days.
+                  Parent Dashboard &rarr; select the child &rarr; Delete. It is immediate, and it is the
+                  whole story: everything about your child &mdash; name, age, progress, pronunciation
+                  history and voice journal recordings &mdash; lives on the device and nowhere else.
+                  Deleting the app removes all of it too. We hold no copy to delete.
                 </p>
 
-                <h3>How do I delete a child profile, or the whole account?</h3>
+                <h3>Can I get a copy of what you hold about my child?</h3>
                 <p>
-                  Both are in the Parent Dashboard. Deleting a profile is immediate. Deleting the account
-                  erases everything we hold within 30 days.
+                  You can ask, and we will answer, but the honest expectation is that we hold nothing.
+                  There is no account on our servers and no cloud profile. Email{" "}
+                  <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> and we will confirm in writing
+                  within 30 days.
                 </p>
 
                 <h3>Is my child talking to an AI?</h3>
