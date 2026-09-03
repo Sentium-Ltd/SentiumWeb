@@ -112,7 +112,7 @@ export default function AlfieEnglishPrivacy() {
             <Reveal>
               <section>
                 <h2>3. What actually leaves the device</h2>
-                <p>Three things, and only three:</p>
+                <p>Two things, and only two:</p>
                 <ul>
                   <li>
                     <strong>Lesson content requests.</strong> The app asks our servers for lessons,
@@ -120,20 +120,16 @@ export default function AlfieEnglishPrivacy() {
                     they name a lesson, not a person.
                   </li>
                   <li>
-                    <strong>Pronunciation scoring.</strong> When your child practises speaking, a short
-                    recording of the phrase is sent to our server, which forwards it to Microsoft Azure's
-                    speech-scoring service and returns a score. The recording carries{" "}
-                    <strong>no name, no account, no device identifier and no profile ID</strong> &mdash;
-                    nothing that could connect it to your child. We do not write it to any database or
-                    storage, and it is discarded once the score comes back. Neither we nor Microsoft use
-                    it to train anything.
-                  </li>
-                  <li>
                     <strong>Subscription checks.</strong> If you subscribe, the App Store receipt is sent
                     to our server so we can confirm the subscription is genuine. It contains Apple's
                     transaction identifiers and no information about your child.
                   </li>
                 </ul>
+                <p>
+                  <strong>Your child's voice is not one of them.</strong> Pronunciation practice uses
+                  Apple's speech recognition running entirely on the device, with on-device recognition
+                  explicitly required. The audio never reaches us, Apple, or anyone else.
+                </p>
               </section>
             </Reveal>
 
@@ -169,8 +165,8 @@ export default function AlfieEnglishPrivacy() {
               <section>
                 <h2>6. Speech, and what happens to your child's voice</h2>
                 <p>
-                  Pronunciation recordings are used to produce a score and nothing else, as described
-                  above. They are never used to train any model, by us or by anyone else.
+                  Speech recognition runs on the device. Recordings are never uploaded, never stored by
+                  us, and never used to train any model &mdash; by us or by anyone else.
                 </p>
                 <p>
                   Every line Alfie speaks was written and reviewed by us in advance.{" "}
@@ -189,7 +185,7 @@ export default function AlfieEnglishPrivacy() {
                   <li><strong>Apple</strong> &mdash; payments and subscription management.</li>
                   <li>
                     <strong>Microsoft Azure</strong> &mdash; hosting for lesson content, in UK data
-                    centres, and the speech-scoring service described above.
+                    centres.
                   </li>
                 </ul>
                 <p>
@@ -203,8 +199,7 @@ export default function AlfieEnglishPrivacy() {
               <section>
                 <h2>8. How long we keep things</h2>
                 <p>
-                  We do not retain personal data, because we do not receive any. Pronunciation recordings
-                  exist only for the seconds it takes to score them, and are never stored.
+                  We do not retain personal data, because we do not receive any.
                 </p>
               </section>
             </Reveal>
@@ -293,9 +288,17 @@ export default function AlfieEnglishPrivacy() {
                 <p>
                   Stated for transparency, because the app contains the consent scaffolding for them: we
                   have built the machinery for optional cloud progress sync, cloud backup of voice
-                  recordings, practice reminders, and anonymous usage analytics.{" "}
-                  <strong>None of these are implemented, and none of them run.</strong> No such data is
-                  collected today.
+                  recordings, practice reminders, anonymous usage analytics, and a server-side
+                  pronunciation-scoring service.{" "}
+                  <strong>
+                    None of these are implemented in the app you are using, and none of them run.
+                  </strong>{" "}
+                  No such data is collected today.
+                </p>
+                <p>
+                  The server-side scoring service exists only behind a researcher tool that is not part
+                  of normal use, and is used solely in supervised studies where a parent has signed a
+                  separate written consent form.
                 </p>
                 <p>
                   If we ever switch one on, it will be off by default, will require you to opt in, and we
