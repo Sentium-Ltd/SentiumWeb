@@ -5,7 +5,7 @@ import { Reveal } from "@/ui/components";
 import { Footer, Header } from "@/ui/sections";
 
 const SITE_URL = "https://www.sentium.app";
-const LAST_UPDATED = "3 September 2026";
+const LAST_UPDATED = "10 September 2026";
 const SUPPORT_EMAIL = "support@sentium.app";
 
 export const metadata: Metadata = {
@@ -103,7 +103,7 @@ export default function AlfieEnglishPrivacy() {
                   <li>Learning progress, stars, gems and badges.</li>
                   <li>Pronunciation scores and history.</li>
                   <li>Voice journal recordings.</li>
-                  <li>The Sign in with Apple identifier, held in the device Keychain.</li>
+                  <li>Your child&rsquo;s profile, progress, recordings and pronunciation history &mdash; all of it, whether or not you sign in.</li>
                 </ul>
                 <p>Deleting the app removes all of it.</p>
               </section>
@@ -112,7 +112,7 @@ export default function AlfieEnglishPrivacy() {
             <Reveal>
               <section>
                 <h2>3. What actually leaves the device</h2>
-                <p>Two things, and only two:</p>
+                <p>Three things, and the third only if you choose to sign in:</p>
                 <ul>
                   <li>
                     <strong>Lesson content requests.</strong> The app asks our servers for lessons,
@@ -123,6 +123,11 @@ export default function AlfieEnglishPrivacy() {
                     <strong>Subscription checks.</strong> If you subscribe, the App Store receipt is sent
                     to our server so we can confirm the subscription is genuine. It contains Apple's
                     transaction identifiers and no information about your child.
+                  </li>
+                  <li>
+                    <strong>Your sign-in, if you create an account.</strong> Apple or Google tells us who{" "}
+                    <em>you</em> are &mdash; an identifier, and an email address if they share one.
+                    Nothing about your child goes with it.
                   </li>
                 </ul>
                 <p>
@@ -142,7 +147,6 @@ export default function AlfieEnglishPrivacy() {
                   <li>Device fingerprints</li>
                   <li>Precise or approximate location</li>
                   <li>Contacts, photos or camera access</li>
-                  <li>Your email address</li>
                   <li>Anything at all for advertising or marketing profiling</li>
                 </ul>
               </section>
@@ -150,13 +154,28 @@ export default function AlfieEnglishPrivacy() {
 
             <Reveal>
               <section>
-                <h2>5. Sign in with Apple</h2>
+                <h2>5. Accounts</h2>
                 <p>
-                  Signing in is optional &mdash; the app works without it. When you do sign in, Apple
-                  gives the app an identifier for you, and that identifier is stored in the device
-                  Keychain. <strong>It is never sent to us.</strong> We do not receive your name or
-                  email, we hold no account record for you, and we cannot identify you from anything in
-                  the app.
+                  Signing in is optional. Everything in the app works without it, including the free
+                  lessons &mdash; we will never make you create an account to reach what you have
+                  already been given or paid for.
+                </p>
+                <p>
+                  An account is for the <strong>parent</strong>, not the child. It exists so your
+                  child&rsquo;s progress can follow them from a phone to a tablet to a browser, and that
+                  needs to know which grown-up owns those devices &mdash; nothing about the child at all.
+                </p>
+                <p>
+                  When you sign in with Apple or Google we store the identifier they give us, and your
+                  email address if they share one. We never see a password. We store no name, nothing
+                  about your child, and no device identifiers. Apple&rsquo;s Private Relay often
+                  does not share a real address, and the account works perfectly well without one.
+                </p>
+                <p>
+                  <strong>Deleting it.</strong> Settings &rarr; Parent Dashboard &rarr; Account &rarr;
+                  Delete account. That deletes the record rather than marking it closed, and signs you
+                  out of every device immediately. There is nothing of your child&rsquo;s to delete,
+                  because we never had any of it.
                 </p>
               </section>
             </Reveal>

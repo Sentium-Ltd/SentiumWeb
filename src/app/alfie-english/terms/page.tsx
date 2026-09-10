@@ -5,7 +5,7 @@ import { Reveal } from "@/ui/components";
 import { Footer, Header } from "@/ui/sections";
 
 const SITE_URL = "https://www.sentium.app";
-const LAST_UPDATED = "3 September 2026";
+const LAST_UPDATED = "10 September 2026";
 const SUPPORT_EMAIL = "support@sentium.app";
 
 export const metadata: Metadata = {
@@ -116,6 +116,25 @@ export default function AlfieEnglishTerms() {
                   </li>
                   <li>
                     Voice journal recordings your child makes belong to you. We claim no right to them.
+                  </li>
+                </ul>
+              </section>
+            </Reveal>
+
+            <Reveal>
+              <section>
+                <h2>4a. Accounts</h2>
+                <ul>
+                  <li>An account is optional. The app works without one.</li>
+                  <li>
+                    The account belongs to the <strong>parent or guardian</strong> and must be created
+                    by an adult. It exists so your child&rsquo;s progress can follow them between
+                    devices.
+                  </li>
+                  <li>Sign in with Apple or Google. We never see or store a password.</li>
+                  <li>
+                    You can delete it at any time from the Parent Dashboard. Deleting it removes the
+                    record and signs out every device.
                   </li>
                 </ul>
               </section>
