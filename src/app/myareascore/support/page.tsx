@@ -90,12 +90,17 @@ export default function MyAreaScoreSupport() {
                   percentages and scores &mdash; where free use shows a range.
                 </p>
 
-                <h3>How do I cancel?</h3>
+                <h3>How do I cancel, change my card or get an invoice?</h3>
                 <p>
-                  Email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> from the address on your
-                  account. You won't be charged again and you keep access to the end of the month you've
-                  paid for. Cancel within 14 days of first subscribing and we refund that first payment
-                  in full.
+                  Sign in and choose <strong>Manage subscription</strong>, under the search box. It opens
+                  Stripe's secure billing page, where you can cancel, update your card and download
+                  invoices. You won't be charged again and you keep access to the end of the month
+                  you've paid for.
+                </p>
+                <p>
+                  Cancel within 14 days of first subscribing and we refund that first payment in full
+                  &mdash; email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> and we'll
+                  process it. If you can't sign in, email us and we'll cancel for you.
                 </p>
 
                 <h3>Where do the figures come from?</h3>

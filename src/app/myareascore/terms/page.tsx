@@ -121,10 +121,10 @@ export default function MyAreaScoreTerms() {
                     the subscription renews each month until you cancel.
                   </li>
                   <li>
-                    <strong>Cancel at any time</strong> by emailing{" "}
-                    <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> from the address on your
-                    account. You won't be charged again, and you keep access until the end of the month
-                    you have paid for.
+                    <strong>Cancel at any time</strong> from <strong>Manage subscription</strong> in
+                    the app, or by emailing <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>{" "}
+                    from the address on your account. You won't be charged again, and you keep access
+                    until the end of the month you have paid for.
                   </li>
                   <li>
                     <strong>14-day right to cancel.</strong> If you cancel within 14 days of first
