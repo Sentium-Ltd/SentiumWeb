@@ -87,8 +87,7 @@ export default function MyAreaScorePrivacy() {
                 <h2>2. The map is about places, not people</h2>
                 <p>
                   My Area Score compares neighbourhoods in London and the surrounding commuter belt. Its
-                  figures come from published sources &mdash; the ONS census, HM Land Registry, police.uk,
-                  the Department for Education, Ofsted and TfL &mdash; and are shown only as totals,
+                  figures come from official published statistics and are shown only as totals,
                   percentages and medians for whole areas. Nothing on the map identifies an individual.
                 </p>
               </section>

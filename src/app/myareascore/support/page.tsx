@@ -105,12 +105,12 @@ export default function MyAreaScoreSupport() {
 
                 <h3>Where do the figures come from?</h3>
                 <ul>
-                  <li>Community and households: the 2021 census (ONS).</li>
-                  <li>Homes: HM Land Registry sale prices over the last two years.</li>
-                  <li>Safety: crime recorded by the police, published on police.uk.</li>
-                  <li>Schools: Department for Education results and Ofsted inspections.</li>
+                  <li>Demographics and households: the 2021 census.</li>
+                  <li>Homes: official records of sale prices over the last two years.</li>
+                  <li>Safety: crime recorded by the police.</li>
+                  <li>Schools: published results and inspection grades.</li>
                   <li>
-                    Commute: TfL's timetabled weekday journeys arriving by 09:00, with the walk to the
+                    Commute: timetabled weekday journeys arriving by 09:00, with the walk to the
                     station estimated from distance.
                   </li>
                 </ul>
