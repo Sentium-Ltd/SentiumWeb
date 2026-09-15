@@ -92,7 +92,7 @@ export default function MyAreaScoreSupport() {
 
                 <h3>How do I cancel, change my card or get an invoice?</h3>
                 <p>
-                  Sign in and choose <strong>Manage subscription</strong>, under the search box. It opens
+                  Sign in and choose <strong>Manage subscription</strong>, at the top right of the map. It opens
                   Stripe's secure billing page, where you can cancel, update your card and download
                   invoices. You won't be charged again and you keep access to the end of the month
                   you've paid for.
