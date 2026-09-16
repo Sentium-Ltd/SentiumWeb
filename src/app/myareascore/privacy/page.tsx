@@ -135,7 +135,7 @@ export default function MyAreaScorePrivacy() {
                   </li>
                   <li>
                     <strong>Your subscription</strong> &mdash; whether you subscribe, the customer and
-                    subscription references Stripe gives us, and when the current period ends.
+                    payment references Stripe gives us, and the date your pass runs out.
                   </li>
                 </ul>
                 <p>
@@ -192,7 +192,20 @@ export default function MyAreaScorePrivacy() {
 
             <Reveal>
               <section>
-                <h2>8. Cookies</h2>
+                <h2>8. Counting how the site is used</h2>
+                <p>
+                  We count anonymous events &mdash; a search, an area opened, a pass bought &mdash;
+                  using <strong>PostHog</strong>, on its European servers. It is set up to store
+                  nothing in your browser, to build no profile of you, and to record nothing beyond
+                  the handful of events we have named. We read the totals to see which parts of the
+                  map people find useful.
+                </p>
+              </section>
+            </Reveal>
+
+            <Reveal>
+              <section>
+                <h2>9. Cookies</h2>
                 <p>We use only the cookies needed to sign you in:</p>
                 <ul>
                   <li>A sign-in cookie, lasting up to 30 days, set only once you sign in.</li>
@@ -207,14 +220,18 @@ export default function MyAreaScorePrivacy() {
 
             <Reveal>
               <section>
-                <h2>9. Who processes data for us</h2>
+                <h2>10. Who processes data for us</h2>
                 <ul>
                   <li>
                     <strong>Microsoft Azure</strong> &mdash; hosts the website and sign-in service (West
                     Europe region, the Netherlands), stores accounts and map data (UK South region,
                     London), and sends our emails (Azure Communication Services, data held in the UK).
                   </li>
-                  <li><strong>Stripe</strong> &mdash; payments and subscriptions.</li>
+                  <li><strong>Stripe</strong> &mdash; payments and receipts.</li>
+                  <li>
+                    <strong>PostHog</strong> &mdash; anonymous usage counts, held in the EU, with
+                    no cookies and no profile of you.
+                  </li>
                   <li><strong>Google and Meta</strong> &mdash; only if you choose to sign in with them.</li>
                   <li><strong>postcodes.io</strong> &mdash; postcode and place search, as described above.</li>
                 </ul>
@@ -224,14 +241,14 @@ export default function MyAreaScorePrivacy() {
 
             <Reveal>
               <section>
-                <h2>10. Why we are allowed to process it</h2>
+                <h2>11. Why we are allowed to process it</h2>
                 <ul>
                   <li>
                     <strong>Contract</strong> &mdash; running your account and subscription, and sending
                     the emails that make sign-in work.
                   </li>
                   <li>
-                    <strong>Legitimate interests</strong> &mdash; the security records in section 7, which
+                    <strong>Legitimate interests</strong> &mdash; the security records in section 7 and the anonymous usage counts in section 8, which
                     protect your account and the service.
                   </li>
                   <li>
@@ -243,7 +260,7 @@ export default function MyAreaScorePrivacy() {
 
             <Reveal>
               <section>
-                <h2>11. How long we keep things</h2>
+                <h2>12. How long we keep things</h2>
                 <ul>
                   <li>Your account: for as long as it exists. When you ask us to delete it, we do so within 30 days.</li>
                   <li>Attempt counts: normally deleted within a day.</li>
@@ -258,7 +275,7 @@ export default function MyAreaScorePrivacy() {
 
             <Reveal>
               <section>
-                <h2>12. International transfers</h2>
+                <h2>13. International transfers</h2>
                 <p>
                   The website and sign-in service run in the Netherlands, which the UK recognises as
                   providing adequate protection. Stripe, Google and Meta may process data in the United
@@ -270,7 +287,7 @@ export default function MyAreaScorePrivacy() {
 
             <Reveal>
               <section>
-                <h2>13. Your rights</h2>
+                <h2>14. Your rights</h2>
                 <p>
                   Under the UK GDPR you have the right to access, correct, erase, restrict and port your
                   personal data, and to object to its processing. To exercise any of them, email{" "}
@@ -292,7 +309,7 @@ export default function MyAreaScorePrivacy() {
 
             <Reveal>
               <section>
-                <h2>14. Children</h2>
+                <h2>15. Children</h2>
                 <p>
                   My Area Score is for adults. Accounts are not intended for anyone under 18, and we do
                   not knowingly hold personal data about children. Figures about schools describe
@@ -303,7 +320,7 @@ export default function MyAreaScorePrivacy() {
 
             <Reveal>
               <section>
-                <h2>15. Changes to this policy</h2>
+                <h2>16. Changes to this policy</h2>
                 <p>
                   We will update this page when anything changes, and email account holders at least 30
                   days before any material change takes effect.
@@ -313,7 +330,7 @@ export default function MyAreaScorePrivacy() {
 
             <Reveal>
               <section>
-                <h2>16. Contact</h2>
+                <h2>17. Contact</h2>
                 <p>
                   <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
                 </p>

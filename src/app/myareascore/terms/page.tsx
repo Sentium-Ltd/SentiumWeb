@@ -110,33 +110,29 @@ export default function MyAreaScoreTerms() {
 
             <Reveal>
               <section>
-                <h2>4. Subscriptions</h2>
+                <h2>4. Passes</h2>
                 <ul>
                   <li>
-                    The map is free to use. A subscription shows exact figures where free use shows a
-                    range.
+                    The map is free to use. A pass shows exact figures where free use shows a range.
                   </li>
                   <li>
-                    The price is shown before you pay. Payment is taken by Stripe, monthly in advance, and
-                    the subscription renews each month until you cancel.
+                    <strong>A pass is one payment for 30 days.</strong> It does not renew, there is
+                    nothing to cancel, and you are never charged again. The price is shown before you
+                    pay, and payment is taken by Stripe.
                   </li>
                   <li>
-                    <strong>Cancel at any time</strong> from <strong>Manage subscription</strong> in
-                    the app, or by emailing <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>{" "}
-                    from the address on your account. You won't be charged again, and you keep access
-                    until the end of the month you have paid for.
+                    Buy another pass whenever you need one. Buying while a pass is still running adds
+                    the new days to the days you have left.
                   </li>
                   <li>
-                    <strong>14-day right to cancel.</strong> If you cancel within 14 days of first
-                    subscribing, we refund that first payment in full.
+                    <strong>Your right to cancel.</strong> A pass is digital content you can use
+                    straight away. At checkout you ask us to start it immediately and accept that the
+                    14-day right to cancel ends when it starts. If you have not used it, email us
+                    within 14 days and we will refund it in full.
                   </li>
                   <li>
-                    If we change the price, we will email you at least 30 days beforehand, and you can
-                    cancel before it applies.
-                  </li>
-                  <li>
-                    If a payment fails and isn't resolved, the subscription ends and the account returns
-                    to free use.
+                    An older monthly subscription continues on its existing terms until you cancel it,
+                    and you can cancel at any time from the map.
                   </li>
                 </ul>
               </section>

@@ -84,23 +84,21 @@ export default function MyAreaScoreSupport() {
                 <h3>It says &ldquo;Too many attempts&rdquo;</h3>
                 <p>Wait 15 minutes and try again. It is there to stop anyone guessing passwords.</p>
 
-                <h3>What does a subscription add?</h3>
+                <h3>What does a pass add?</h3>
                 <p>
-                  The whole map is free to explore. A subscription shows exact figures &mdash; prices,
+                  The whole map is free to explore. A 30-day pass shows exact figures &mdash; prices,
                   percentages and scores &mdash; where free use shows a range.
                 </p>
 
-                <h3>How do I cancel, change my card or get an invoice?</h3>
+                <h3>Does a pass renew? How do I get a receipt?</h3>
                 <p>
-                  Sign in and choose <strong>Manage subscription</strong>, at the top right of the map. It opens
-                  Stripe's secure billing page, where you can cancel, update your card and download
-                  invoices. You won't be charged again and you keep access to the end of the month
-                  you've paid for.
+                  A pass is one payment for 30 days. It does not renew, so there is nothing to cancel
+                  and you are never charged again. Stripe emails your receipt when you pay.
                 </p>
                 <p>
-                  Cancel within 14 days of first subscribing and we refund that first payment in full
-                  &mdash; email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> and we'll
-                  process it. If you can't sign in, email us and we'll cancel for you.
+                  Bought a pass and not used it? Email us within 14 days and we will refund it in
+                  full. An older monthly subscription can still be cancelled from the top right of
+                  the map, or ask us and we will do it.
                 </p>
 
                 <h3>Where do the figures come from?</h3>
