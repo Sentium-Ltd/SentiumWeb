@@ -125,10 +125,10 @@ export default function MyAreaScoreTerms() {
                     the new days to the days you have left.
                   </li>
                   <li>
-                    <strong>Your right to cancel.</strong> A pass is digital content you can use
-                    straight away. At checkout you ask us to start it immediately and accept that the
-                    14-day right to cancel ends when it starts. If you have not used it, email us
-                    within 14 days and we will refund it in full.
+                    <strong>Your right to cancel.</strong> You have 14 days from buying a pass to
+                    change your mind. Email us within those 14 days and we will refund you in full,
+                    whether or not you have used it. After that a pass is not refundable — but it
+                    never renews, so there is nothing left to cancel.
                   </li>
                   <li>
                     An older monthly subscription continues on its existing terms until you cancel it,
