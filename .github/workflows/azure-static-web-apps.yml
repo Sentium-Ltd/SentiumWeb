@@ -27,6 +27,10 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
+          # Dependabot PRs get no Actions secrets. This still builds them and skips
+          # only the deploy, so their check reports the upgrade. It is false on push,
+          # so main still fails if the secret goes missing.
+          skip_deploy_on_missing_secrets: ${{ github.event_name == 'pull_request' }}
           app_location: "/"
           # api_location intentionally empty - Functions live on the linked
           # backend Function App (func-sentium-web) with Always On, deployed
